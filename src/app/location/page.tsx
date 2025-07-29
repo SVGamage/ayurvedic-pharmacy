@@ -122,7 +122,7 @@ export default function LocationPage() {
               <div>
                 <h3 className="font-semibold mb-2">By Bus</h3>
                 <p className="text-gray-600 text-sm">
-                  Bus routes 42, 67, and 89 stop directly in front of our center. The "Wellness Center" stop is
+                  Bus routes 42, 67, and 89 stop directly in front of our center. The &ldquo;Wellness Center&rdquo; stop is
                   announced on all routes.
                 </p>
               </div>

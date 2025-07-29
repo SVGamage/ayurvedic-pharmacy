@@ -1,38 +1,56 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Star, ShoppingCart, Search, Filter } from "lucide-react"
+import { useState } from "react";
+import Image from "next/image";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Star, ShoppingCart, Search, Filter } from "lucide-react";
 
-const productCategories = ["All Products", "Ayurvedic Products", "Disease-Related Products", "Traditional Products"]
+const productCategories = [
+  "All Products",
+  "Ayurvedic Products",
+  "Disease-Related Products",
+  "Traditional Products",
+];
 
-const ayurvedicSubcategories = [
-  "Cosmetics",
-  "Oils",
-  "Balms",
-  "Arishta & Asava",
-  "Kwatha & Kashaya",
-  "Powders",
-  "Capsules & Tablets",
-]
+// const ayurvedicSubcategories = [
+//   "Cosmetics",
+//   "Oils",
+//   "Balms",
+//   "Arishta & Asava",
+//   "Kwatha & Kashaya",
+//   "Powders",
+//   "Capsules & Tablets",
+// ]
 
-const diseaseSubcategories = [
-  "Joint & Muscle Pain",
-  "Digestive Disorders",
-  "Respiratory Health",
-  "Skin Conditions",
-  "Women's Health",
-  "Stress & Sleep",
-  "Diabetes Support",
-  "Immunity Boosters",
-  "Hair & Scalp Problems",
-]
+// const diseaseSubcategories = [
+//   "Joint & Muscle Pain",
+//   "Digestive Disorders",
+//   "Respiratory Health",
+//   "Skin Conditions",
+//   "Women's Health",
+//   "Stress & Sleep",
+//   "Diabetes Support",
+//   "Immunity Boosters",
+//   "Hair & Scalp Problems",
+// ]
 
-const traditionalSubcategories = ["Puja Items", "Pottery Items", "Thovil Badu", "Gift Packs/Herbal Kits"]
+// const traditionalSubcategories = ["Puja Items", "Pottery Items", "Thovil Badu", "Gift Packs/Herbal Kits"]
 
 const products = [
   {
@@ -46,7 +64,8 @@ const products = [
     reviews: 156,
     image: "/placeholder.svg?height=300&width=300",
     badge: "Best Seller",
-    description: "Premium quality Ashwagandha for stress relief and better sleep",
+    description:
+      "Premium quality Ashwagandha for stress relief and better sleep",
   },
   {
     id: 2,
@@ -113,41 +132,45 @@ const products = [
     badge: "Premium",
     description: "Complete wellness gift set with assorted herbs",
   },
-]
+];
 
 export default function ProductsPage() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("All Products")
-  const [sortBy, setSortBy] = useState("name")
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All Products");
+  const [sortBy, setSortBy] = useState("name");
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCategory = selectedCategory === "All Products" || product.category === selectedCategory
-    return matchesSearch && matchesCategory
-  })
+      product.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "All Products" ||
+      product.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
       case "price-low":
-        return a.price - b.price
+        return a.price - b.price;
       case "price-high":
-        return b.price - a.price
+        return b.price - a.price;
       case "rating":
-        return b.rating - a.rating
+        return b.rating - a.rating;
       default:
-        return a.name.localeCompare(b.name)
+        return a.name.localeCompare(b.name);
     }
-  })
+  });
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Our Products</h1>
+        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+          Our Products
+        </h1>
         <p className="text-lg text-gray-600">
-          Discover our comprehensive range of authentic Ayurvedic products, traditional remedies, and wellness
-          solutions.
+          Discover our comprehensive range of authentic Ayurvedic products,
+          traditional remedies, and wellness solutions.
         </p>
       </div>
 
@@ -186,7 +209,10 @@ export default function ProductsPage() {
               <SelectItem value="rating">Highest Rated</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" className="border-green-600 text-green-600 bg-transparent">
+          <Button
+            variant="outline"
+            className="border-green-600 text-green-600 bg-transparent"
+          >
             <Filter className="h-4 w-4 mr-2" />
             More Filters
           </Button>
@@ -196,32 +222,53 @@ export default function ProductsPage() {
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {sortedProducts.map((product) => (
-          <Card key={product.id} className="group hover:shadow-lg transition-shadow duration-300">
+          <Card
+            key={product.id}
+            className="group hover:shadow-lg transition-shadow duration-300"
+          >
             <CardHeader className="p-0">
-              <div className="relative overflow-hidden rounded-t-lg">
-                <img
+              <div className="relative w-full h-48">
+                <Image
                   src={product.image || "/placeholder.svg"}
                   alt={product.name}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                {product.badge && <Badge className="absolute top-2 left-2 bg-green-600">{product.badge}</Badge>}
               </div>
+              {product.badge && (
+                <Badge className="absolute top-2 left-2 bg-green-600">
+                  {product.badge}
+                </Badge>
+              )}
             </CardHeader>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-green-600 font-medium">{product.subcategory}</span>
+                <span className="text-sm text-green-600 font-medium">
+                  {product.subcategory}
+                </span>
                 <div className="flex items-center space-x-1">
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm text-gray-600">{product.rating}</span>
-                  <span className="text-sm text-gray-400">({product.reviews})</span>
+                  <span className="text-sm text-gray-600">
+                    {product.rating}
+                  </span>
+                  <span className="text-sm text-gray-400">
+                    ({product.reviews})
+                  </span>
                 </div>
               </div>
               <CardTitle className="text-lg mb-2">{product.name}</CardTitle>
-              <p className="text-sm text-gray-600 mb-3">{product.description}</p>
+              <p className="text-sm text-gray-600 mb-3">
+                {product.description}
+              </p>
               <div className="flex items-center space-x-2">
-                <span className="text-xl font-bold text-green-600">${product.price}</span>
+                <span className="text-xl font-bold text-green-600">
+                  ${product.price}
+                </span>
                 {product.originalPrice && (
-                  <span className="text-sm text-gray-400 line-through">${product.originalPrice}</span>
+                  <span className="text-sm text-gray-400 line-through">
+                    ${product.originalPrice}
+                  </span>
                 )}
               </div>
             </CardContent>
@@ -237,9 +284,11 @@ export default function ProductsPage() {
 
       {sortedProducts.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No products found matching your criteria.</p>
+          <p className="text-gray-500 text-lg">
+            No products found matching your criteria.
+          </p>
         </div>
       )}
     </div>
-  )
+  );
 }

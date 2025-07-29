@@ -45,7 +45,7 @@ export function TestimonialsPreview() {
                 ))}
               </div>
               <Quote className="h-8 w-8 text-green-600 mb-4" />
-              <p className="text-gray-700 mb-4 italic">"{testimonial.text}"</p>
+              <p className="text-gray-700 mb-4 italic">{testimonial.text}</p>
               <div className="border-t border-green-200 pt-4">
                 <p className="font-semibold text-gray-900">{testimonial.name}</p>
                 <p className="text-sm text-gray-600">{testimonial.location}</p>

@@ -36,7 +36,7 @@ export default function ContactPage() {
       <div className="text-center mb-12">
         <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          We're here to help you on your wellness journey. Reach out to us for consultations, product inquiries, or any
+          We&apos;re here to help you on your wellness journey. Reach out to us for consultations, product inquiries, or any
           questions about Ayurvedic healing.
         </p>
       </div>

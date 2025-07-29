@@ -142,7 +142,7 @@ export default function ServicesPage() {
                 </div>
 
                 <div>
-                  <h4 className="font-semibold mb-3">What's Included:</h4>
+                  <h4 className="font-semibold mb-3">What&apos;s Included:</h4>
                   <ul className="space-y-2">
                     {service.features.map((feature, idx) => (
                       <li key={idx} className="flex items-center space-x-2">
@@ -167,7 +167,7 @@ export default function ServicesPage() {
         <div className="text-center mb-8">
           <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">Nakshatra & Astrological Services</h2>
           <p className="text-gray-600">
-            Traditional astrological guidance for life's important decisions and spiritual growth
+            Traditional astrological guidance for life&apos;s important decisions and spiritual growth
           </p>
         </div>
 

@@ -1,12 +1,19 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calendar, User, Clock, Search, ArrowRight } from "lucide-react"
+import { useState } from "react";
+import Image from "next/image";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Calendar, User, Clock, Search, ArrowRight } from "lucide-react";
 
 const blogCategories = [
   "All Categories",
@@ -14,7 +21,7 @@ const blogCategories = [
   "Healing Through Ayurveda",
   "Power of Nature",
   "Ayurveda for Daily Life",
-]
+];
 
 const blogPosts = [
   {
@@ -80,7 +87,8 @@ const blogPosts = [
   {
     id: 6,
     title: "Creating Your Home Herbal Garden",
-    excerpt: "A beginner's guide to growing medicinal herbs at home for daily wellness and natural remedies.",
+    excerpt:
+      "A beginner's guide to growing medicinal herbs at home for daily wellness and natural remedies.",
     category: "Power of Nature",
     author: "Dr. Sunita Reddy",
     date: "March 3, 2024",
@@ -88,30 +96,34 @@ const blogPosts = [
     image: "/placeholder.svg?height=250&width=400",
     featured: false,
   },
-]
+];
 
 export default function BlogPage() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("All Categories")
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
 
   const filteredPosts = blogPosts.filter((post) => {
     const matchesSearch =
       post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCategory = selectedCategory === "All Categories" || post.category === selectedCategory
-    return matchesSearch && matchesCategory
-  })
+      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "All Categories" ||
+      post.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
-  const featuredPost = blogPosts.find((post) => post.featured)
-  const regularPosts = filteredPosts.filter((post) => !post.featured)
+  const featuredPost = blogPosts.find((post) => post.featured);
+  const regularPosts = filteredPosts.filter((post) => !post.featured);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-center mb-12">
-        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Wellness Blog</h1>
+        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+          Wellness Blog
+        </h1>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          Discover the wisdom of Ayurveda through our comprehensive articles on natural healing, herbal remedies, and
-          holistic wellness practices.
+          Discover the wisdom of Ayurveda through our comprehensive articles on
+          natural healing, herbal remedies, and holistic wellness practices.
         </p>
       </div>
 
@@ -145,20 +157,30 @@ export default function BlogPage() {
       {/* Featured Article */}
       {featuredPost && selectedCategory === "All Categories" && !searchTerm && (
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Article</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Featured Article
+          </h2>
           <Card className="overflow-hidden">
             <div className="md:flex">
               <div className="md:w-1/2">
-                <img
+                <Image
                   src={featuredPost.image || "/placeholder.svg"}
                   alt={featuredPost.title}
                   className="w-full h-64 md:h-full object-cover"
+                  width={400}
+                  height={250}
                 />
               </div>
               <div className="md:w-1/2 p-8">
-                <Badge className="bg-green-600 mb-4">{featuredPost.category}</Badge>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">{featuredPost.title}</h3>
-                <p className="text-gray-600 mb-6 text-lg">{featuredPost.excerpt}</p>
+                <Badge className="bg-green-600 mb-4">
+                  {featuredPost.category}
+                </Badge>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  {featuredPost.title}
+                </h3>
+                <p className="text-gray-600 mb-6 text-lg">
+                  {featuredPost.excerpt}
+                </p>
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center space-x-4 text-sm text-gray-500">
                     <div className="flex items-center space-x-1">
@@ -188,19 +210,25 @@ export default function BlogPage() {
       {/* Regular Articles Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {regularPosts.map((post) => (
-          <Card key={post.id} className="group hover:shadow-lg transition-shadow duration-300">
-            <CardHeader className="p-0">
-              <div className="relative overflow-hidden rounded-t-lg">
-                <img
+          <Card key={post.id} className="group cursor-pointer overflow-hidden">
+            <CardHeader className="p-0 relative">
+              <div className="overflow-hidden">
+                <Image
                   src={post.image || "/placeholder.svg"}
                   alt={post.title}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  width={400}
+                  height={250}
                 />
-                <Badge className="absolute top-4 left-4 bg-green-600">{post.category}</Badge>
+                <Badge className="absolute top-4 left-4 bg-green-600">
+                  {post.category}
+                </Badge>
               </div>
             </CardHeader>
             <CardContent className="p-6">
-              <CardTitle className="text-xl mb-3 group-hover:text-green-600 transition-colors">{post.title}</CardTitle>
+              <CardTitle className="text-xl mb-3 group-hover:text-green-600 transition-colors">
+                {post.title}
+              </CardTitle>
               <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt}</p>
               <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                 <div className="flex items-center space-x-4">
@@ -218,7 +246,10 @@ export default function BlogPage() {
                   <span>{post.readTime}</span>
                 </div>
               </div>
-              <Button variant="ghost" className="p-0 h-auto text-green-600 hover:text-green-700">
+              <Button
+                variant="ghost"
+                className="p-0 h-auto text-green-600 hover:text-green-700"
+              >
                 Read More
                 <ArrowRight className="h-4 w-4 ml-1" />
               </Button>
@@ -229,23 +260,30 @@ export default function BlogPage() {
 
       {filteredPosts.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No articles found matching your criteria.</p>
+          <p className="text-gray-500 text-lg">
+            No articles found matching your criteria.
+          </p>
         </div>
       )}
 
       {/* Newsletter Signup */}
       <section className="bg-green-50 rounded-lg p-8 mt-16">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Stay Updated with Our Wellness Newsletter</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Stay Updated with Our Wellness Newsletter
+          </h2>
           <p className="text-gray-600 mb-6">
-            Get the latest articles on Ayurveda, natural healing, and wellness tips delivered to your inbox.
+            Get the latest articles on Ayurveda, natural healing, and wellness
+            tips delivered to your inbox.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <Input placeholder="Enter your email" className="flex-1" />
-            <Button className="bg-green-600 hover:bg-green-700">Subscribe</Button>
+            <Button className="bg-green-600 hover:bg-green-700">
+              Subscribe
+            </Button>
           </div>
         </div>
       </section>
     </div>
-  )
+  );
 }
