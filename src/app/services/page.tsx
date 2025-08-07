@@ -136,15 +136,58 @@ export default function ServicesPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-          Our Services
+      {/* Enhanced Header Section */}
+      <div className="relative mb-16 text-center">
+        {/* Background decoration */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-40 h-40 bg-gradient-to-r from-green-100 to-blue-100 rounded-full opacity-20 blur-3xl"></div>
+          <div className="absolute top-12 left-1/3 w-24 h-24 bg-yellow-100 rounded-full opacity-30 blur-2xl animate-pulse"></div>
+          <div className="absolute top-6 right-1/3 w-28 h-28 bg-orange-100 rounded-full opacity-25 blur-2xl"></div>
+        </div>
+
+        {/* Badge */}
+        <div className="inline-flex items-center justify-center mb-6">
+          <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-2 rounded-full text-sm font-semibold tracking-wide shadow-lg">
+            ✨ Holistic Healing Services
+          </div>
+        </div>
+
+        {/* Main title with enhanced styling */}
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          <span className="block text-gray-900 mb-2">Transformative</span>
+          <span className="block bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 bg-clip-text text-transparent">
+            Wellness Services
+          </span>
         </h1>
-        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          Experience holistic healing through our comprehensive Ayurvedic
-          consultations and traditional Nakshatra services. Our expert
-          practitioners combine ancient wisdom with modern convenience.
-        </p>
+
+        {/* Enhanced subtitle with icons */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-6">
+            Experience holistic healing through our comprehensive Ayurvedic
+            consultations and traditional Nakshatra services
+          </p>
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <span>Expert Practitioners</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <span>Ancient Wisdom</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+              <span>Modern Convenience</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Decorative separator */}
+        <div className="flex justify-center items-center">
+          <div className="h-px bg-gradient-to-r from-transparent via-green-300 to-transparent w-32"></div>
+          <div className="mx-4 w-3 h-3 bg-green-500 rounded-full shadow-lg"></div>
+          <div className="h-px bg-gradient-to-r from-transparent via-green-300 to-transparent w-32"></div>
+        </div>
       </div>
 
       {/* Ayurvedic Services */}

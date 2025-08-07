@@ -17,6 +17,54 @@
   overflow: hidden;
 }
 
+/* Custom animations for enhanced page headers */
+@keyframes pulse-slow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Animation delay utilities */
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+/* Enhanced gradient text support */
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Backdrop blur utilities for better browser support */
+.backdrop-blur-light {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Custom shadow for floating elements */
+.shadow-float {
+  box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.1),
+    0 20px 40px -12px rgba(52, 168, 90, 0.15);
+}
+
 :root {
   --background: #f9f9fa;
   --foreground: #333333;

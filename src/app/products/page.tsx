@@ -158,14 +158,56 @@ export default function ProductsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-          Our Products
-        </h1>
-        <p className="text-lg text-gray-600">
-          Discover our comprehensive range of authentic Ayurvedic products,
-          traditional remedies, and wellness solutions.
-        </p>
+      {/* Enhanced Header Section */}
+      <div className="relative mb-12 text-center">
+        {/* Background decoration */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-32 bg-green-100 rounded-full opacity-20 blur-3xl"></div>
+          <div className="absolute top-8 left-1/4 w-16 h-16 bg-yellow-100 rounded-full opacity-30 blur-2xl"></div>
+          <div className="absolute top-4 right-1/4 w-20 h-20 bg-orange-100 rounded-full opacity-25 blur-2xl"></div>
+        </div>
+
+        {/* Main title with gradient */}
+        <div className="mb-6">
+          <div className="inline-flex items-center justify-center mb-4">
+            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
+            <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
+              Authentic Wellness
+            </span>
+            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-gray-900 via-green-800 to-gray-900 bg-clip-text text-transparent">
+              Our Premium
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-green-600 via-green-500 to-emerald-500 bg-clip-text text-transparent">
+              Ayurvedic Products
+            </span>
+          </h1>
+        </div>
+
+        {/* Enhanced subtitle */}
+        <div className="max-w-4xl mx-auto">
+          <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-4">
+            Discover our comprehensive range of authentic Ayurvedic products,
+            traditional remedies, and wellness solutions
+          </p>
+          <p className="text-base text-gray-500 max-w-2xl mx-auto">
+            Carefully crafted with time-honored formulations to support your
+            natural healing journey
+          </p>
+        </div>
+
+        {/* Decorative elements */}
+        <div className="flex justify-center items-center mt-8 space-x-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+          <div className="w-1 h-1 bg-green-400 rounded-full"></div>
+          <div className="w-3 h-3 bg-green-600 rounded-full"></div>
+          <div className="w-1 h-1 bg-green-400 rounded-full"></div>
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+        </div>
       </div>
 
       {/* Filters */}
