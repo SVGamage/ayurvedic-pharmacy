@@ -7,71 +7,67 @@ export default function LocationPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Enhanced Header Section */}
       <div className="relative mb-16 text-center">
-        {/* Background decoration with map-inspired elements */}
+        {/* Background decoration */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-48 h-48 bg-gradient-to-br from-green-50 to-blue-50 rounded-full opacity-40 blur-3xl"></div>
-          {/* Map pin style decorations */}
-          <div className="absolute top-8 left-1/4 w-4 h-4 bg-green-500 rounded-full shadow-lg"></div>
-          <div className="absolute top-16 right-1/3 w-3 h-3 bg-blue-500 rounded-full shadow-md"></div>
-          <div className="absolute top-4 right-1/4 w-2 h-2 bg-yellow-500 rounded-full"></div>
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-48 h-48 bg-green-100 rounded-full opacity-30 blur-3xl"></div>
+          <div className="absolute top-8 left-1/4 w-20 h-20 bg-emerald-100 rounded-full opacity-20 blur-2xl"></div>
+          <div className="absolute top-16 right-1/3 w-16 h-16 bg-teal-100 rounded-full opacity-25 blur-2xl"></div>
         </div>
 
-        {/* Location badge */}
-        <div className="inline-flex items-center justify-center mb-6">
-          <div className="bg-gradient-to-r from-blue-500 to-green-500 text-white px-6 py-2 rounded-full text-sm font-semibold tracking-wide shadow-lg flex items-center gap-2">
-            <MapPin className="h-4 w-4" />
-            Find Our Sanctuary
+        {/* Main title with gradient */}
+        <div className="mb-6">
+          <div className="inline-flex items-center justify-center mb-4">
+            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
+            <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
+              Find Our Sanctuary
+            </span>
+            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
           </div>
-        </div>
 
-        {/* Main title with location theme */}
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-          <span className="block text-gray-900 mb-2">Visit Our</span>
-          <span className="block bg-gradient-to-r from-green-600 via-blue-600 to-emerald-600 bg-clip-text text-transparent">
-            Wellness Sanctuary
-          </span>
-        </h1>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-gray-900 via-green-800 to-gray-900 bg-clip-text text-transparent">
+              Visit Our
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-green-500 bg-clip-text text-transparent">
+              Wellness Center
+            </span>
+          </h1>
+        </div>
 
         {/* Enhanced subtitle */}
         <div className="max-w-4xl mx-auto mb-8">
           <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-6">
             Experience authentic Ayurvedic healing in our serene wellness center
           </p>
-          <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-6 max-w-3xl mx-auto">
-            <p className="text-gray-700 leading-relaxed">
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 max-w-3xl mx-auto">
+            <p className="text-gray-700 leading-relaxed mb-4">
               Located in the heart of the city, our center provides a peaceful
               sanctuary where ancient healing traditions meet modern comfort.
               Step into our tranquil space and begin your journey to natural
               wellness.
             </p>
+            <div className="flex flex-wrap justify-center gap-4 text-sm">
+              <span className="bg-white/80 px-3 py-1 rounded-full text-green-700 font-medium">
+                Free Parking
+              </span>
+              <span className="bg-white/80 px-3 py-1 rounded-full text-emerald-700 font-medium">
+                Extended Hours
+              </span>
+              <span className="bg-white/80 px-3 py-1 rounded-full text-teal-700 font-medium">
+                24/7 Emergency
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Location highlights */}
-        <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600 mb-8">
-          <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-            <Car className="h-4 w-4 text-green-600" />
-            <span>Free Parking</span>
-          </div>
-          <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-            <Clock className="h-4 w-4 text-blue-600" />
-            <span>Extended Hours</span>
-          </div>
-          <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-            <Phone className="h-4 w-4 text-emerald-600" />
-            <span>24/7 Emergency</span>
-          </div>
-        </div>
-
-        {/* Decorative map-style lines */}
-        <div className="flex justify-center items-center space-x-4">
-          <div className="w-8 h-px bg-gradient-to-r from-transparent to-green-300"></div>
-          <MapPin className="h-5 w-5 text-green-600" />
-          <div className="w-16 h-px bg-green-300"></div>
-          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-          <div className="w-16 h-px bg-blue-300"></div>
-          <MapPin className="h-4 w-4 text-blue-500" />
-          <div className="w-8 h-px bg-gradient-to-l from-transparent to-blue-300"></div>
+        {/* Decorative elements */}
+        <div className="flex justify-center items-center space-x-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+          <div className="w-1 h-1 bg-emerald-400 rounded-full"></div>
+          <div className="w-3 h-3 bg-green-600 rounded-full"></div>
+          <div className="w-1 h-1 bg-emerald-400 rounded-full"></div>
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
         </div>
       </div>
 
@@ -169,10 +165,23 @@ export default function LocationPage() {
         </div>
       </div>
 
-      {/* Transportation Options */}
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>How to Reach Us</CardTitle>
+      {/* Enhanced Transportation Options */}
+      <Card className="mb-8 shadow-sm border-green-100">
+        <CardHeader className="pb-4">
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center mb-3">
+              <div className="h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent w-12"></div>
+              <span className="mx-4 text-sm font-medium text-blue-600 tracking-wider uppercase">
+                Transportation
+              </span>
+              <div className="h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent w-12"></div>
+            </div>
+            <CardTitle className="text-2xl font-bold">
+              <span className="bg-gradient-to-r from-blue-700 to-green-600 bg-clip-text text-transparent">
+                How to Reach Us
+              </span>
+            </CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -214,10 +223,23 @@ export default function LocationPage() {
         </CardContent>
       </Card>
 
-      {/* Facilities */}
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Our Facilities</CardTitle>
+      {/* Enhanced Facilities */}
+      <Card className="mb-8 shadow-sm border-green-100">
+        <CardHeader className="pb-4">
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center mb-3">
+              <div className="h-px bg-gradient-to-r from-transparent via-green-400 to-transparent w-12"></div>
+              <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
+                Wellness Spaces
+              </span>
+              <div className="h-px bg-gradient-to-r from-transparent via-green-400 to-transparent w-12"></div>
+            </div>
+            <CardTitle className="text-2xl font-bold">
+              <span className="bg-gradient-to-r from-green-700 to-emerald-600 bg-clip-text text-transparent">
+                Our Healing Facilities
+              </span>
+            </CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -284,23 +306,42 @@ export default function LocationPage() {
         </CardContent>
       </Card>
 
-      {/* CTA Section */}
-      <Card className="bg-green-50">
-        <CardContent className="p-8 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Ready to Visit Us?
+      {/* Enhanced CTA Section */}
+      <Card className="bg-gradient-to-br from-green-50 to-blue-50 border-0 shadow-lg">
+        <CardContent className="p-10 text-center">
+          <div className="inline-flex items-center justify-center mb-6">
+            <div className="h-px bg-gradient-to-r from-transparent via-green-400 to-transparent w-16"></div>
+            <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
+              Visit Us Today
+            </span>
+            <div className="h-px bg-gradient-to-r from-transparent via-green-400 to-transparent w-16"></div>
+          </div>
+
+          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-gray-900 to-green-800 bg-clip-text text-transparent">
+              Ready to Visit Our
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+              Wellness Sanctuary?
+            </span>
           </h2>
-          <p className="text-gray-600 mb-6">
+
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
             Schedule your appointment today and begin your journey to natural
-            wellness.
+            wellness in our peaceful healing environment.
           </p>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-green-600 hover:bg-green-700" size="lg">
+            <Button
+              className="bg-green-600 hover:bg-green-700 shadow-lg px-8 py-3"
+              size="lg"
+            >
               Book Appointment
             </Button>
             <Button
               variant="outline"
-              className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white bg-transparent"
+              className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white bg-transparent shadow-lg px-8 py-3"
               size="lg"
             >
               Get Directions

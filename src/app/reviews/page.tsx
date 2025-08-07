@@ -94,24 +94,107 @@ const stats = [
 export default function ReviewsPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-          Customer Reviews & Testimonials
-        </h1>
-        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          Read authentic experiences from our customers who have found healing
-          and wellness through our Ayurvedic treatments and services.
-        </p>
+      {/* Enhanced Header Section */}
+      <div className="relative mb-16 text-center">
+        {/* Background decoration */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-48 h-48 bg-green-100 rounded-full opacity-30 blur-3xl"></div>
+          <div className="absolute top-8 left-1/4 w-20 h-20 bg-emerald-100 rounded-full opacity-20 blur-2xl"></div>
+          <div className="absolute top-16 right-1/3 w-16 h-16 bg-teal-100 rounded-full opacity-25 blur-2xl"></div>
+        </div>
+
+        {/* Main title with gradient */}
+        <div className="mb-6">
+          <div className="inline-flex items-center justify-center mb-4">
+            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
+            <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
+              Trusted by Thousands
+            </span>
+            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-gray-900 via-green-800 to-gray-900 bg-clip-text text-transparent">
+              Customer Stories &
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-green-500 bg-clip-text text-transparent">
+              Testimonials
+            </span>
+          </h1>
+        </div>
+
+        {/* Enhanced subtitle */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-6">
+            Read authentic experiences from our wellness community
+          </p>
+          <div className="bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50 rounded-2xl p-6 max-w-3xl mx-auto">
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Discover how our customers have found healing and wellness through
+              our Ayurvedic treatments and services. Real stories, real
+              transformations.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 text-sm">
+              <span className="bg-white/80 px-3 py-1 rounded-full text-green-700 font-medium">
+                Verified Reviews
+              </span>
+              <span className="bg-white/80 px-3 py-1 rounded-full text-emerald-700 font-medium">
+                Real Results
+              </span>
+              <span className="bg-white/80 px-3 py-1 rounded-full text-teal-700 font-medium">
+                Trusted Care
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Rating highlights */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mb-8">
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-green-100">
+            <div className="flex items-center justify-center mb-2">
+              <Star className="h-6 w-6 text-green-500 fill-current" />
+            </div>
+            <div className="text-xl font-bold text-green-600 mb-1">4.8</div>
+            <p className="text-xs text-gray-600">Average Rating</p>
+          </div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-emerald-100">
+            <div className="text-xl font-bold text-emerald-600 mb-1">1.2K+</div>
+            <p className="text-xs text-gray-600">Happy Customers</p>
+          </div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-teal-100">
+            <div className="text-xl font-bold text-teal-600 mb-1">89%</div>
+            <p className="text-xs text-gray-600">5-Star Reviews</p>
+          </div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-green-100">
+            <div className="text-xl font-bold text-green-600 mb-1">94%</div>
+            <p className="text-xs text-gray-600">Verified</p>
+          </div>
+        </div>
+
+        {/* Decorative stars pattern */}
+        <div className="flex justify-center items-center space-x-3">
+          <div className="w-8 h-px bg-gradient-to-r from-transparent via-amber-300 to-orange-300"></div>
+          <Star className="h-4 w-4 text-amber-500 fill-current" />
+          <div className="w-6 h-px bg-orange-300"></div>
+          <Star className="h-5 w-5 text-orange-500 fill-current" />
+          <div className="w-6 h-px bg-yellow-300"></div>
+          <Star className="h-4 w-4 text-yellow-500 fill-current" />
+          <div className="w-8 h-px bg-gradient-to-l from-transparent via-yellow-300 to-orange-300"></div>
+        </div>
       </div>
 
-      {/* Stats Section */}
+      {/* Enhanced Stats Section */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         {stats.map((stat, index) => (
-          <Card key={index} className="text-center p-6">
-            <div className="text-3xl font-bold text-green-600 mb-2">
+          <Card
+            key={index}
+            className="text-center p-6 bg-gradient-to-br from-white to-amber-50 border-amber-100 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div className="text-3xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent mb-2">
               {stat.value}
             </div>
-            <div className="text-gray-600">{stat.label}</div>
+            <div className="text-gray-600 font-medium">{stat.label}</div>
           </Card>
         ))}
       </div>
@@ -242,20 +325,39 @@ export default function ReviewsPage() {
         </Button>
       </div>
 
-      {/* Write Review CTA */}
-      <Card className="mt-12 p-8 bg-green-50">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Share Your Experience
+      {/* Enhanced Write Review CTA */}
+      <Card className="mt-12 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 border-0 shadow-lg">
+        <CardContent className="p-10 text-center">
+          <div className="inline-flex items-center justify-center mb-6">
+            <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-16"></div>
+            <span className="mx-4 text-sm font-medium text-amber-600 tracking-wider uppercase">
+              Your Voice Matters
+            </span>
+            <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-16"></div>
+          </div>
+
+          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-gray-900 to-amber-800 bg-clip-text text-transparent">
+              Share Your
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+              Healing Journey
+            </span>
           </h2>
-          <p className="text-gray-600 mb-6">
+
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
             Help others discover the benefits of Ayurvedic healing by sharing
-            your journey with us.
+            your transformation story with our wellness community.
           </p>
-          <Button className="bg-green-600 hover:bg-green-700" size="lg">
+
+          <Button
+            className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg px-8 py-3"
+            size="lg"
+          >
             Write a Review
           </Button>
-        </div>
+        </CardContent>
       </Card>
     </div>
   );

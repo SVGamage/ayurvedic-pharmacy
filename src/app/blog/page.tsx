@@ -117,14 +117,69 @@ export default function BlogPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-          Wellness Blog
-        </h1>
-        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          Discover the wisdom of Ayurveda through our comprehensive articles on
-          natural healing, herbal remedies, and holistic wellness practices.
-        </p>
+      {/* Enhanced Header Section */}
+      <div className="relative mb-16 text-center">
+        {/* Background decoration */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-44 h-44 bg-green-100 rounded-full opacity-30 blur-3xl"></div>
+          <div className="absolute top-10 left-1/4 w-20 h-20 bg-emerald-100 rounded-full opacity-20 blur-2xl"></div>
+          <div className="absolute top-16 right-1/3 w-16 h-16 bg-teal-100 rounded-full opacity-25 blur-2xl"></div>
+        </div>
+
+        {/* Main title with gradient */}
+        <div className="mb-6">
+          <div className="inline-flex items-center justify-center mb-4">
+            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
+            <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
+              Ancient Wisdom Hub
+            </span>
+            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-gray-900 via-green-800 to-gray-900 bg-clip-text text-transparent">
+              Wellness
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-green-500 bg-clip-text text-transparent">
+              Knowledge Center
+            </span>
+          </h1>
+        </div>
+
+        {/* Enhanced subtitle */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-6">
+            Discover the wisdom of Ayurveda through our comprehensive articles
+          </p>
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 max-w-3xl mx-auto">
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Explore natural healing, herbal remedies, and holistic wellness
+              practices through expertly crafted articles by our experienced
+              practitioners.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 text-sm">
+              <span className="bg-white/80 px-3 py-1 rounded-full text-green-700 font-medium">
+                Expert Articles
+              </span>
+              <span className="bg-white/80 px-3 py-1 rounded-full text-emerald-700 font-medium">
+                Daily Wisdom
+              </span>
+              <span className="bg-white/80 px-3 py-1 rounded-full text-teal-700 font-medium">
+                Practical Tips
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Decorative elements */}
+        <div className="flex justify-center items-center space-x-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+          <div className="w-1 h-1 bg-emerald-400 rounded-full"></div>
+          <div className="w-3 h-3 bg-green-600 rounded-full"></div>
+          <div className="w-1 h-1 bg-emerald-400 rounded-full"></div>
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+        </div>
       </div>
 
       {/* Search and Filter */}
@@ -266,19 +321,38 @@ export default function BlogPage() {
         </div>
       )}
 
-      {/* Newsletter Signup */}
-      <section className="bg-green-50 rounded-lg p-8 mt-16">
+      {/* Enhanced Newsletter Signup */}
+      <section className="bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-50 rounded-3xl p-10 mt-16 border-0 shadow-lg">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Stay Updated with Our Wellness Newsletter
+          <div className="inline-flex items-center justify-center mb-6">
+            <div className="h-px bg-gradient-to-r from-transparent via-indigo-400 to-transparent w-16"></div>
+            <span className="mx-4 text-sm font-medium text-indigo-600 tracking-wider uppercase">
+              Stay Connected
+            </span>
+            <div className="h-px bg-gradient-to-r from-transparent via-indigo-400 to-transparent w-16"></div>
+          </div>
+
+          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-gray-900 to-indigo-800 bg-clip-text text-transparent">
+              Stay Updated with Our
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              Wellness Newsletter
+            </span>
           </h2>
-          <p className="text-gray-600 mb-6">
+
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
             Get the latest articles on Ayurveda, natural healing, and wellness
-            tips delivered to your inbox.
+            tips delivered to your inbox every week.
           </p>
+
           <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <Input placeholder="Enter your email" className="flex-1" />
-            <Button className="bg-green-600 hover:bg-green-700">
+            <Input
+              placeholder="Enter your email"
+              className="flex-1 h-12 border-indigo-200 focus:border-indigo-500"
+            />
+            <Button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg px-8 h-12">
               Subscribe
             </Button>
           </div>
