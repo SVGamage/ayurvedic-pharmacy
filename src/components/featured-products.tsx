@@ -1,17 +1,11 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Star, ShoppingCart } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
+"use client";
 
-const featuredProducts = [
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { ProductCard } from "@/components/product-card";
+import { Product } from "@/types/product";
+
+const featuredProducts: Product[] = [
   {
     id: 1,
     name: "Ashwagandha Capsules",
@@ -22,6 +16,8 @@ const featuredProducts = [
     reviews: 156,
     image: "/placeholder.svg?height=300&width=300",
     badge: "Best Seller",
+    description:
+      "Premium quality Ashwagandha for stress relief and better sleep",
   },
   {
     id: 2,
@@ -33,6 +29,7 @@ const featuredProducts = [
     reviews: 89,
     image: "/placeholder.svg?height=300&width=300",
     badge: "Organic",
+    description: "Traditional digestive support formula",
   },
   {
     id: 3,
@@ -44,6 +41,7 @@ const featuredProducts = [
     reviews: 203,
     image: "/placeholder.svg?height=300&width=300",
     badge: "Pure",
+    description: "Pure neem oil for healthy, glowing skin",
   },
   {
     id: 4,
@@ -55,6 +53,7 @@ const featuredProducts = [
     reviews: 134,
     image: "/placeholder.svg?height=300&width=300",
     badge: "New",
+    description: "Natural turmeric tablets for immunity support",
   },
 ];
 
@@ -73,56 +72,17 @@ export function FeaturedProducts() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {featuredProducts.map((product) => (
-          <Card
+          <ProductCard
             key={product.id}
-            className="group hover:shadow-lg transition-shadow duration-300"
-          >
-            <CardHeader className="p-0">
-              <Image
-                src={product.image || "/placeholder.svg"}
-                alt={product.name}
-                width={300}
-                height={300}
-                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              {product.badge && (
-                <Badge className="absolute top-2 left-2 bg-green-600">
-                  {product.badge}
-                </Badge>
-              )}
-            </CardHeader>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-green-600 font-medium">
-                  {product.category}
-                </span>
-                <div className="flex items-center space-x-1">
-                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm text-gray-600">
-                    {product.rating}
-                  </span>
-                  <span className="text-sm text-gray-400">
-                    ({product.reviews})
-                  </span>
-                </div>
-              </div>
-              <CardTitle className="text-lg mb-2">{product.name}</CardTitle>
-              <div className="flex items-center space-x-2">
-                <span className="text-xl font-bold text-green-600">
-                  ${product.price}
-                </span>
-                <span className="text-sm text-gray-400 line-through">
-                  ${product.originalPrice}
-                </span>
-              </div>
-            </CardContent>
-            <CardFooter className="p-4 pt-0">
-              <Button className="w-full bg-green-600 hover:bg-green-700">
-                <ShoppingCart className="h-4 w-4 mr-2" />
-                Add to Cart
-              </Button>
-            </CardFooter>
-          </Card>
+            product={product}
+            variant="featured"
+            showQuickAdd={false}
+            showDescription={false}
+            onAddToCart={(product) => {
+              console.log("Adding to cart:", product);
+              // TODO: Implement add to cart functionality
+            }}
+          />
         ))}
       </div>
 
