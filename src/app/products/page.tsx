@@ -194,10 +194,23 @@ export default function ProductsPage() {
             Discover our comprehensive range of authentic Ayurvedic products,
             traditional remedies, and wellness solutions
           </p>
-          <p className="text-base text-gray-500 max-w-2xl mx-auto">
-            Carefully crafted with time-honored formulations to support your
-            natural healing journey
-          </p>
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 max-w-3xl mx-auto">
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Carefully crafted with time-honored formulations to support your
+              natural healing journey
+            </p>
+            {/* <div className="flex flex-wrap justify-center gap-4 text-sm">
+              <span className="bg-white/80 px-3 py-1 rounded-full text-green-700 font-medium">
+                Free Parking
+              </span>
+              <span className="bg-white/80 px-3 py-1 rounded-full text-emerald-700 font-medium">
+                Extended Hours
+              </span>
+              <span className="bg-white/80 px-3 py-1 rounded-full text-teal-700 font-medium">
+                24/7 Emergency
+              </span>
+            </div> */}
+          </div>
         </div>
 
         {/* Decorative elements */}
