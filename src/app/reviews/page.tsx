@@ -1,7 +1,7 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Star, Quote, ThumbsUp, MessageCircle } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Star, Quote, ThumbsUp, MessageCircle } from "lucide-react";
 
 const reviews = [
   {
@@ -82,23 +82,25 @@ const reviews = [
     helpful: 19,
     verified: true,
   },
-]
+];
 
 const stats = [
   { label: "Total Reviews", value: "1,247" },
   { label: "Average Rating", value: "4.8" },
   { label: "5-Star Reviews", value: "89%" },
   { label: "Verified Purchases", value: "94%" },
-]
+];
 
 export default function ReviewsPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-center mb-12">
-        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Customer Reviews & Testimonials</h1>
+        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+          Customer Reviews & Testimonials
+        </h1>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          Read authentic experiences from our customers who have found healing and wellness through our Ayurvedic
-          treatments and services.
+          Read authentic experiences from our customers who have found healing
+          and wellness through our Ayurvedic treatments and services.
         </p>
       </div>
 
@@ -106,7 +108,9 @@ export default function ReviewsPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         {stats.map((stat, index) => (
           <Card key={index} className="text-center p-6">
-            <div className="text-3xl font-bold text-green-600 mb-2">{stat.value}</div>
+            <div className="text-3xl font-bold text-green-600 mb-2">
+              {stat.value}
+            </div>
             <div className="text-gray-600">{stat.label}</div>
           </Card>
         ))}
@@ -120,7 +124,10 @@ export default function ReviewsPage() {
               <span className="text-4xl font-bold text-gray-900">4.8</span>
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-6 w-6 fill-yellow-400 text-yellow-400" />
+                  <Star
+                    key={i}
+                    className="h-6 w-6 fill-yellow-400 text-yellow-400"
+                  />
                 ))}
               </div>
             </div>
@@ -133,10 +140,14 @@ export default function ReviewsPage() {
                 <div className="w-32 bg-gray-200 rounded-full h-2">
                   <div
                     className="bg-yellow-400 h-2 rounded-full"
-                    style={{ width: rating === 5 ? "89%" : rating === 4 ? "8%" : "3%" }}
+                    style={{
+                      width: rating === 5 ? "89%" : rating === 4 ? "8%" : "3%",
+                    }}
                   ></div>
                 </div>
-                <span className="text-sm text-gray-600 w-8">{rating === 5 ? "89%" : rating === 4 ? "8%" : "3%"}</span>
+                <span className="text-sm text-gray-600 w-8">
+                  {rating === 5 ? "89%" : rating === 4 ? "8%" : "3%"}
+                </span>
               </div>
             ))}
           </div>
@@ -146,8 +157,8 @@ export default function ReviewsPage() {
       {/* Reviews Grid */}
       <div className="space-y-6">
         {reviews.map((review) => (
-          <Card key={review.id} className="p-6">
-            <CardContent className="p-0">
+          <Card key={review.id} className="p-6 flex flex-col">
+            <CardContent className="p-0 flex flex-col h-full">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
@@ -160,7 +171,9 @@ export default function ReviewsPage() {
                   </div>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <h3 className="font-semibold text-gray-900">{review.name}</h3>
+                      <h3 className="font-semibold text-gray-900">
+                        {review.name}
+                      </h3>
                       {review.verified && (
                         <Badge variant="secondary" className="text-xs">
                           Verified
@@ -173,7 +186,10 @@ export default function ReviewsPage() {
                 <div className="text-right">
                   <div className="flex items-center space-x-1 mb-1">
                     {[...Array(review.rating)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <Star
+                        key={i}
+                        className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                      />
                     ))}
                   </div>
                   <p className="text-sm text-gray-500">{review.date}</p>
@@ -191,12 +207,14 @@ export default function ReviewsPage() {
                 </div>
               </div>
 
-              <div className="relative mb-4">
+              <div className="relative mb-4 flex-grow">
                 <Quote className="h-6 w-6 text-green-600 mb-2" />
-                <p className="text-gray-700 leading-relaxed pl-8">{review.review}</p>
+                <p className="text-gray-700 leading-relaxed pl-8">
+                  {review.review}
+                </p>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+              <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
                 <div className="flex items-center space-x-4">
                   <button className="flex items-center space-x-1 text-gray-500 hover:text-green-600">
                     <ThumbsUp className="h-4 w-4" />
@@ -227,9 +245,12 @@ export default function ReviewsPage() {
       {/* Write Review CTA */}
       <Card className="mt-12 p-8 bg-green-50">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Share Your Experience</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Share Your Experience
+          </h2>
           <p className="text-gray-600 mb-6">
-            Help others discover the benefits of Ayurvedic healing by sharing your journey with us.
+            Help others discover the benefits of Ayurvedic healing by sharing
+            your journey with us.
           </p>
           <Button className="bg-green-600 hover:bg-green-700" size="lg">
             Write a Review
@@ -237,5 +258,5 @@ export default function ReviewsPage() {
         </div>
       </Card>
     </div>
-  )
+  );
 }

@@ -1,8 +1,8 @@
-import { HeroSection } from "@/components/hero-section"
-import { FeaturedProducts } from "@/components/featured-products"
-import { ServiceHighlights } from "@/components/service-highlights"
-import { TestimonialsPreview } from "@/components/testimonials-preview"
-import { BlogPreview } from "@/components/blog-preview"
+import { HeroSection } from "@/components/hero-section";
+import { FeaturedProducts } from "@/components/featured-products";
+import { ServiceHighlights } from "@/components/service-highlights";
+import { TestimonialsPreview } from "@/components/testimonials-preview";
+// import { BlogPreview } from "@/components/blog-preview"
 
 export default function HomePage() {
   return (
@@ -11,7 +11,7 @@ export default function HomePage() {
       <FeaturedProducts />
       <ServiceHighlights />
       <TestimonialsPreview />
-      <BlogPreview />
+      {/* <BlogPreview /> */}
     </div>
-  )
+  );
 }

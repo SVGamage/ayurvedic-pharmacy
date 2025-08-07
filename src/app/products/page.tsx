@@ -1,16 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -19,7 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Star, ShoppingCart, Search, Filter } from "lucide-react";
+import { Search, Filter } from "lucide-react";
+import { ProductCard } from "@/components/product-card";
+import { Product } from "@/types/product";
 
 const productCategories = [
   "All Products",
@@ -52,7 +45,7 @@ const productCategories = [
 
 // const traditionalSubcategories = ["Puja Items", "Pottery Items", "Thovil Badu", "Gift Packs/Herbal Kits"]
 
-const products = [
+const products: Product[] = [
   {
     id: 1,
     name: "Ashwagandha Capsules",
@@ -142,7 +135,8 @@ export default function ProductsPage() {
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      (product.description &&
+        product.description.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesCategory =
       selectedCategory === "All Products" ||
       product.category === selectedCategory;
@@ -164,14 +158,56 @@ export default function ProductsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-          Our Products
-        </h1>
-        <p className="text-lg text-gray-600">
-          Discover our comprehensive range of authentic Ayurvedic products,
-          traditional remedies, and wellness solutions.
-        </p>
+      {/* Enhanced Header Section */}
+      <div className="relative mb-12 text-center">
+        {/* Background decoration */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-32 bg-green-100 rounded-full opacity-20 blur-3xl"></div>
+          <div className="absolute top-8 left-1/4 w-16 h-16 bg-yellow-100 rounded-full opacity-30 blur-2xl"></div>
+          <div className="absolute top-4 right-1/4 w-20 h-20 bg-orange-100 rounded-full opacity-25 blur-2xl"></div>
+        </div>
+
+        {/* Main title with gradient */}
+        <div className="mb-6">
+          <div className="inline-flex items-center justify-center mb-4">
+            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
+            <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
+              Authentic Wellness
+            </span>
+            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-gray-900 via-green-800 to-gray-900 bg-clip-text text-transparent">
+              Our Premium
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-green-600 via-green-500 to-emerald-500 bg-clip-text text-transparent">
+              Ayurvedic Products
+            </span>
+          </h1>
+        </div>
+
+        {/* Enhanced subtitle */}
+        <div className="max-w-4xl mx-auto">
+          <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-4">
+            Discover our comprehensive range of authentic Ayurvedic products,
+            traditional remedies, and wellness solutions
+          </p>
+          <p className="text-base text-gray-500 max-w-2xl mx-auto">
+            Carefully crafted with time-honored formulations to support your
+            natural healing journey
+          </p>
+        </div>
+
+        {/* Decorative elements */}
+        <div className="flex justify-center items-center mt-8 space-x-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+          <div className="w-1 h-1 bg-green-400 rounded-full"></div>
+          <div className="w-3 h-3 bg-green-600 rounded-full"></div>
+          <div className="w-1 h-1 bg-green-400 rounded-full"></div>
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+        </div>
       </div>
 
       {/* Filters */}
@@ -222,63 +258,21 @@ export default function ProductsPage() {
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {sortedProducts.map((product) => (
-          <Card
+          <ProductCard
             key={product.id}
-            className="group hover:shadow-lg transition-shadow duration-300"
-          >
-            <CardHeader className="p-0">
-              <div className="relative w-full h-48">
-                <Image
-                  src={product.image || "/placeholder.svg"}
-                  alt={product.name}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              {product.badge && (
-                <Badge className="absolute top-2 left-2 bg-green-600">
-                  {product.badge}
-                </Badge>
-              )}
-            </CardHeader>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-green-600 font-medium">
-                  {product.subcategory}
-                </span>
-                <div className="flex items-center space-x-1">
-                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm text-gray-600">
-                    {product.rating}
-                  </span>
-                  <span className="text-sm text-gray-400">
-                    ({product.reviews})
-                  </span>
-                </div>
-              </div>
-              <CardTitle className="text-lg mb-2">{product.name}</CardTitle>
-              <p className="text-sm text-gray-600 mb-3">
-                {product.description}
-              </p>
-              <div className="flex items-center space-x-2">
-                <span className="text-xl font-bold text-green-600">
-                  ${product.price}
-                </span>
-                {product.originalPrice && (
-                  <span className="text-sm text-gray-400 line-through">
-                    ${product.originalPrice}
-                  </span>
-                )}
-              </div>
-            </CardContent>
-            <CardFooter className="p-4 pt-0">
-              <Button className="w-full bg-green-600 hover:bg-green-700">
-                <ShoppingCart className="h-4 w-4 mr-2" />
-                Add to Cart
-              </Button>
-            </CardFooter>
-          </Card>
+            product={product}
+            variant="default"
+            showQuickAdd={true}
+            showDescription={true}
+            onAddToCart={(product) => {
+              console.log("Adding to cart:", product);
+              // TODO: Implement add to cart functionality
+            }}
+            onQuickAdd={(product) => {
+              console.log("Quick add:", product);
+              // TODO: Implement quick add functionality
+            }}
+          />
         ))}
       </div>
 
