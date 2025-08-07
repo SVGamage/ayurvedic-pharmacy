@@ -1,34 +1,41 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Menu, X, Leaf } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X, Leaf } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Products", href: "/products" },
   { name: "Services", href: "/services" },
-  { name: "Blog", href: "/blog" },
-  { name: "Reviews", href: "/reviews" },
+  // { name: "Blog", href: "/blog" },
+  // { name: "Reviews", href: "/reviews" },
   { name: "Location", href: "/location" },
   { name: "Contact", href: "/contact" },
-]
+];
 
 export function Navigation() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const pathname = usePathname()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
         <div className="flex w-full items-center justify-between border-b border-green-500 py-6 lg:border-none">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2">
-              <Leaf className="h-8 w-8 text-green-600" />
-              <span className="text-2xl font-bold text-green-800">AyurVeda</span>
+            <Link href="/" className="flex items-center space-x-2 group">
+              <Leaf className="h-8 w-8 text-green-600 transition-transform group-hover:scale-110" />
+              <div className="flex flex-col">
+                <span className="text-xl sm:text-2xl font-bold text-green-800 leading-tight">
+                  Rathnadeepa
+                </span>
+                <span className="text-sm sm:text-base font-medium text-green-600 -mt-1 hidden sm:block">
+                  Ayurvedic Pharmacy
+                </span>
+              </div>
             </Link>
           </div>
           <div className="ml-10 hidden space-x-8 lg:block">
@@ -38,7 +45,9 @@ export function Navigation() {
                 href={link.href}
                 className={cn(
                   "text-base font-medium transition-colors hover:text-green-600",
-                  pathname === link.href ? "text-green-600 border-b-2 border-green-600 pb-1" : "text-gray-700",
+                  pathname === link.href
+                    ? "text-green-600 border-b-2 border-green-600 pb-1"
+                    : "text-gray-700"
                 )}
               >
                 {link.name}
@@ -46,11 +55,20 @@ export function Navigation() {
             ))}
           </div>
           <div className="ml-10 hidden lg:block">
-            <Button className="bg-green-600 hover:bg-green-700">Book Consultation</Button>
+            <Button className="bg-green-600 hover:bg-green-700">
+              Book Consultation
+            </Button>
           </div>
           <div className="ml-6 lg:hidden">
-            <Button variant="ghost" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <Button
+              variant="ghost"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </Button>
           </div>
         </div>
@@ -65,7 +83,7 @@ export function Navigation() {
                     "block rounded-md px-3 py-2 text-base font-medium transition-colors",
                     pathname === link.href
                       ? "bg-green-100 text-green-600"
-                      : "text-gray-700 hover:bg-green-50 hover:text-green-600",
+                      : "text-gray-700 hover:bg-green-50 hover:text-green-600"
                   )}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -73,12 +91,14 @@ export function Navigation() {
                 </Link>
               ))}
               <div className="px-3 py-2">
-                <Button className="w-full bg-green-600 hover:bg-green-700">Book Consultation</Button>
+                <Button className="w-full bg-green-600 hover:bg-green-700">
+                  Book Consultation
+                </Button>
               </div>
             </div>
           </div>
         )}
       </nav>
     </header>
-  )
+  );
 }
