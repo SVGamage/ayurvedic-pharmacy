@@ -11,12 +11,12 @@ export function HeroSection() {
           backgroundImage: `url(${heroImage.src || heroImage})`,
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="max-w-3xl mx-auto animate-fade-in">
           <h1 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6 leading-tight">
             Natural Healing with
-            <span className="text-accent"> Ayurvedic </span>
+            <span className="text-primary"> Ayurvedic </span>
             Wisdom
           </h1>
           <p className="text-xl text-white/90 mb-8 leading-relaxed">
