@@ -50,93 +50,88 @@ export default function ContactPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Enhanced Header Section */}
       <div className="relative mb-16 text-center">
-        {/* Background decoration with communication theme */}
+        {/* Background decoration */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-52 h-52 bg-gradient-to-br from-purple-50 via-blue-50 to-green-50 rounded-full opacity-40 blur-3xl"></div>
-          {/* Communication wave patterns */}
-          <div className="absolute top-12 left-1/4 w-6 h-6 border-2 border-green-300 rounded-full animate-ping opacity-20"></div>
-          <div className="absolute top-8 right-1/3 w-4 h-4 border-2 border-blue-300 rounded-full animate-ping opacity-30 animation-delay-200"></div>
-          <div className="absolute top-16 right-1/4 w-5 h-5 border-2 border-purple-300 rounded-full animate-ping opacity-25 animation-delay-400"></div>
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-48 h-48 bg-green-100 rounded-full opacity-30 blur-3xl"></div>
+          <div className="absolute top-12 left-1/4 w-20 h-20 bg-emerald-100 rounded-full opacity-20 blur-2xl"></div>
+          <div className="absolute top-8 right-1/3 w-16 h-16 bg-teal-100 rounded-full opacity-25 blur-2xl"></div>
         </div>
 
-        {/* Contact badge */}
-        <div className="inline-flex items-center justify-center mb-6">
-          <div className="bg-gradient-to-r from-purple-500 via-blue-500 to-green-500 text-white px-6 py-2 rounded-full text-sm font-semibold tracking-wide shadow-lg flex items-center gap-2">
-            <Mail className="h-4 w-4" />
-            Let&apos;s Connect
+        {/* Main title with gradient */}
+        <div className="mb-6">
+          <div className="inline-flex items-center justify-center mb-4">
+            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
+            <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
+              Connect With Us
+            </span>
+            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
           </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-gray-900 via-green-800 to-gray-900 bg-clip-text text-transparent">
+              Get in Touch
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-green-500 bg-clip-text text-transparent">
+              With Our Team
+            </span>
+          </h1>
         </div>
 
-        {/* Main title with communication theme */}
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-          <span className="block text-gray-900 mb-2">Get in</span>
-          <span className="block bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 bg-clip-text text-transparent">
-            Touch With Us
-          </span>
-        </h1>
-
-        {/* Enhanced subtitle with contact methods */}
+        {/* Enhanced subtitle */}
         <div className="max-w-4xl mx-auto mb-8">
           <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-6">
             We&apos;re here to help you on your wellness journey
           </p>
-          <div className="bg-gradient-to-r from-purple-50 via-blue-50 to-green-50 rounded-2xl p-6 max-w-3xl mx-auto">
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 max-w-3xl mx-auto">
             <p className="text-gray-700 leading-relaxed mb-4">
               Reach out to us for consultations, product inquiries, or any
               questions about Ayurvedic healing. Our dedicated team is ready to
               guide you towards natural wellness.
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="bg-white/80 px-3 py-1 rounded-full text-purple-700 font-medium">
+              <span className="bg-white/80 px-3 py-1 rounded-full text-green-700 font-medium">
                 Expert Guidance
               </span>
-              <span className="bg-white/80 px-3 py-1 rounded-full text-blue-700 font-medium">
+              <span className="bg-white/80 px-3 py-1 rounded-full text-emerald-700 font-medium">
                 Quick Response
               </span>
-              <span className="bg-white/80 px-3 py-1 rounded-full text-green-700 font-medium">
+              <span className="bg-white/80 px-3 py-1 rounded-full text-teal-700 font-medium">
                 Personal Care
               </span>
             </div>
           </div>
         </div>
 
-        {/* Contact method highlights */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto mb-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-purple-100">
-            <Phone className="h-6 w-6 text-purple-600 mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-900">Instant Support</p>
-            <p className="text-xs text-gray-600">Call us anytime</p>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-blue-100">
-            <Mail className="h-6 w-6 text-blue-600 mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-900">Email Response</p>
-            <p className="text-xs text-gray-600">Within 24 hours</p>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-green-100">
-            <MapPin className="h-6 w-6 text-green-600 mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-900">Visit Us</p>
-            <p className="text-xs text-gray-600">In-person consultation</p>
-          </div>
-        </div>
-
-        {/* Decorative communication waves */}
-        <div className="flex justify-center items-center space-x-3">
-          <div className="w-12 h-px bg-gradient-to-r from-transparent via-purple-300 to-blue-300"></div>
-          <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-          <div className="w-8 h-px bg-blue-300"></div>
-          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-          <div className="w-8 h-px bg-green-300"></div>
-          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse animation-delay-300"></div>
-          <div className="w-12 h-px bg-gradient-to-l from-transparent via-green-300 to-blue-300"></div>
+        {/* Decorative elements */}
+        <div className="flex justify-center items-center space-x-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+          <div className="w-1 h-1 bg-emerald-400 rounded-full"></div>
+          <div className="w-3 h-3 bg-green-600 rounded-full"></div>
+          <div className="w-1 h-1 bg-emerald-400 rounded-full"></div>
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-        {/* Contact Form */}
+        {/* Enhanced Contact Form */}
         <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Send Us a Message</CardTitle>
+          <Card className="shadow-lg border-purple-100">
+            <CardHeader className="pb-4">
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center mb-3">
+                  <div className="h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent w-12"></div>
+                  <span className="mx-4 text-sm font-medium text-purple-600 tracking-wider uppercase">
+                    Message Us
+                  </span>
+                  <div className="h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent w-12"></div>
+                </div>
+                <CardTitle className="text-2xl font-bold">
+                  <span className="bg-gradient-to-r from-purple-700 to-blue-600 bg-clip-text text-transparent">
+                    Send Us a Message
+                  </span>
+                </CardTitle>
+              </div>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -239,11 +234,17 @@ export default function ContactPage() {
           </Card>
         </div>
 
-        {/* Contact Information */}
+        {/* Enhanced Contact Information */}
         <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Get in Touch</CardTitle>
+          <Card className="shadow-sm border-green-100">
+            <CardHeader className="pb-3">
+              <div className="text-center">
+                <CardTitle className="text-lg">
+                  <span className="bg-gradient-to-r from-green-700 to-emerald-600 bg-clip-text text-transparent">
+                    Get in Touch
+                  </span>
+                </CardTitle>
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center space-x-3">
@@ -286,9 +287,15 @@ export default function ContactPage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Follow Us</CardTitle>
+          <Card className="shadow-sm border-blue-100">
+            <CardHeader className="pb-3">
+              <div className="text-center">
+                <CardTitle className="text-lg">
+                  <span className="bg-gradient-to-r from-blue-700 to-purple-600 bg-clip-text text-transparent">
+                    Follow Us
+                  </span>
+                </CardTitle>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4">
@@ -324,16 +331,26 @@ export default function ContactPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-green-50">
+          <Card className="bg-gradient-to-br from-red-50 to-orange-50 border-red-200 shadow-sm">
             <CardContent className="p-6 text-center">
-              <h3 className="font-semibold text-gray-900 mb-2">
-                Emergency Consultation
+              <div className="inline-flex items-center justify-center mb-3">
+                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                  <Phone className="h-5 w-5 text-red-600" />
+                </div>
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2 text-lg">
+                <span className="bg-gradient-to-r from-red-700 to-orange-600 bg-clip-text text-transparent">
+                  Emergency Consultation
+                </span>
               </h3>
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-gray-600 mb-4 leading-relaxed">
                 Need urgent Ayurvedic advice? Our emergency consultation service
-                is available 24/7.
+                is available 24/7 for critical wellness concerns.
               </p>
-              <Button className="bg-red-600 hover:bg-red-700" size="sm">
+              <Button
+                className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 shadow-lg"
+                size="sm"
+              >
                 Emergency Contact
               </Button>
             </CardContent>
@@ -341,10 +358,23 @@ export default function ContactPage() {
         </div>
       </div>
 
-      {/* FAQ Section */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Frequently Asked Questions</CardTitle>
+      {/* Enhanced FAQ Section */}
+      <Card className="shadow-sm border-gray-100">
+        <CardHeader className="pb-4">
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center mb-3">
+              <div className="h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent w-12"></div>
+              <span className="mx-4 text-sm font-medium text-gray-600 tracking-wider uppercase">
+                Common Questions
+              </span>
+              <div className="h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent w-12"></div>
+            </div>
+            <CardTitle className="text-2xl font-bold">
+              <span className="bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+                Frequently Asked Questions
+              </span>
+            </CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
