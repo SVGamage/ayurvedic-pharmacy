@@ -1,16 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -19,7 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Star, ShoppingCart, Search, Filter } from "lucide-react";
+import { Search, Filter } from "lucide-react";
+import { ProductCard } from "@/components/product-card";
+import { Product } from "@/types/product";
 
 const productCategories = [
   "All Products",
@@ -52,7 +45,7 @@ const productCategories = [
 
 // const traditionalSubcategories = ["Puja Items", "Pottery Items", "Thovil Badu", "Gift Packs/Herbal Kits"]
 
-const products = [
+const products: Product[] = [
   {
     id: 1,
     name: "Ashwagandha Capsules",
@@ -142,7 +135,8 @@ export default function ProductsPage() {
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      (product.description &&
+        product.description.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesCategory =
       selectedCategory === "All Products" ||
       product.category === selectedCategory;
@@ -222,63 +216,21 @@ export default function ProductsPage() {
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {sortedProducts.map((product) => (
-          <Card
+          <ProductCard
             key={product.id}
-            className="group hover:shadow-lg transition-shadow duration-300"
-          >
-            <CardHeader className="p-0">
-              <div className="relative w-full h-48">
-                <Image
-                  src={product.image || "/placeholder.svg"}
-                  alt={product.name}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              {product.badge && (
-                <Badge className="absolute top-2 left-2 bg-green-600">
-                  {product.badge}
-                </Badge>
-              )}
-            </CardHeader>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-green-600 font-medium">
-                  {product.subcategory}
-                </span>
-                <div className="flex items-center space-x-1">
-                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm text-gray-600">
-                    {product.rating}
-                  </span>
-                  <span className="text-sm text-gray-400">
-                    ({product.reviews})
-                  </span>
-                </div>
-              </div>
-              <CardTitle className="text-lg mb-2">{product.name}</CardTitle>
-              <p className="text-sm text-gray-600 mb-3">
-                {product.description}
-              </p>
-              <div className="flex items-center space-x-2">
-                <span className="text-xl font-bold text-green-600">
-                  ${product.price}
-                </span>
-                {product.originalPrice && (
-                  <span className="text-sm text-gray-400 line-through">
-                    ${product.originalPrice}
-                  </span>
-                )}
-              </div>
-            </CardContent>
-            <CardFooter className="p-4 pt-0">
-              <Button className="w-full bg-green-600 hover:bg-green-700">
-                <ShoppingCart className="h-4 w-4 mr-2" />
-                Add to Cart
-              </Button>
-            </CardFooter>
-          </Card>
+            product={product}
+            variant="default"
+            showQuickAdd={true}
+            showDescription={true}
+            onAddToCart={(product) => {
+              console.log("Adding to cart:", product);
+              // TODO: Implement add to cart functionality
+            }}
+            onQuickAdd={(product) => {
+              console.log("Quick add:", product);
+              // TODO: Implement quick add functionality
+            }}
+          />
         ))}
       </div>
 
