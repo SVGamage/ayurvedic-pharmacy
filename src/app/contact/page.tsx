@@ -30,7 +30,7 @@ import {
   contactViaWhatsApp,
   emergencyConsultationViaWhatsApp,
 } from "@/lib/whatsapp";
-import { WHATSAPP_BUSINESS_CONFIG } from "@/config/whatsapp";
+import { WHATSAPP_CONFIG } from "@/config/whatsapp";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -270,9 +270,9 @@ export default function ContactPage() {
               <div className="flex items-center space-x-3">
                 <MessageCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
                 <div>
-                  <p className="font-medium">WhatsApp Business</p>
+                  <p className="font-medium">WhatsApp</p>
                   <p className="text-gray-600">
-                    {WHATSAPP_BUSINESS_CONFIG.displayNumber}
+                    {WHATSAPP_CONFIG.displayNumber}
                   </p>
                   <p className="text-sm text-gray-500">
                     Quick ordering & booking

@@ -4,6 +4,7 @@ import { Stethoscope, Video, Star, Calendar, Users, Award } from "lucide-react";
 import { ServiceCard } from "@/components/service-card";
 import { Service } from "@/types/service";
 import { bookServiceViaWhatsApp } from "@/lib/whatsapp";
+import { formatServicePrice } from "@/config/currency";
 
 const ayurvedicServices: Service[] = [
   {
@@ -11,7 +12,7 @@ const ayurvedicServices: Service[] = [
     title: "In-Person Consultation",
     icon: Stethoscope,
     duration: "60 minutes",
-    price: "From $75",
+    price: formatServicePrice(7500),
     description:
       "Comprehensive health assessment with our experienced Ayurvedic doctors in a traditional clinical setting.",
     features: [
@@ -31,7 +32,7 @@ const ayurvedicServices: Service[] = [
     title: "Online Consultation",
     icon: Video,
     duration: "45 minutes",
-    price: "From $50",
+    price: formatServicePrice(5000),
     description:
       "Get expert Ayurvedic advice from the comfort of your home through secure video consultations.",
     features: [
@@ -54,7 +55,7 @@ const nakshatraServices: Service[] = [
     title: "Personal Horoscope Reading",
     icon: Star,
     duration: "45 minutes",
-    price: "From $60",
+    price: formatServicePrice(6000),
     description:
       "Detailed analysis of your birth chart and comprehensive life predictions based on Vedic astrology.",
     features: [
@@ -73,7 +74,7 @@ const nakshatraServices: Service[] = [
     title: "Wedding & Event Calculations",
     icon: Calendar,
     duration: "30 minutes",
-    price: "From $40",
+    price: formatServicePrice(4000),
     description:
       "Find the most auspicious dates and times for your special events and important life ceremonies.",
     features: [
@@ -92,7 +93,7 @@ const nakshatraServices: Service[] = [
     title: "Newborn Name Selection",
     icon: Users,
     duration: "30 minutes",
-    price: "From $35",
+    price: formatServicePrice(3500),
     description:
       "Choose the perfect name for your newborn based on precise astrological calculations and traditions.",
     features: [
@@ -111,7 +112,7 @@ const nakshatraServices: Service[] = [
     title: "Healing Rituals & Remedies",
     icon: Award,
     duration: "60 minutes",
-    price: "From $80",
+    price: formatServicePrice(8000),
     description:
       "Customized rituals and remedies designed to address specific life challenges and spiritual growth.",
     features: [
@@ -304,7 +305,7 @@ export default function ServicesPage() {
               onClick={() =>
                 bookServiceViaWhatsApp(
                   "Ayurvedic Consultation",
-                  "From $50",
+                  formatServicePrice(5000),
                   "45 minutes"
                 )
               }
@@ -318,7 +319,7 @@ export default function ServicesPage() {
               onClick={() =>
                 bookServiceViaWhatsApp(
                   "Nakshatra Reading",
-                  "From $40",
+                  formatServicePrice(4000),
                   "30 minutes"
                 )
               }
