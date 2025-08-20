@@ -3,15 +3,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Clock, Star, ArrowRight } from "lucide-react";
+import { CheckCircle, Clock, Star, MessageCircle } from "lucide-react";
 import { Service } from "@/types/service";
 import { cn } from "@/lib/utils";
+import { bookServiceViaWhatsApp } from "@/lib/whatsapp";
 
 interface ServiceCardProps {
   service: Service;
   variant?: "default" | "compact" | "featured";
   className?: string;
-  onBookClick?: (service: Service) => void;
   showRating?: boolean;
   rating?: number;
 }
@@ -20,7 +20,6 @@ export function ServiceCard({
   service,
   variant = "default",
   className,
-  onBookClick,
   showRating = false,
   rating = 0,
 }: ServiceCardProps) {
@@ -74,9 +73,8 @@ export function ServiceCard({
   const colors = getThemeColors();
 
   const handleBookClick = () => {
-    if (onBookClick) {
-      onBookClick(service);
-    }
+    // Route to WhatsApp Business for booking
+    bookServiceViaWhatsApp(service.title, service.price, service.duration);
   };
 
   if (isCompact) {
@@ -146,8 +144,8 @@ export function ServiceCard({
             className={cn("w-full text-sm", colors.buttonBg)}
             size="sm"
           >
-            {service.buttonText || "Book Now"}
-            <ArrowRight className="h-3 w-3 ml-1" />
+            {service.buttonText || "Book via WhatsApp"}
+            <MessageCircle className="h-3 w-3 ml-1" />
           </Button>
         </CardContent>
       </Card>
@@ -250,8 +248,8 @@ export function ServiceCard({
           )}
           size="lg"
         >
-          {service.buttonText || "Book Consultation"}
-          <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+          {service.buttonText || "Book via WhatsApp"}
+          <MessageCircle className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
         </Button>
       </CardContent>
     </Card>
