@@ -38,6 +38,9 @@ export function ServiceCard({
           buttonBg: "bg-green-600 hover:bg-green-700",
           ringColor: "ring-green-500",
           badgeBg: "bg-green-600",
+          borderColor: "border-green-200 hover:border-green-300",
+          glowColor: "hover:shadow-green-200/25",
+          ringGlow: "hover:ring-green-100",
         };
       case "nakshatra":
         return {
@@ -48,6 +51,9 @@ export function ServiceCard({
           buttonBg: "bg-yellow-600 hover:bg-yellow-700",
           ringColor: "ring-yellow-500",
           badgeBg: "bg-yellow-600",
+          borderColor: "border-yellow-200 hover:border-yellow-300",
+          glowColor: "hover:shadow-yellow-200/25",
+          ringGlow: "hover:ring-yellow-100",
         };
       default:
         return {
@@ -58,6 +64,9 @@ export function ServiceCard({
           buttonBg: "bg-blue-600 hover:bg-blue-700",
           ringColor: "ring-blue-500",
           badgeBg: "bg-blue-600",
+          borderColor: "border-blue-200 hover:border-blue-300",
+          glowColor: "hover:shadow-blue-200/25",
+          ringGlow: "hover:ring-blue-100",
         };
     }
   };
@@ -74,9 +83,12 @@ export function ServiceCard({
     return (
       <Card
         className={cn(
-          "group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer relative",
+          "group border-2 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer relative hover:ring-2 hover:ring-opacity-50",
           service.popular && "ring-2",
           service.popular && colors.ringColor,
+          colors.borderColor,
+          colors.glowColor,
+          colors.ringGlow,
           className
         )}
       >
@@ -145,9 +157,12 @@ export function ServiceCard({
   return (
     <Card
       className={cn(
-        "group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden",
+        "group border-2 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden hover:ring-2 hover:ring-opacity-50",
         service.popular && "ring-2",
         service.popular && colors.ringColor,
+        colors.borderColor,
+        colors.glowColor,
+        colors.ringGlow,
         isFeatured && "lg:col-span-2",
         className
       )}
