@@ -78,10 +78,6 @@ export function FeaturedProducts() {
             variant="featured"
             showQuickAdd={false}
             showDescription={false}
-            onAddToCart={(product) => {
-              console.log("Adding to cart:", product);
-              // TODO: Implement add to cart functionality
-            }}
           />
         ))}
       </div>

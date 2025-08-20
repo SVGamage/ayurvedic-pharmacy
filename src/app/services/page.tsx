@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Stethoscope, Video, Star, Calendar, Users, Award } from "lucide-react";
 import { ServiceCard } from "@/components/service-card";
 import { Service } from "@/types/service";
+import { bookServiceViaWhatsApp } from "@/lib/whatsapp";
 
 const ayurvedicServices: Service[] = [
   {
@@ -128,12 +129,6 @@ const nakshatraServices: Service[] = [
 ];
 
 export default function ServicesPage() {
-  const handleBookClick = (service: Service) => {
-    // Handle booking logic here
-    console.log(`Booking service: ${service.title}`);
-    // You can implement routing to booking page or open booking modal
-  };
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Enhanced Header Section */}
@@ -228,7 +223,6 @@ export default function ServicesPage() {
             <ServiceCard
               key={service.id}
               service={service}
-              onBookClick={handleBookClick}
               showRating={true}
               rating={5}
             />
@@ -263,7 +257,6 @@ export default function ServicesPage() {
             <ServiceCard
               key={service.id}
               service={service}
-              onBookClick={handleBookClick}
               showRating={true}
               rating={5}
               className="bg-white/80 backdrop-blur-sm"
@@ -308,6 +301,13 @@ export default function ServicesPage() {
             <Button
               size="lg"
               className="bg-green-600 hover:bg-green-700 shadow-lg px-8 py-3"
+              onClick={() =>
+                bookServiceViaWhatsApp(
+                  "Ayurvedic Consultation",
+                  "From $50",
+                  "45 minutes"
+                )
+              }
             >
               Schedule Ayurvedic Consultation
             </Button>
@@ -315,6 +315,13 @@ export default function ServicesPage() {
               size="lg"
               variant="outline"
               className="border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-white bg-transparent shadow-lg px-8 py-3"
+              onClick={() =>
+                bookServiceViaWhatsApp(
+                  "Nakshatra Reading",
+                  "From $40",
+                  "30 minutes"
+                )
+              }
             >
               Book Nakshatra Reading
             </Button>

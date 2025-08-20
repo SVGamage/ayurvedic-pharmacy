@@ -277,14 +277,6 @@ export default function ProductsPage() {
             variant="default"
             showQuickAdd={true}
             showDescription={true}
-            onAddToCart={(product) => {
-              console.log("Adding to cart:", product);
-              // TODO: Implement add to cart functionality
-            }}
-            onQuickAdd={(product) => {
-              console.log("Quick add:", product);
-              // TODO: Implement quick add functionality
-            }}
           />
         ))}
       </div>

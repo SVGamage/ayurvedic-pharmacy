@@ -3,15 +3,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Clock, Star, ArrowRight } from "lucide-react";
+import { CheckCircle, Clock, Star, MessageCircle } from "lucide-react";
 import { Service } from "@/types/service";
 import { cn } from "@/lib/utils";
+import { bookServiceViaWhatsApp } from "@/lib/whatsapp";
 
 interface ServiceCardProps {
   service: Service;
   variant?: "default" | "compact" | "featured";
   className?: string;
-  onBookClick?: (service: Service) => void;
   showRating?: boolean;
   rating?: number;
 }
@@ -20,7 +20,6 @@ export function ServiceCard({
   service,
   variant = "default",
   className,
-  onBookClick,
   showRating = false,
   rating = 0,
 }: ServiceCardProps) {
@@ -38,6 +37,9 @@ export function ServiceCard({
           buttonBg: "bg-green-600 hover:bg-green-700",
           ringColor: "ring-green-500",
           badgeBg: "bg-green-600",
+          borderColor: "border-green-200 hover:border-green-300",
+          glowColor: "hover:shadow-green-200/25",
+          ringGlow: "hover:ring-green-100",
         };
       case "nakshatra":
         return {
@@ -48,6 +50,9 @@ export function ServiceCard({
           buttonBg: "bg-yellow-600 hover:bg-yellow-700",
           ringColor: "ring-yellow-500",
           badgeBg: "bg-yellow-600",
+          borderColor: "border-yellow-200 hover:border-yellow-300",
+          glowColor: "hover:shadow-yellow-200/25",
+          ringGlow: "hover:ring-yellow-100",
         };
       default:
         return {
@@ -58,6 +63,9 @@ export function ServiceCard({
           buttonBg: "bg-blue-600 hover:bg-blue-700",
           ringColor: "ring-blue-500",
           badgeBg: "bg-blue-600",
+          borderColor: "border-blue-200 hover:border-blue-300",
+          glowColor: "hover:shadow-blue-200/25",
+          ringGlow: "hover:ring-blue-100",
         };
     }
   };
@@ -65,18 +73,20 @@ export function ServiceCard({
   const colors = getThemeColors();
 
   const handleBookClick = () => {
-    if (onBookClick) {
-      onBookClick(service);
-    }
+    // Route to WhatsApp Business for booking
+    bookServiceViaWhatsApp(service.title, service.price, service.duration);
   };
 
   if (isCompact) {
     return (
       <Card
         className={cn(
-          "group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer relative",
+          "group border-2 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer relative hover:ring-2 hover:ring-opacity-50",
           service.popular && "ring-2",
           service.popular && colors.ringColor,
+          colors.borderColor,
+          colors.glowColor,
+          colors.ringGlow,
           className
         )}
       >
@@ -134,8 +144,8 @@ export function ServiceCard({
             className={cn("w-full text-sm", colors.buttonBg)}
             size="sm"
           >
-            {service.buttonText || "Book Now"}
-            <ArrowRight className="h-3 w-3 ml-1" />
+            {service.buttonText || "Book via WhatsApp"}
+            <MessageCircle className="h-3 w-3 ml-1" />
           </Button>
         </CardContent>
       </Card>
@@ -145,9 +155,12 @@ export function ServiceCard({
   return (
     <Card
       className={cn(
-        "group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden",
+        "group border-2 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden hover:ring-2 hover:ring-opacity-50",
         service.popular && "ring-2",
         service.popular && colors.ringColor,
+        colors.borderColor,
+        colors.glowColor,
+        colors.ringGlow,
         isFeatured && "lg:col-span-2",
         className
       )}
@@ -235,8 +248,8 @@ export function ServiceCard({
           )}
           size="lg"
         >
-          {service.buttonText || "Book Consultation"}
-          <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+          {service.buttonText || "Book via WhatsApp"}
+          <MessageCircle className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
         </Button>
       </CardContent>
     </Card>

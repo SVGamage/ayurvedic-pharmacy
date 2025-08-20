@@ -10,16 +10,15 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, ShoppingCart } from "lucide-react";
+import { Star, MessageCircle } from "lucide-react";
 import { Product } from "@/types/product";
+import { orderProductViaWhatsApp } from "@/lib/whatsapp";
 
 interface ProductCardProps {
   product: Product;
   variant?: "default" | "featured";
   showQuickAdd?: boolean;
   showDescription?: boolean;
-  onAddToCart?: (product: Product) => void;
-  onQuickAdd?: (product: Product) => void;
 }
 
 export function ProductCard({
@@ -27,24 +26,24 @@ export function ProductCard({
   variant = "default",
   showQuickAdd = true,
   showDescription = true,
-  onAddToCart,
-  onQuickAdd,
 }: ProductCardProps) {
   const isCompact = variant === "featured";
   const displayCategory = product.subcategory || product.category;
 
   const handleAddToCart = () => {
-    onAddToCart?.(product);
+    // Route to WhatsApp Business for ordering
+    orderProductViaWhatsApp(product.name, product.price, product.id);
   };
 
   const handleQuickAdd = () => {
-    onQuickAdd?.(product);
+    // Route to WhatsApp Business for quick ordering
+    orderProductViaWhatsApp(product.name, product.price, product.id);
   };
 
   return (
     <Card
-      className={`group border-0 shadow-sm hover:shadow-xl transition-all duration-500 bg-white rounded-xl overflow-hidden hover:-translate-y-1 flex flex-col h-full ${
-        isCompact ? "hover:shadow-lg" : ""
+      className={`group !border-2 !border-green-200 shadow-sm hover:shadow-xl hover:shadow-green-200/30 transition-all duration-500 bg-white rounded-xl overflow-hidden hover:-translate-y-1 flex flex-col h-full hover:!border-green-300  hover:ring-green-100 hover:ring-opacity-50 focus:outline-none focus:ring-2 focus:ring-green-200 focus:!border-green-300 ${
+        isCompact ? "hover:shadow-lg hover:shadow-green-200/20" : ""
       }`}
     >
       <CardHeader className="p-0 relative">
@@ -85,7 +84,7 @@ export function ProductCard({
               className="bg-white/90 hover:bg-white shadow-md rounded-full h-8 w-8 p-0"
               onClick={handleQuickAdd}
             >
-              <ShoppingCart className="h-4 w-4 text-green-600" />
+              <MessageCircle className="h-4 w-4 text-green-600" />
             </Button>
           </div>
         )}
@@ -176,8 +175,8 @@ export function ProductCard({
           }`}
           onClick={handleAddToCart}
         >
-          <ShoppingCart className="h-4 w-4 mr-2" />
-          Add to Cart
+          <MessageCircle className="h-4 w-4 mr-2" />
+          Order via WhatsApp
         </Button>
       </CardFooter>
     </Card>

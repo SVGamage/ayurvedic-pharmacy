@@ -1,5 +1,15 @@
-import Link from "next/link"
-import { Leaf, Phone, Mail, MapPin, Facebook, Instagram, Twitter } from "lucide-react"
+import Link from "next/link";
+import {
+  Leaf,
+  Phone,
+  Mail,
+  MapPin,
+  Facebook,
+  Instagram,
+  Twitter,
+  MessageCircle,
+} from "lucide-react";
+import { WHATSAPP_BUSINESS_CONFIG } from "@/config/whatsapp";
 
 export function Footer() {
   return (
@@ -12,7 +22,8 @@ export function Footer() {
               <span className="text-2xl font-bold">AyurVeda</span>
             </div>
             <p className="text-green-100">
-              Authentic Ayurvedic medicines and traditional healing solutions for natural wellness.
+              Authentic Ayurvedic medicines and traditional healing solutions
+              for natural wellness.
             </p>
             <div className="flex space-x-4">
               <Facebook className="h-5 w-5 text-green-400 hover:text-white cursor-pointer" />
@@ -25,12 +36,18 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/products" className="text-green-100 hover:text-white">
+                <Link
+                  href="/products"
+                  className="text-green-100 hover:text-white"
+                >
                   Products
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="text-green-100 hover:text-white">
+                <Link
+                  href="/services"
+                  className="text-green-100 hover:text-white"
+                >
                   Services
                 </Link>
               </li>
@@ -40,7 +57,10 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/reviews" className="text-green-100 hover:text-white">
+                <Link
+                  href="/reviews"
+                  className="text-green-100 hover:text-white"
+                >
                   Reviews
                 </Link>
               </li>
@@ -69,16 +89,26 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
             <div className="space-y-3">
               <div className="flex items-center space-x-2">
+                <MessageCircle className="h-4 w-4 text-green-400" />
+                <span className="text-green-100">
+                  WhatsApp: {WHATSAPP_BUSINESS_CONFIG.displayNumber}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4 text-green-400" />
                 <span className="text-green-100">+1 (555) 123-4567</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4 text-green-400" />
-                <span className="text-green-100">info@ayurvedapharmacy.com</span>
+                <span className="text-green-100">
+                  info@ayurvedapharmacy.com
+                </span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4 text-green-400" />
-                <span className="text-green-100">123 Wellness St, Natural City</span>
+                <span className="text-green-100">
+                  123 Wellness St, Natural City
+                </span>
               </div>
             </div>
           </div>
@@ -98,5 +128,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

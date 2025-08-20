@@ -64,11 +64,6 @@ const services: Service[] = [
 ];
 
 export function ServiceHighlights() {
-  const handleBookClick = (service: Service) => {
-    // Handle booking logic here
-    console.log(`Booking service: ${service.title}`);
-  };
-
   return (
     <section className="bg-green-50 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -87,7 +82,6 @@ export function ServiceHighlights() {
             <ServiceCard
               key={service.id}
               service={service}
-              onBookClick={handleBookClick}
               showRating={true}
               rating={5}
               className="bg-white"

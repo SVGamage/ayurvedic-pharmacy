@@ -24,7 +24,13 @@ import {
   Instagram,
   Twitter,
   Youtube,
+  MessageCircle,
 } from "lucide-react";
+import {
+  contactViaWhatsApp,
+  emergencyConsultationViaWhatsApp,
+} from "@/lib/whatsapp";
+import { WHATSAPP_BUSINESS_CONFIG } from "@/config/whatsapp";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -222,13 +228,27 @@ export default function ContactPage() {
                   />
                 </div>
 
-                <Button
-                  type="submit"
-                  className="w-full bg-green-600 hover:bg-green-700"
-                  size="lg"
-                >
-                  Send Message
-                </Button>
+                <div className="flex gap-4">
+                  <Button
+                    type="submit"
+                    className="flex-1 bg-green-600 hover:bg-green-700"
+                    size="lg"
+                  >
+                    Send Message
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="flex-1 border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
+                    size="lg"
+                    onClick={() =>
+                      contactViaWhatsApp(formData.subject, formData.message)
+                    }
+                  >
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    WhatsApp
+                  </Button>
+                </div>
               </form>
             </CardContent>
           </Card>
@@ -247,6 +267,19 @@ export default function ContactPage() {
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <MessageCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                <div>
+                  <p className="font-medium">WhatsApp Business</p>
+                  <p className="text-gray-600">
+                    {WHATSAPP_BUSINESS_CONFIG.displayNumber}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Quick ordering & booking
+                  </p>
+                </div>
+              </div>
+
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-green-600 flex-shrink-0" />
                 <div>
@@ -350,6 +383,7 @@ export default function ContactPage() {
               <Button
                 className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 shadow-lg"
                 size="sm"
+                onClick={emergencyConsultationViaWhatsApp}
               >
                 Emergency Contact
               </Button>
