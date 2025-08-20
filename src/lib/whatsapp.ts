@@ -1,5 +1,6 @@
 // WhatsApp utility functions
 import { WHATSAPP_CONFIG } from "@/config/whatsapp";
+import { formatCurrencyForWhatsApp } from "@/config/currency";
 
 export interface WhatsAppConfig {
   phoneNumber: string; // WhatsApp number without + sign
@@ -21,7 +22,7 @@ export const orderProductViaWhatsApp = (
   const message = `Hello! I'm interested in ordering the following product:
 
 📦 Product: ${productName}
-💰 Price: $${productPrice}
+💰 Price: ${formatCurrencyForWhatsApp(productPrice)}
 🆔 Product ID: ${productId}
 
 Could you please provide more information about availability and delivery options?
@@ -112,9 +113,9 @@ export const bulkProductInquiryViaWhatsApp = (
   const productList = products
     .map(
       (product, index) =>
-        `${index + 1}. ${product.name} - $${product.price}${
-          product.quantity ? ` (Qty: ${product.quantity})` : ""
-        }`
+        `${index + 1}. ${product.name} - ${formatCurrencyForWhatsApp(
+          product.price
+        )}${product.quantity ? ` (Qty: ${product.quantity})` : ""}`
     )
     .join("\n");
 

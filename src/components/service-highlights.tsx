@@ -4,6 +4,7 @@ import { Stethoscope, Video, Star, Calendar } from "lucide-react";
 import Link from "next/link";
 import { ServiceCard } from "@/components/service-card";
 import { Service } from "@/types/service";
+import { formatServicePrice } from "@/config/currency";
 
 const services: Service[] = [
   {
@@ -19,7 +20,7 @@ const services: Service[] = [
       "Prescription medicines",
       "Follow-up support",
     ],
-    price: "From $75",
+    price: formatServicePrice(7500),
     duration: "60 minutes",
     category: "ayurvedic",
     popular: true,
@@ -38,7 +39,7 @@ const services: Service[] = [
       "24/7 chat support",
       "Medicine delivery",
     ],
-    price: "From $50",
+    price: formatServicePrice(5000),
     duration: "45 minutes",
     category: "ayurvedic",
     buttonText: "Book Online",
@@ -56,7 +57,7 @@ const services: Service[] = [
       "Ritual guidance",
       "Gemstone recommendations",
     ],
-    price: "From $40",
+    price: formatServicePrice(4000),
     duration: "30 minutes",
     category: "nakshatra",
     buttonText: "Book Reading",

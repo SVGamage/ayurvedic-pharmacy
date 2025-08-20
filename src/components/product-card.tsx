@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Star, MessageCircle } from "lucide-react";
 import { Product } from "@/types/product";
 import { orderProductViaWhatsApp } from "@/lib/whatsapp";
+import { formatCurrency, formatSavings } from "@/config/currency";
 
 interface ProductCardProps {
   product: Product;
@@ -150,17 +151,17 @@ export function ProductCard({
                 isCompact ? "text-xl" : "text-2xl"
               }`}
             >
-              ${product.price}
+              {formatCurrency(product.price)}
             </span>
             {product.originalPrice && (
               <span className="text-sm text-gray-400 line-through">
-                ${product.originalPrice}
+                {formatCurrency(product.originalPrice)}
               </span>
             )}
           </div>
           {product.originalPrice && !isCompact && (
             <span className="text-xs text-green-600 font-semibold bg-green-100 px-2 py-1 rounded-full">
-              Save ${(product.originalPrice - product.price).toFixed(2)}
+              {formatSavings(product.originalPrice, product.price)}
             </span>
           )}
         </div>

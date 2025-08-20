@@ -70,7 +70,7 @@ Edit these in `src/config/whatsapp.ts` under `defaultMessages`.
 Hello! I'm interested in ordering the following product:
 
 📦 Product: Ashwagandha Powder
-💰 Price: $24.99
+💰 Price: LKR 2,499
 🆔 Product ID: 1
 
 Could you please provide more information about availability and delivery options?
@@ -84,7 +84,7 @@ Thank you!
 Hello! I would like to book the following service:
 
 🔮 Service: In-Person Consultation
-💰 Price: From $75
+💰 Price: From LKR 7,500
 ⏰ Duration: 60 minutes
 
 Could you please help me schedule an appointment at a convenient time?
