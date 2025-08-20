@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {
-  Leaf,
   Phone,
   Mail,
   MapPin,
@@ -10,6 +9,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { WHATSAPP_CONFIG } from "@/config/whatsapp";
+import Brand from "./brand";
 
 export function Footer() {
   return (
@@ -18,8 +18,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <Leaf className="h-8 w-8 text-green-400" />
-              <span className="text-2xl font-bold">AyurVeda</span>
+              <Brand isFooter={true} />
             </div>
             <p className="text-green-100">
               Authentic Ayurvedic medicines and traditional healing solutions

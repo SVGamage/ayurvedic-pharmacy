@@ -3,9 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Leaf } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Brand from "./brand";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -23,19 +24,11 @@ export function Navigation() {
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
+      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-6" aria-label="Top">
         <div className="flex w-full items-center justify-between border-b border-green-500 py-6 lg:border-none">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2 group">
-              <Leaf className="h-8 w-8 text-green-600 transition-transform group-hover:scale-110" />
-              <div className="flex flex-col">
-                <span className="text-xl sm:text-2xl font-bold text-green-800 leading-tight">
-                  Rathnadeepa
-                </span>
-                <span className="text-sm sm:text-base font-medium text-green-600 -mt-1 hidden sm:block">
-                  Ayurvedic Pharmacy
-                </span>
-              </div>
+              <Brand isFooter={false} />
             </Link>
           </div>
           <div className="ml-10 hidden space-x-8 lg:block">
