@@ -22,7 +22,7 @@ export function WhatsAppFloatingButton() {
           onClick={handleWhatsAppClick}
           onMouseEnter={() => setShowTooltip(true)}
           onMouseLeave={() => setShowTooltip(false)}
-          className="bg-green-500 hover:bg-green-600 text-white rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse hover:animate-none group"
+          className="bg-green-500 hover:bg-green-600 text-white rounded-full w-14 h-14 p-0 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse hover:animate-none group"
           size="lg"
         >
           <MessageCircle className="h-6 w-6 group-hover:scale-110 transition-transform" />
