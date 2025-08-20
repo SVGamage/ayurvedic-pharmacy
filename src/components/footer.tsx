@@ -9,7 +9,7 @@ import {
   Twitter,
   MessageCircle,
 } from "lucide-react";
-import { WHATSAPP_BUSINESS_CONFIG } from "@/config/whatsapp";
+import { WHATSAPP_CONFIG } from "@/config/whatsapp";
 
 export function Footer() {
   return (
@@ -91,7 +91,7 @@ export function Footer() {
               <div className="flex items-center space-x-2">
                 <MessageCircle className="h-4 w-4 text-green-400" />
                 <span className="text-green-100">
-                  WhatsApp: {WHATSAPP_BUSINESS_CONFIG.displayNumber}
+                  WhatsApp: {WHATSAPP_CONFIG.displayNumber}
                 </span>
               </div>
               <div className="flex items-center space-x-2">

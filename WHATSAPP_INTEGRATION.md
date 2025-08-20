@@ -1,12 +1,25 @@
-# WhatsApp Business Integration
+# WhatsApp Integration
 
-This Ayurvedic Pharmacy website has been fully integrated with WhatsApp Business for all product ordering and service booking functionality.
+## ⚙️ Configuration
+
+### Update WhatsApp Number
+
+To change the WhatsApp number, edit the configuration file:
+
+````typescript
+// src/config/whatsapp.ts
+export const WHATSAPP_CONFIG = {
+  phoneNumber: "94702048015", // Replace with your number (no + sign)
+  displayNumber: "+94 (070) 204-8015", // Replace with formatted display
+  // ... other settings
+}
+```c Pharmacy website has been fully integrated with WhatsApp for all product ordering and service booking functionality.
 
 ## 🚀 Features
 
 ### Product Ordering
 
-- All "Add to Cart" buttons now route directly to WhatsApp Business
+- All "Add to Cart" buttons now route directly to WhatsApp
 - Products include name, price, and ID in the WhatsApp message
 - Quick order functionality available on product cards
 
@@ -36,7 +49,7 @@ export const WHATSAPP_BUSINESS_CONFIG = {
   displayNumber: "+1 (555) 123-4567", // Replace with formatted display
   // ... other settings
 };
-```
+````
 
 ### Message Templates
 
@@ -112,14 +125,12 @@ src/
 
 ## 📋 Setup Checklist
 
-1. ✅ Update WhatsApp Business number in config
+1. ✅ Update WhatsApp number in config
 2. ✅ Test product ordering flow
 3. ✅ Test service booking flow
 4. ✅ Test emergency consultation
 5. ✅ Verify floating button functionality
-6. ✅ Check all contact information consistency
-
-## 🎨 UI Changes
+6. ✅ Check all contact information consistency## 🎨 UI Changes
 
 - Shopping cart icons replaced with WhatsApp message icons
 - "Add to Cart" text changed to "Order via WhatsApp"
@@ -131,7 +142,7 @@ src/
 
 1. **Browse Products/Services** → Customer sees options
 2. **Click Order/Book Button** → Opens WhatsApp with pre-filled message
-3. **Customer Sends Message** → Business receives order/booking request
+3. **Customer Sends Message** → Regular WhatsApp chat opens
 4. **Business Responds** → Confirms availability, pricing, delivery
 5. **Complete Transaction** → Payment and fulfillment handled via WhatsApp
 
@@ -139,9 +150,9 @@ src/
 
 - Update phone number in single config file
 - Customize message templates as needed
-- Monitor WhatsApp Business metrics
+- Monitor WhatsApp chat metrics
 - Train staff on handling WhatsApp orders/bookings
 
 ---
 
-All traditional cart and booking functionality has been replaced with WhatsApp Business integration for a more direct, personal customer experience.
+All traditional cart and booking functionality has been replaced with regular WhatsApp integration for a more direct, personal customer experience.

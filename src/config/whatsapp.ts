@@ -1,11 +1,11 @@
-// Configuration file for WhatsApp Business integration
-// Update this file to change the WhatsApp Business number across the entire application
+// Configuration file for WhatsApp integration
+// Update this file to change the WhatsApp number across the entire application
 
-export const WHATSAPP_BUSINESS_CONFIG = {
-  // WhatsApp Business phone number (without + sign)
+export const WHATSAPP_CONFIG = {
+  // WhatsApp phone number (without + sign for wa.me links)
   // Format: Country code + Area code + Number (no spaces, dashes, or parentheses)
   // Example: "15551234567" for +1 (555) 123-4567
-  phoneNumber: "0702048015",
+  phoneNumber: "94702048015",
 
   // Formatted display number for UI (with formatting for readability)
   displayNumber: "+94 (070) 204-8015",
@@ -14,7 +14,8 @@ export const WHATSAPP_BUSINESS_CONFIG = {
   businessName: "AyurVeda Pharmacy",
 
   // WhatsApp Web/API base URL
-  whatsappBaseUrl: "https://wa.me",
+  // Using api.whatsapp.com forces regular WhatsApp instead of business detection
+  whatsappBaseUrl: "https://api.whatsapp.com/send?phone=",
 
   // Default messages for different scenarios
   defaultMessages: {

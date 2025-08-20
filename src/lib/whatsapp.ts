@@ -1,15 +1,15 @@
-// WhatsApp Business utility functions
-import { WHATSAPP_BUSINESS_CONFIG } from "@/config/whatsapp";
+// WhatsApp utility functions
+import { WHATSAPP_CONFIG } from "@/config/whatsapp";
 
 export interface WhatsAppConfig {
-  businessNumber: string; // WhatsApp Business number without + sign
+  phoneNumber: string; // WhatsApp number without + sign
   baseUrl: string;
 }
 
-// WhatsApp Business configuration
-const WHATSAPP_CONFIG: WhatsAppConfig = {
-  businessNumber: WHATSAPP_BUSINESS_CONFIG.phoneNumber,
-  baseUrl: WHATSAPP_BUSINESS_CONFIG.whatsappBaseUrl,
+// WhatsApp configuration
+const LOCAL_WHATSAPP_CONFIG: WhatsAppConfig = {
+  phoneNumber: WHATSAPP_CONFIG.phoneNumber,
+  baseUrl: WHATSAPP_CONFIG.whatsappBaseUrl,
 };
 
 // Product ordering via WhatsApp
@@ -29,7 +29,7 @@ Could you please provide more information about availability and delivery option
 Thank you!`;
 
   const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `${WHATSAPP_CONFIG.baseUrl}/${WHATSAPP_CONFIG.businessNumber}?text=${encodedMessage}`;
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
 
   window.open(whatsappUrl, "_blank");
 };
@@ -51,7 +51,7 @@ Could you please help me schedule an appointment at a convenient time?
 Thank you!`;
 
   const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `${WHATSAPP_CONFIG.baseUrl}/${WHATSAPP_CONFIG.businessNumber}?text=${encodedMessage}`;
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
 
   window.open(whatsappUrl, "_blank");
 };
@@ -79,7 +79,7 @@ Thank you!`;
   }
 
   const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `${WHATSAPP_CONFIG.baseUrl}/${WHATSAPP_CONFIG.businessNumber}?text=${encodedMessage}`;
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
 
   window.open(whatsappUrl, "_blank");
 };
@@ -95,7 +95,7 @@ Please connect me with an available doctor as soon as possible.
 Thank you!`;
 
   const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `${WHATSAPP_CONFIG.baseUrl}/${WHATSAPP_CONFIG.businessNumber}?text=${encodedMessage}`;
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
 
   window.open(whatsappUrl, "_blank");
 };
@@ -131,18 +131,18 @@ Could you please provide:
 Thank you!`;
 
   const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `${WHATSAPP_CONFIG.baseUrl}/${WHATSAPP_CONFIG.businessNumber}?text=${encodedMessage}`;
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
 
   window.open(whatsappUrl, "_blank");
 };
 
-// Update WhatsApp business number (for admin use)
+// Update WhatsApp number (for admin use)
 export const updateWhatsAppNumber = (newNumber: string): WhatsAppConfig => {
-  WHATSAPP_CONFIG.businessNumber = newNumber.replace(/\+/g, "");
-  return WHATSAPP_CONFIG;
+  LOCAL_WHATSAPP_CONFIG.phoneNumber = newNumber.replace(/\+/g, "");
+  return LOCAL_WHATSAPP_CONFIG;
 };
 
 // Get current WhatsApp configuration
 export const getWhatsAppConfig = (): WhatsAppConfig => {
-  return { ...WHATSAPP_CONFIG };
+  return { ...LOCAL_WHATSAPP_CONFIG };
 };
