@@ -43,7 +43,7 @@ export function ProductCard({
 
   return (
     <Card
-      className={`group border-2 border-green-200 shadow-sm hover:shadow-xl hover:shadow-green-200/30 transition-all duration-500 bg-white rounded-xl overflow-hidden hover:-translate-y-1 flex flex-col h-full hover:border-green-300 hover:ring-2 hover:ring-green-100 hover:ring-opacity-50 ${
+      className={`group !border-2 !border-green-200 shadow-sm hover:shadow-xl hover:shadow-green-200/30 transition-all duration-500 bg-white rounded-xl overflow-hidden hover:-translate-y-1 flex flex-col h-full hover:!border-green-300  hover:ring-green-100 hover:ring-opacity-50 focus:outline-none focus:ring-2 focus:ring-green-200 focus:!border-green-300 ${
         isCompact ? "hover:shadow-lg hover:shadow-green-200/20" : ""
       }`}
     >
