@@ -51,8 +51,8 @@ const products: Product[] = [
     name: "Ashwagandha Capsules",
     category: "Disease-Related Products",
     subcategory: "Stress & Sleep",
-    price: 24.99,
-    originalPrice: 29.99,
+    price: 2499,
+    originalPrice: 2999,
     rating: 4.8,
     reviews: 156,
     image: "/placeholder.svg?height=300&width=300",
@@ -65,8 +65,8 @@ const products: Product[] = [
     name: "Neem Face Oil",
     category: "Ayurvedic Products",
     subcategory: "Oils",
-    price: 16.99,
-    originalPrice: 19.99,
+    price: 1699,
+    originalPrice: 1999,
     rating: 4.7,
     reviews: 89,
     image: "/placeholder.svg?height=300&width=300",
@@ -78,8 +78,8 @@ const products: Product[] = [
     name: "Triphala Powder",
     category: "Disease-Related Products",
     subcategory: "Digestive Disorders",
-    price: 18.99,
-    originalPrice: 22.99,
+    price: 1899,
+    originalPrice: 2299,
     rating: 4.9,
     reviews: 203,
     image: "/placeholder.svg?height=300&width=300",
@@ -91,8 +91,8 @@ const products: Product[] = [
     name: "Copper Water Pot",
     category: "Traditional Products",
     subcategory: "Pottery Items",
-    price: 45.99,
-    originalPrice: 55.99,
+    price: 4599,
+    originalPrice: 5599,
     rating: 4.6,
     reviews: 67,
     image: "/placeholder.svg?height=300&width=300",
@@ -104,8 +104,8 @@ const products: Product[] = [
     name: "Turmeric Face Mask",
     category: "Ayurvedic Products",
     subcategory: "Cosmetics",
-    price: 12.99,
-    originalPrice: 15.99,
+    price: 1299,
+    originalPrice: 1599,
     rating: 4.5,
     reviews: 124,
     image: "/placeholder.svg?height=300&width=300",
@@ -117,8 +117,8 @@ const products: Product[] = [
     name: "Herbal Gift Set",
     category: "Traditional Products",
     subcategory: "Gift Packs/Herbal Kits",
-    price: 89.99,
-    originalPrice: 109.99,
+    price: 8999,
+    originalPrice: 10999,
     rating: 4.8,
     reviews: 45,
     image: "/placeholder.svg?height=300&width=300",
@@ -225,7 +225,7 @@ export default function ProductsPage() {
 
       {/* Filters */}
       <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
             <Input
@@ -269,7 +269,7 @@ export default function ProductsPage() {
       </div>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
         {sortedProducts.map((product) => (
           <ProductCard
             key={product.id}
