@@ -43,8 +43,8 @@ export function ProductCard({
 
   return (
     <Card
-      className={`group border-0 shadow-sm hover:shadow-xl transition-all duration-500 bg-white rounded-xl overflow-hidden hover:-translate-y-1 flex flex-col h-full ${
-        isCompact ? "hover:shadow-lg" : ""
+      className={`group border-2 border-green-200 shadow-sm hover:shadow-xl hover:shadow-green-200/30 transition-all duration-500 bg-white rounded-xl overflow-hidden hover:-translate-y-1 flex flex-col h-full hover:border-green-300 hover:ring-2 hover:ring-green-100 hover:ring-opacity-50 ${
+        isCompact ? "hover:shadow-lg hover:shadow-green-200/20" : ""
       }`}
     >
       <CardHeader className="p-0 relative">
