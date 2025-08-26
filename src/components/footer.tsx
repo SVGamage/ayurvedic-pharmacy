@@ -15,10 +15,10 @@ export function Footer() {
   return (
     <footer className="bg-green-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Brand isFooter={true} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 justify-items-center md:justify-items-start">
+          <div className="space-y-4 text-center md:text-left">
+            <div className="flex items-center justify-center md:justify-start space-x-2">
+              <Brand isFooter={true} width={110} height={120} isColumn={true} />
             </div>
             <p className="text-green-100">
               Authentic Ayurvedic medicines and traditional healing solutions
@@ -31,7 +31,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
@@ -66,7 +66,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="text-lg font-semibold mb-4">Services</h3>
             <ul className="space-y-2">
               <li>
@@ -84,7 +84,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
             <div className="space-y-3">
               <div className="flex items-center space-x-2">

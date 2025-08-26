@@ -28,7 +28,7 @@ export function Navigation() {
         <div className="flex w-full items-center justify-between border-b border-green-500  lg:border-none">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2 group">
-              <Brand isFooter={false} />
+              <Brand isFooter={false} width={150} height={150} />
             </Link>
           </div>
           <div className="ml-10 hidden space-x-8 lg:block">
