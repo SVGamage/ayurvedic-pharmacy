@@ -13,7 +13,7 @@ export default function Brand({ isFooter }: { isFooter: boolean }) {
       />
       <div className="flex flex-col">
         <span
-          className={`text-6xl sm:text-5xl font-bold ${
+          className={`text-6xl sm:text-5xl font-black ${
             isFooter ? "text-green-100" : "text-green-800"
           } leading-tight`}
           style={{ fontFamily: "var(--font-tangerine), cursive" }}
