@@ -24,11 +24,11 @@ export function Navigation() {
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-6" aria-label="Top">
-        <div className="flex w-full items-center justify-between border-b border-green-500 py-6 lg:border-none">
+      <nav className="mx-auto max-w-7xl   " aria-label="Top">
+        <div className="flex w-full items-center justify-between border-b border-green-500  lg:border-none">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2 group">
-              <Brand isFooter={false} />
+              <Brand isFooter={false} width={150} height={150} />
             </Link>
           </div>
           <div className="ml-10 hidden space-x-8 lg:block">
