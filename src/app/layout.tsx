@@ -14,12 +14,11 @@ const tangerine = Tangerine({
 });
 
 export const metadata: Metadata = {
-  title: "AyurVeda Pharmacy - Natural Healing & Traditional Medicine",
+  title: "Rathnadeepa Herbals - Natural Healing & Traditional Medicine",
   description:
     "Authentic Ayurvedic medicines, consultations, and traditional healing products. Expert Ayurvedic doctors and Nakshatra services available.",
   keywords:
     "Ayurveda, herbal medicine, natural healing, Ayurvedic consultation, traditional medicine",
-  generator: "v0.dev",
 };
 
 export default function RootLayout({
