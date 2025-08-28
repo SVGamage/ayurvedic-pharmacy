@@ -1,17 +1,8 @@
 import type React from "react";
-import type { Metadata } from "next";
 import { Inter, Tangerine } from "next/font/google";
 import "./globals.css";
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
-import { WhatsAppFloatingButton } from "@/components/whatsapp-floating-button";
-
-const inter = Inter({ subsets: ["latin"] });
-const tangerine = Tangerine({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-tangerine",
-});
+import LayoutComponent from "./_components/layout-components";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Rathnadeepa Herbals - Natural Healing & Traditional Medicine",
@@ -21,6 +12,13 @@ export const metadata: Metadata = {
     "Ayurveda, herbal medicine, natural healing, Ayurvedic consultation, traditional medicine",
 };
 
+const inter = Inter({ subsets: ["latin"] });
+const tangerine = Tangerine({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-tangerine",
+});
+
 export default function RootLayout({
   children,
 }: {
@@ -29,10 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} ${tangerine.variable}`}>
-        <Navigation />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
-        <WhatsAppFloatingButton />
+        <LayoutComponent>{children}</LayoutComponent>
       </body>
     </html>
   );
