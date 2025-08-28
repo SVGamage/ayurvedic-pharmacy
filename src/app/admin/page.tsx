@@ -1,12 +1,10 @@
 import React from "react";
+import AdminHeader from "../_components/admin-header";
 
-const AdminPage = () => {
+export default async function AdminPage() {
   return (
     <div className="min-h-screen bg-gray-100 p-4">
-      <header className="bg-white shadow p-4 mb-6">
-        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-      </header>
-
+      <AdminHeader />
       <main>
         <section className="bg-white shadow rounded p-4 mb-6">
           <h2 className="text-xl font-semibold mb-4">Overview</h2>
@@ -26,6 +24,4 @@ const AdminPage = () => {
       </main>
     </div>
   );
-};
-
-export default AdminPage;
+}
