@@ -5,6 +5,29 @@ import { ServiceCard } from "@/components/service-card";
 import { Service } from "@/types/service";
 import { bookServiceViaWhatsApp } from "@/lib/whatsapp";
 import { formatServicePrice } from "@/config/currency";
+import { ReusableHeroSection } from "@/components/reusable-hero-section";
+import heroImage1 from "@/assets/hero-1.jpg";
+import heroImage2 from "@/assets/hero-2.png";
+import heroImage3 from "@/assets/hero-3.jpg";
+import CarouselGrid from "@/components/carousel-grid";
+
+const heroSlides = [
+  {
+    id: 1,
+    image: heroImage1,
+    gradient: "from-black/80 via-black/60 to-transparent",
+  },
+  {
+    id: 2,
+    image: heroImage2, // Using same image for now - replace with different hero images
+    gradient: "from-black/80 via-black/60 to-transparent",
+  },
+  {
+    id: 3,
+    image: heroImage3, // Using same image for now - replace with different hero images
+    gradient: "from-black/80 via-black/60 to-transparent",
+  },
+];
 
 const ayurvedicServices: Service[] = [
   {
@@ -132,71 +155,22 @@ const nakshatraServices: Service[] = [
 export default function ServicesPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
+      <CarouselGrid heroSlidesArray={[heroSlides,heroSlides,heroSlides]} />
       {/* Enhanced Header Section */}
-      <div className="relative mb-16 text-center">
-        {/* Background decoration */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-40 h-40 bg-green-100 rounded-full opacity-30 blur-3xl"></div>
-          <div className="absolute top-12 left-1/3 w-24 h-24 bg-emerald-100 rounded-full opacity-20 blur-2xl"></div>
-          <div className="absolute top-6 right-1/3 w-28 h-28 bg-teal-100 rounded-full opacity-25 blur-2xl"></div>
-        </div>
-
-        {/* Main title with gradient */}
-        <div className="mb-6">
-          <div className="inline-flex items-center justify-center mb-4">
-            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
-            <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
-              Expert Care
-            </span>
-            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
-          </div>
-
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-gray-900 via-green-800 to-gray-900 bg-clip-text text-transparent">
-              Transformative
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-green-500 bg-clip-text text-transparent">
-              Wellness Services
-            </span>
-          </h1>
-        </div>
-
-        {/* Enhanced subtitle */}
-        <div className="max-w-4xl mx-auto mb-8">
-          <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-6">
-            Experience holistic healing through our comprehensive Ayurvedic
-            consultations and traditional Nakshatra services
-          </p>
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 max-w-3xl mx-auto">
-            <p className="text-gray-700 leading-relaxed mb-4">
-              Our expert practitioners combine ancient wisdom with modern
-              convenience to guide you towards optimal health and spiritual
-              well-being.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="bg-white/80 px-3 py-1 rounded-full text-green-700 font-medium">
-                Expert Practitioners
-              </span>
-              <span className="bg-white/80 px-3 py-1 rounded-full text-emerald-700 font-medium">
-                Ancient Wisdom
-              </span>
-              <span className="bg-white/80 px-3 py-1 rounded-full text-teal-700 font-medium">
-                Modern Convenience
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Decorative elements */}
-        <div className="flex justify-center items-center space-x-2">
-          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-          <div className="w-1 h-1 bg-emerald-400 rounded-full"></div>
-          <div className="w-3 h-3 bg-green-600 rounded-full"></div>
-          <div className="w-1 h-1 bg-emerald-400 rounded-full"></div>
-          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-        </div>
-      </div>
+      <ReusableHeroSection
+        preTitle="Expert Care"
+        titleLine1="Transformative"
+        titleLine2="Wellness Services"
+        subtitle="Experience holistic healing through our comprehensive Ayurvedic consultations and traditional Nakshatra services"
+        description="Our expert practitioners combine ancient wisdom with modern convenience to guide you towards optimal health and spiritual well-being."
+        badges={[
+          "Expert Practitioners",
+          "Ancient Wisdom",
+          "Modern Convenience",
+        ]}
+        theme="green"
+      />
 
       {/* Ayurvedic Services */}
       <section className="mb-16">

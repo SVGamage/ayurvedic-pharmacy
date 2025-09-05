@@ -13,6 +13,72 @@ import {
 import { Search, Filter } from "lucide-react";
 import { ProductCard } from "@/components/product-card";
 import { Product } from "@/types/product";
+import { ReusableHeroSection } from "@/components/reusable-hero-section";
+import CarouselGrid from "@/components/carousel-grid";
+import p1 from "@/assets/1.png";
+import p2 from "@/assets/2.png";
+import p3 from "@/assets/3.png";
+import p4 from "@/assets/4.png";
+import p5 from "@/assets/5.png";
+import p6 from "@/assets/6.png";
+import p7 from "@/assets/7.png";
+import p8 from "@/assets/8.png";
+import p9 from "@/assets/9.png";
+import { HeroSlide } from "@/components/custom-carousel";
+
+const heroSlides1: HeroSlide[] = [
+  {
+    id: 1,
+    image: p1,
+    gradient: "",
+  },
+  {
+    id: 2,
+    image: p2, // Using same image for now - replace with different hero images
+    gradient: "",
+  },
+];
+
+const heroSlides2: HeroSlide[] = [
+  {
+    id: 1,
+    image: p3,
+    gradient: "",
+  },
+  {
+    id: 2,
+    image: p4, // Using same image for now - replace with different hero images
+    gradient: "",
+  },
+  {
+    id: 3,
+    image: p5, // Using same image for now - replace with different hero images
+    gradient: "",
+  },
+];
+
+const heroSlides3: HeroSlide[] = [
+  {
+    id: 1,
+    image: p6,
+    gradient: "",
+  },
+  {
+    id: 2,
+    image: p7, // Using same image for now - replace with different hero images
+    gradient: "",
+  },
+  {
+    id: 3,
+    image: p8, // Using same image for now - replace with different hero images
+    gradient: "",
+  },
+  {
+    id: 4,
+    image: p9, // Using same image for now - replace with different hero images
+    gradient: "",
+  },
+];
 
 const productCategories = [
   "All Products",
@@ -158,70 +224,22 @@ export default function ProductsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
+      <CarouselGrid heroSlidesArray={[heroSlides1, heroSlides2, heroSlides3]} />
       {/* Enhanced Header Section */}
-      <div className="relative mb-12 text-center">
-        {/* Background decoration */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-32 bg-green-100 rounded-full opacity-20 blur-3xl"></div>
-          <div className="absolute top-8 left-1/4 w-16 h-16 bg-yellow-100 rounded-full opacity-30 blur-2xl"></div>
-          <div className="absolute top-4 right-1/4 w-20 h-20 bg-orange-100 rounded-full opacity-25 blur-2xl"></div>
-        </div>
-
-        {/* Main title with gradient */}
-        <div className="mb-6">
-          <div className="inline-flex items-center justify-center mb-4">
-            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
-            <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
-              Authentic Wellness
-            </span>
-            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
-          </div>
-
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-gray-900 via-green-800 to-gray-900 bg-clip-text text-transparent">
-              Our Premium
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-green-600 via-green-500 to-emerald-500 bg-clip-text text-transparent">
-              Ayurvedic Products
-            </span>
-          </h1>
-        </div>
-
-        {/* Enhanced subtitle */}
-        <div className="max-w-4xl mx-auto">
-          <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-4">
-            Discover our comprehensive range of authentic Ayurvedic products,
-            traditional remedies, and wellness solutions
-          </p>
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 max-w-3xl mx-auto">
-            <p className="text-gray-700 leading-relaxed mb-4">
-              Carefully crafted with time-honored formulations to support your
-              natural healing journey
-            </p>
-            {/* <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="bg-white/80 px-3 py-1 rounded-full text-green-700 font-medium">
-                Free Parking
-              </span>
-              <span className="bg-white/80 px-3 py-1 rounded-full text-emerald-700 font-medium">
-                Extended Hours
-              </span>
-              <span className="bg-white/80 px-3 py-1 rounded-full text-teal-700 font-medium">
-                24/7 Emergency
-              </span>
-            </div> */}
-          </div>
-        </div>
-
-        {/* Decorative elements */}
-        <div className="flex justify-center items-center mt-8 space-x-2">
-          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-          <div className="w-1 h-1 bg-green-400 rounded-full"></div>
-          <div className="w-3 h-3 bg-green-600 rounded-full"></div>
-          <div className="w-1 h-1 bg-green-400 rounded-full"></div>
-          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-        </div>
-      </div>
+      <ReusableHeroSection
+        preTitle="Authentic Wellness"
+        titleLine1="Our Premium"
+        titleLine2="Ayurvedic Products"
+        subtitle="Discover our comprehensive range of authentic Ayurvedic products, traditional remedies, and wellness solutions"
+        description="Carefully crafted with time-honored formulations to support your natural healing journey"
+        badges={[
+          "Organic Certified",
+          "Traditional Methods",
+          "Expert Formulated",
+        ]}
+        theme="green"
+      />
 
       {/* Filters */}
       <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
