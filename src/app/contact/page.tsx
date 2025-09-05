@@ -77,7 +77,7 @@ export default function ContactPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
-      <CarouselGrid heroSlides={heroSlides} />
+      <CarouselGrid heroSlidesArray={[heroSlides, heroSlides, heroSlides]} />
       {/* Enhanced Header Section */}
       <ReusableHeroSection
         preTitle="Connect With Us"

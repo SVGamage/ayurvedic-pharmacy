@@ -15,25 +15,68 @@ import { ProductCard } from "@/components/product-card";
 import { Product } from "@/types/product";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
 import CarouselGrid from "@/components/carousel-grid";
-import heroImage1 from "@/assets/hero-1.jpg";
-import heroImage2 from "@/assets/hero-2.png";
-import heroImage3 from "@/assets/hero-3.jpg";
+import p1 from "@/assets/1.png";
+import p2 from "@/assets/2.png";
+import p3 from "@/assets/3.png";
+import p4 from "@/assets/4.png";
+import p5 from "@/assets/5.png";
+import p6 from "@/assets/6.png";
+import p7 from "@/assets/7.png";
+import p8 from "@/assets/8.png";
+import p9 from "@/assets/9.png";
+import { HeroSlide } from "@/components/custom-carousel";
 
-const heroSlides = [
+const heroSlides1: HeroSlide[] = [
   {
     id: 1,
-    image: heroImage1,
-    gradient: "from-black/80 via-black/60 to-transparent",
+    image: p1,
+    gradient: "",
   },
   {
     id: 2,
-    image: heroImage2, // Using same image for now - replace with different hero images
-    gradient: "from-black/80 via-black/60 to-transparent",
+    image: p2, // Using same image for now - replace with different hero images
+    gradient: "",
+  },
+];
+
+const heroSlides2: HeroSlide[] = [
+  {
+    id: 1,
+    image: p3,
+    gradient: "",
+  },
+  {
+    id: 2,
+    image: p4, // Using same image for now - replace with different hero images
+    gradient: "",
   },
   {
     id: 3,
-    image: heroImage3, // Using same image for now - replace with different hero images
-    gradient: "from-black/80 via-black/60 to-transparent",
+    image: p5, // Using same image for now - replace with different hero images
+    gradient: "",
+  },
+];
+
+const heroSlides3: HeroSlide[] = [
+  {
+    id: 1,
+    image: p6,
+    gradient: "",
+  },
+  {
+    id: 2,
+    image: p7, // Using same image for now - replace with different hero images
+    gradient: "",
+  },
+  {
+    id: 3,
+    image: p8, // Using same image for now - replace with different hero images
+    gradient: "",
+  },
+  {
+    id: 4,
+    image: p9, // Using same image for now - replace with different hero images
+    gradient: "",
   },
 ];
 
@@ -182,7 +225,7 @@ export default function ProductsPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
-      <CarouselGrid heroSlides={heroSlides} />
+      <CarouselGrid heroSlidesArray={[heroSlides1, heroSlides2, heroSlides3]} />
       {/* Enhanced Header Section */}
       <ReusableHeroSection
         preTitle="Authentic Wellness"
