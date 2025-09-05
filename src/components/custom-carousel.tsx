@@ -1,17 +1,18 @@
 "use client";
 
 import Autoplay from "embla-carousel-autoplay";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "./ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
 import { StaticImageData } from "next/image";
 
+export interface HeroSlide {
+  id: number;
+  image: StaticImageData;
+  gradient: string;
+}
 export default function CustomCarousel({
   heroSlides,
 }: {
-  heroSlides: { id: number; image: StaticImageData; gradient: string }[];
+  heroSlides: HeroSlide[];
 }) {
   return (
     <div className="relative w-full rounded-lg overflow-hidden">
@@ -44,7 +45,7 @@ export default function CustomCarousel({
             </CarouselItem>
           ))}
         </CarouselContent>
-        </Carousel>
+      </Carousel>
     </div>
   );
 }

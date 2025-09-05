@@ -1,21 +1,20 @@
-import { StaticImageData } from "next/image";
-import CustomCarousel from "./custom-carousel";
+import CustomCarousel, { HeroSlide } from "./custom-carousel";
 
 export default function CarouselGrid({
-  heroSlides,
+  heroSlidesArray,
 }: {
-  heroSlides: { id: number; image: StaticImageData; gradient: string }[];
+  heroSlidesArray: HeroSlide[][];
 }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
       <div className="w-full">
-        <CustomCarousel heroSlides={heroSlides} />
+        <CustomCarousel heroSlides={heroSlidesArray[0]} />
       </div>
       <div className="w-full hidden lg:block">
-        <CustomCarousel heroSlides={heroSlides} />
+        <CustomCarousel heroSlides={heroSlidesArray[1]} />
       </div>
       <div className="w-full hidden lg:block">
-        <CustomCarousel heroSlides={heroSlides} />
+        <CustomCarousel heroSlides={heroSlidesArray[2]} />
       </div>
     </div>
   );
