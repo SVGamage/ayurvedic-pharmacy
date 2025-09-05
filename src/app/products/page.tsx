@@ -15,15 +15,15 @@ import { ProductCard } from "@/components/product-card";
 import { Product } from "@/types/product";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
 import CarouselGrid from "@/components/carousel-grid";
-import p1 from "@/assets/1.png";
-import p2 from "@/assets/2.png";
-import p3 from "@/assets/3.png";
-import p4 from "@/assets/4.png";
-import p5 from "@/assets/5.png";
-import p6 from "@/assets/6.png";
-import p7 from "@/assets/7.png";
-import p8 from "@/assets/8.png";
-import p9 from "@/assets/9.png";
+import p1 from "@/assets/1.webp";
+import p2 from "@/assets/2.webp";
+import p3 from "@/assets/3.webp";
+import p4 from "@/assets/4.webp";
+import p5 from "@/assets/5.webp";
+import p6 from "@/assets/6.webp";
+import p7 from "@/assets/7.webp";
+import p8 from "@/assets/8.webp";
+import p9 from "@/assets/9.webp";
 import { HeroSlide } from "@/components/custom-carousel";
 
 const heroSlides1: HeroSlide[] = [
