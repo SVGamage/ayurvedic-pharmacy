@@ -9,7 +9,15 @@ module.exports = {
     extend: {
       fontFamily: {
         brand: ["var(--font-tangerine)", "cursive"],
-        sans: ["var(--font-sans)", "sans-serif"],
+        sans: [
+          "var(--font-inter)",
+          "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif",
+        ],
         serif: ["var(--font-serif)", "serif"],
         mono: ["var(--font-mono)", "monospace"],
       },
