@@ -26,6 +26,9 @@ export function ServiceCard({
   const isCompact = variant === "compact";
   const isFeatured = variant === "featured";
 
+  // Create component reference for icon
+  const IconComponent = service.icon;
+
   const getThemeColors = () => {
     switch (service.category) {
       case "ayurvedic":
@@ -102,7 +105,9 @@ export function ServiceCard({
               colors.iconBg
             )}
           >
-            <service.icon className={cn("h-6 w-6", colors.iconColor)} />
+            {IconComponent && (
+              <IconComponent className={cn("h-6 w-6", colors.iconColor)} />
+            )}
           </div>
           <CardTitle className="text-lg mb-1">{service.title}</CardTitle>
           <p className="text-sm text-gray-600 line-clamp-2">
@@ -181,7 +186,9 @@ export function ServiceCard({
             colors.iconBg
           )}
         >
-          <service.icon className={cn("h-8 w-8", colors.iconColor)} />
+          {IconComponent && (
+            <IconComponent className={cn("h-8 w-8", colors.iconColor)} />
+          )}
         </div>
         <CardTitle className="text-xl mb-2 group-hover:text-gray-900 transition-colors">
           {service.title}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -25,6 +25,46 @@ import p7 from "@/assets/7.webp";
 import p8 from "@/assets/8.webp";
 import p9 from "@/assets/9.webp";
 import { HeroSlide } from "@/components/custom-carousel";
+
+interface ApiProduct {
+  id: string;
+  name: string;
+  category?: {
+    id: string;
+    name: string;
+    description?: string;
+    image?: string;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+  };
+  subcategory?: {
+    id: string;
+    name: string;
+    description?: string;
+    image?: string;
+    isActive: boolean;
+    categoryId: string;
+    createdAt: string;
+    updatedAt: string;
+    category?: {
+      id: string;
+      name: string;
+      description?: string;
+      image?: string;
+      isActive: boolean;
+      createdAt: string;
+      updatedAt: string;
+    };
+  };
+  price: string | number;
+  originalPrice?: string | number;
+  rating?: number;
+  reviews?: number;
+  image?: string;
+  badge?: string;
+  description: string;
+}
 
 const heroSlides1: HeroSlide[] = [
   {
@@ -111,93 +151,106 @@ const productCategories = [
 
 // const traditionalSubcategories = ["Puja Items", "Pottery Items", "Thovil Badu", "Gift Packs/Herbal Kits"]
 
-const products: Product[] = [
-  {
-    id: 1,
-    name: "Ashwagandha Capsules",
-    category: "Disease-Related Products",
-    subcategory: "Stress & Sleep",
-    price: 2499,
-    originalPrice: 2999,
-    rating: 4.8,
-    reviews: 156,
-    image: "/placeholder.svg?height=300&width=300",
-    badge: "Best Seller",
-    description:
-      "Premium quality Ashwagandha for stress relief and better sleep",
-  },
-  {
-    id: 2,
-    name: "Neem Face Oil",
-    category: "Ayurvedic Products",
-    subcategory: "Oils",
-    price: 1699,
-    originalPrice: 1999,
-    rating: 4.7,
-    reviews: 89,
-    image: "/placeholder.svg?height=300&width=300",
-    badge: "Organic",
-    description: "Pure neem oil for healthy, glowing skin",
-  },
-  {
-    id: 3,
-    name: "Triphala Powder",
-    category: "Disease-Related Products",
-    subcategory: "Digestive Disorders",
-    price: 1899,
-    originalPrice: 2299,
-    rating: 4.9,
-    reviews: 203,
-    image: "/placeholder.svg?height=300&width=300",
-    badge: "Pure",
-    description: "Traditional digestive support formula",
-  },
-  {
-    id: 4,
-    name: "Copper Water Pot",
-    category: "Traditional Products",
-    subcategory: "Pottery Items",
-    price: 4599,
-    originalPrice: 5599,
-    rating: 4.6,
-    reviews: 67,
-    image: "/placeholder.svg?height=300&width=300",
-    badge: "Handmade",
-    description: "Traditional copper vessel for water storage",
-  },
-  {
-    id: 5,
-    name: "Turmeric Face Mask",
-    category: "Ayurvedic Products",
-    subcategory: "Cosmetics",
-    price: 1299,
-    originalPrice: 1599,
-    rating: 4.5,
-    reviews: 124,
-    image: "/placeholder.svg?height=300&width=300",
-    badge: "Natural",
-    description: "Brightening turmeric face mask for radiant skin",
-  },
-  {
-    id: 6,
-    name: "Herbal Gift Set",
-    category: "Traditional Products",
-    subcategory: "Gift Packs/Herbal Kits",
-    price: 8999,
-    originalPrice: 10999,
-    rating: 4.8,
-    reviews: 45,
-    image: "/placeholder.svg?height=300&width=300",
-    badge: "Premium",
-    description: "Complete wellness gift set with assorted herbs",
-  },
-];
-
 export default function ProductsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [sortBy, setSortBy] = useState("name");
 
+  // Fetch products from API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("/api/admin/products?limit=100"); // Get all products
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
+
+        const data = await response.json();
+
+        // Convert API data to Product format
+        const productsData = data.products.map((product: ApiProduct) => ({
+          id: product.id,
+          name: product.name,
+          categoryId: product.category?.id,
+          subcategoryId: product.subcategory?.id,
+          category: product.category,
+          subcategory: product.subcategory,
+          price:
+            typeof product.price === "string"
+              ? parseFloat(product.price.replace(/[^\d.-]/g, ""))
+              : typeof product.price === "number"
+                ? product.price
+                : 0,
+          originalPrice: product.originalPrice
+            ? typeof product.originalPrice === "string"
+              ? parseFloat(product.originalPrice.replace(/[^\d.-]/g, ""))
+              : typeof product.originalPrice === "number"
+                ? product.originalPrice
+                : undefined
+            : undefined,
+          rating: product.rating || 4.5,
+          reviews: product.reviews || 0,
+          image: product.image || "/placeholder.svg?height=300&width=300",
+          badge: product.badge,
+          description: product.description,
+        }));
+        setProducts(productsData);
+      } catch (err) {
+        console.error("Error fetching products:", err);
+        setError("Failed to load products");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Add loading and error states
+  if (isLoading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
+            <h3 className="text-lg font-semibold text-gray-600">
+              Loading products...
+            </h3>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="text-red-500 text-xl mb-4">⚠️</div>
+            <h3 className="text-lg font-semibold text-gray-600 mb-2">
+              Error Loading Products
+            </h3>
+            <p className="text-gray-500">{error}</p>
+            <Button
+              onClick={() => window.location.reload()}
+              className="mt-4"
+              variant="outline"
+            >
+              Try Again
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Filter products based on search term and selected category
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -205,7 +258,7 @@ export default function ProductsPage() {
         product.description.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesCategory =
       selectedCategory === "All Products" ||
-      product.category === selectedCategory;
+      product.category?.name === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 

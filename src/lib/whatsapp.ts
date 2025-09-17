@@ -17,7 +17,7 @@ const LOCAL_WHATSAPP_CONFIG: WhatsAppConfig = {
 export const orderProductViaWhatsApp = (
   productName: string,
   productPrice: number,
-  productId: number
+  productId: string
 ) => {
   const message = `Hello! I'm interested in ordering the following product:
 

@@ -31,7 +31,7 @@ export const formatCurrencyForWhatsApp = (amount: number): string => {
   return `${CURRENCY_CONFIG.symbol} ${amount}`;
 };
 
-// Format currency range (e.g., "From LKR 5,000")
+// Format currency range (e.g., "From Rs. 5,000")
 export const formatCurrencyRange = (
   amount: number,
   prefix: string = "From"

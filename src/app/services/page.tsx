@@ -1,6 +1,6 @@
 "use client";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Stethoscope, Video, Star, Calendar, Users, Award } from "lucide-react";
 import { ServiceCard } from "@/components/service-card";
 import { Service } from "@/types/service";
 import { bookServiceViaWhatsApp } from "@/lib/whatsapp";
@@ -10,6 +10,20 @@ import heroImage1 from "@/assets/hero-1.jpg";
 import heroImage2 from "@/assets/hero-2.png";
 import heroImage3 from "@/assets/hero-3.jpg";
 import CarouselGrid from "@/components/carousel-grid";
+import * as Icons from "lucide-react";
+
+interface ApiService {
+  id: string;
+  title: string;
+  description: string;
+  price: string | number;
+  features: string[];
+  iconName?: string;
+  category?: string;
+  duration?: string;
+  popular?: boolean;
+  buttonText?: string;
+}
 
 const heroSlides = [
   {
@@ -29,134 +43,109 @@ const heroSlides = [
   },
 ];
 
-const ayurvedicServices: Service[] = [
-  {
-    id: "in-person-consultation",
-    title: "In-Person Consultation",
-    icon: Stethoscope,
-    duration: "60 minutes",
-    price: formatServicePrice(7500),
-    description:
-      "Comprehensive health assessment with our experienced Ayurvedic doctors in a traditional clinical setting.",
-    features: [
-      "Complete health evaluation",
-      "Pulse diagnosis (Nadi Pariksha)",
-      "Personalized treatment plan",
-      "Prescription medicines",
-      "Dietary recommendations",
-      "Follow-up support",
-    ],
-    popular: true,
-    category: "ayurvedic",
-    buttonText: "Book In-Person Visit",
-  },
-  {
-    id: "online-consultation",
-    title: "Online Consultation",
-    icon: Video,
-    duration: "45 minutes",
-    price: formatServicePrice(5000),
-    description:
-      "Get expert Ayurvedic advice from the comfort of your home through secure video consultations.",
-    features: [
-      "Video consultation",
-      "Digital prescriptions",
-      "Health monitoring",
-      "24/7 chat support",
-      "Medicine delivery",
-      "Progress tracking",
-    ],
-    popular: false,
-    category: "ayurvedic",
-    buttonText: "Book Online Session",
-  },
-];
+// Helper function to get icon component from string name
+const getIconComponent = (iconName?: string) => {
+  if (!iconName) return Icons.Star;
 
-const nakshatraServices: Service[] = [
-  {
-    id: "horoscope-reading",
-    title: "Personal Horoscope Reading",
-    icon: Star,
-    duration: "45 minutes",
-    price: formatServicePrice(6000),
-    description:
-      "Detailed analysis of your birth chart and comprehensive life predictions based on Vedic astrology.",
-    features: [
-      "Complete birth chart analysis",
-      "Life predictions",
-      "Career guidance",
-      "Relationship compatibility",
-      "Health insights",
-      "Remedial measures",
-    ],
-    category: "nakshatra",
-    buttonText: "Book Reading",
-  },
-  {
-    id: "wedding-calculations",
-    title: "Wedding & Event Calculations",
-    icon: Calendar,
-    duration: "30 minutes",
-    price: formatServicePrice(4000),
-    description:
-      "Find the most auspicious dates and times for your special events and important life ceremonies.",
-    features: [
-      "Muhurat calculation",
-      "Auspicious date selection",
-      "Time recommendations",
-      "Ritual guidance",
-      "Compatibility analysis",
-      "Custom ceremonies",
-    ],
-    category: "nakshatra",
-    buttonText: "Calculate Dates",
-  },
-  {
-    id: "name-selection",
-    title: "Newborn Name Selection",
-    icon: Users,
-    duration: "30 minutes",
-    price: formatServicePrice(3500),
-    description:
-      "Choose the perfect name for your newborn based on precise astrological calculations and traditions.",
-    features: [
-      "Nakshatra-based naming",
-      "Multiple name options",
-      "Meaning explanations",
-      "Lucky letters",
-      "Numerology analysis",
-      "Certificate provided",
-    ],
-    category: "nakshatra",
-    buttonText: "Select Name",
-  },
-  {
-    id: "healing-rituals",
-    title: "Healing Rituals & Remedies",
-    icon: Award,
-    duration: "60 minutes",
-    price: formatServicePrice(8000),
-    description:
-      "Customized rituals and remedies designed to address specific life challenges and spiritual growth.",
-    features: [
-      "Personalized rituals",
-      "Gemstone recommendations",
-      "Mantra guidance",
-      "Yantra preparation",
-      "Puja instructions",
-      "Ongoing support",
-    ],
-    popular: true,
-    category: "nakshatra",
-    buttonText: "Book Ritual",
-  },
-];
+  const IconComponent = (Icons as unknown as Record<string, typeof Icons.Star>)[
+    iconName
+  ];
+  return IconComponent || Icons.Star;
+};
 
 export default function ServicesPage() {
+  const [services, setServices] = useState<Service[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch services from API
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("/api/admin/services?limit=100"); // Get all services
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch services");
+        }
+
+        const data = await response.json();
+
+        // Convert API data to Service format with icon components
+        const servicesWithIcons = data.services.map((service: ApiService) => ({
+          ...service,
+          icon: getIconComponent(service.iconName),
+          price: formatServicePrice(
+            typeof service.price === "string"
+              ? parseFloat(service.price.replace(/[^\d.-]/g, ""))
+              : typeof service.price === "number"
+                ? service.price
+                : 0
+          ),
+        }));
+
+        setServices(servicesWithIcons);
+      } catch (err) {
+        console.error("Error fetching services:", err);
+        setError("Failed to load services");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  // Filter services by category
+  const ayurvedicServices = services.filter(
+    (service) => service.category === "ayurvedic"
+  );
+  const nakshatraServices = services.filter(
+    (service) => service.category === "nakshatra"
+  );
+
+  if (isLoading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
+            <h3 className="text-lg font-semibold text-gray-600">
+              Loading services...
+            </h3>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="text-red-500 text-xl mb-4">⚠️</div>
+            <h3 className="text-lg font-semibold text-gray-600 mb-2">
+              Error Loading Services
+            </h3>
+            <p className="text-gray-500">{error}</p>
+            <Button
+              onClick={() => window.location.reload()}
+              className="mt-4"
+              variant="outline"
+            >
+              Try Again
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
-      <CarouselGrid heroSlidesArray={[heroSlides,heroSlides,heroSlides]} />
+      <CarouselGrid heroSlidesArray={[heroSlides, heroSlides, heroSlides]} />
       {/* Enhanced Header Section */}
       <ReusableHeroSection
         preTitle="Expert Care"

@@ -1,7 +1,8 @@
 export interface Service {
   id?: string;
   title: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon?: React.ComponentType<{ className?: string }>; // Optional for API responses
+  iconName?: string; // For API responses that store icon name as string
   duration: string;
   price: string;
   description: string;

@@ -12,10 +12,25 @@ export const metadata: Metadata = {
     "Ayurveda, herbal medicine, natural healing, Ayurvedic consultation, traditional medicine",
 };
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  fallback: [
+    "system-ui",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Segoe UI",
+    "Roboto",
+    "sans-serif",
+  ],
+  preload: true,
+  variable: "--font-inter",
+});
 const tangerine = Tangerine({
   subsets: ["latin"],
   weight: ["400", "700"],
+  display: "swap",
+  fallback: ["cursive"],
   variable: "--font-tangerine",
 });
 
@@ -26,7 +41,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${tangerine.variable}`}>
+      <body className={`${inter.variable} ${tangerine.variable} font-sans`}>
         <LayoutComponent>{children}</LayoutComponent>
       </body>
     </html>
