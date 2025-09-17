@@ -29,10 +29,36 @@ import { HeroSlide } from "@/components/custom-carousel";
 interface ApiProduct {
   id: string;
   name: string;
-  category: string;
-  subcategory?: string;
-  price: string;
-  originalPrice?: string;
+  category?: {
+    id: string;
+    name: string;
+    description?: string;
+    image?: string;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+  };
+  subcategory?: {
+    id: string;
+    name: string;
+    description?: string;
+    image?: string;
+    isActive: boolean;
+    categoryId: string;
+    createdAt: string;
+    updatedAt: string;
+    category?: {
+      id: string;
+      name: string;
+      description?: string;
+      image?: string;
+      isActive: boolean;
+      createdAt: string;
+      updatedAt: string;
+    };
+  };
+  price: string | number;
+  originalPrice?: string | number;
   rating?: number;
   reviews?: number;
   image?: string;
@@ -150,30 +176,22 @@ export default function ProductsPage() {
         const productsData = data.products.map((product: ApiProduct) => ({
           id: product.id,
           name: product.name,
-          categoryId: product.category,
-          subcategoryId: product.subcategory,
-          category: product.category
-            ? {
-                id: product.category,
-                name: product.category,
-                isActive: true,
-                createdAt: "",
-                updatedAt: "",
-              }
-            : undefined,
-          subcategory: product.subcategory
-            ? {
-                id: product.subcategory,
-                name: product.subcategory,
-                isActive: true,
-                categoryId: product.category || "",
-                createdAt: "",
-                updatedAt: "",
-              }
-            : undefined,
-          price: parseFloat(product.price.replace(/[^\d.-]/g, "")),
+          categoryId: product.category?.id,
+          subcategoryId: product.subcategory?.id,
+          category: product.category,
+          subcategory: product.subcategory,
+          price:
+            typeof product.price === "string"
+              ? parseFloat(product.price.replace(/[^\d.-]/g, ""))
+              : typeof product.price === "number"
+                ? product.price
+                : 0,
           originalPrice: product.originalPrice
-            ? parseFloat(product.originalPrice.replace(/[^\d.-]/g, ""))
+            ? typeof product.originalPrice === "string"
+              ? parseFloat(product.originalPrice.replace(/[^\d.-]/g, ""))
+              : typeof product.originalPrice === "number"
+                ? product.originalPrice
+                : undefined
             : undefined,
           rating: product.rating || 4.5,
           reviews: product.reviews || 0,
@@ -181,7 +199,6 @@ export default function ProductsPage() {
           badge: product.badge,
           description: product.description,
         }));
-
         setProducts(productsData);
       } catch (err) {
         console.error("Error fetching products:", err);

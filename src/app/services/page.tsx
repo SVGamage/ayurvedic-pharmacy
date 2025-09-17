@@ -16,7 +16,7 @@ interface ApiService {
   id: string;
   title: string;
   description: string;
-  price: string;
+  price: string | number;
   features: string[];
   iconName?: string;
   category?: string;
@@ -76,7 +76,11 @@ export default function ServicesPage() {
           ...service,
           icon: getIconComponent(service.iconName),
           price: formatServicePrice(
-            parseFloat(service.price.replace(/[^\d.-]/g, ""))
+            typeof service.price === "string"
+              ? parseFloat(service.price.replace(/[^\d.-]/g, ""))
+              : typeof service.price === "number"
+                ? service.price
+                : 0
           ),
         }));
 
