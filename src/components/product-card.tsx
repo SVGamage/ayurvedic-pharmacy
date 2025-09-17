@@ -29,7 +29,8 @@ export function ProductCard({
   showDescription = true,
 }: ProductCardProps) {
   const isCompact = variant === "featured";
-  const displayCategory = product.subcategory || product.category;
+  const displayCategory =
+    product.subcategory?.name || product.category?.name || "General";
 
   const handleAddToCart = () => {
     // Route to WhatsApp Business for ordering
