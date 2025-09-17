@@ -1,4 +1,3 @@
-
 datasource db {
   url      = env("DATABASE_URL")
   provider = "mongodb"
@@ -66,4 +65,72 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+model Category {
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  name          String        @unique
+  description   String?
+  image         String?
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  subcategories SubCategory[]
+  products      Product[]
+
+  @@map("category")
+}
+
+model SubCategory {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  image       String?
+  isActive    Boolean   @default(true)
+  categoryId  String    @db.ObjectId
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([name, categoryId])
+  @@map("subcategory")
+}
+
+model Product {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  categoryId    String?      @db.ObjectId
+  subcategoryId String?      @db.ObjectId
+  category      Category?    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  subcategory   SubCategory? @relation(fields: [subcategoryId], references: [id], onDelete: SetNull)
+  price         Float
+  originalPrice Float?
+  rating        Float        @default(0)
+  reviews       Int          @default(0)
+  image         String
+  badge         String?
+  description   String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@map("product")
+}
+
+model Service {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  duration    String
+  price       String
+  description String
+  features    String[]
+  popular     Boolean  @default(false)
+  category    String?
+  image       String?
+  buttonText  String?
+  iconName    String   @default("Star")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("service")
 }
