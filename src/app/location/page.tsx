@@ -1,8 +1,12 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Mail, Clock, Car, Bus, Train } from "lucide-react";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
 import CarouselGrid from "@/components/carousel-grid";
+import EmbeddedMap from "@/components/embedded-map";
+import { pharmacyLocation, locationInfo } from "@/config/location";
 import heroImage1 from "@/assets/hero-1.jpg";
 import heroImage2 from "@/assets/hero-2.png";
 import heroImage3 from "@/assets/hero-3.jpg";
@@ -28,7 +32,7 @@ export default function LocationPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
-      <CarouselGrid heroSlidesArray={[heroSlides,heroSlides,heroSlides]} />
+      <CarouselGrid heroSlidesArray={[heroSlides, heroSlides, heroSlides]} />
       {/* Enhanced Header Section */}
       <ReusableHeroSection
         preTitle="Find Our Sanctuary"
@@ -50,15 +54,7 @@ export default function LocationPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="aspect-video bg-green-100 flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="h-12 w-12 text-green-600 mx-auto mb-4" />
-                <p className="text-gray-600">Interactive Map</p>
-                <p className="text-sm text-gray-500">
-                  Google Maps integration would be placed here
-                </p>
-              </div>
-            </div>
+            <EmbeddedMap height="400px" />
           </CardContent>
         </Card>
 
@@ -73,10 +69,7 @@ export default function LocationPage() {
                 <MapPin className="h-5 w-5 text-green-600 flex-shrink-0" />
                 <div>
                   <p className="font-medium">Address</p>
-                  <p className="text-gray-600">
-                    123 Wellness Street, Natural Healing District
-                  </p>
-                  <p className="text-gray-600">Ayurveda City, AC 12345</p>
+                  <p className="text-gray-600">{pharmacyLocation.address}</p>
                 </div>
               </div>
 
@@ -84,8 +77,10 @@ export default function LocationPage() {
                 <Phone className="h-5 w-5 text-green-600 flex-shrink-0" />
                 <div>
                   <p className="font-medium">Phone</p>
-                  <p className="text-gray-600">+1 (555) 123-4567</p>
-                  <p className="text-gray-600">+1 (555) 123-4568 (Emergency)</p>
+                  <p className="text-gray-600">{pharmacyLocation.phone}</p>
+                  <p className="text-gray-600">
+                    {locationInfo.emergencyPhone} (Emergency)
+                  </p>
                 </div>
               </div>
 
@@ -93,9 +88,9 @@ export default function LocationPage() {
                 <Mail className="h-5 w-5 text-green-600 flex-shrink-0" />
                 <div>
                   <p className="font-medium">Email</p>
-                  <p className="text-gray-600">info@ayurvedapharmacy.com</p>
+                  <p className="text-gray-600">{locationInfo.email.general}</p>
                   <p className="text-gray-600">
-                    appointments@ayurvedapharmacy.com
+                    {locationInfo.email.appointments}
                   </p>
                 </div>
               </div>
@@ -111,21 +106,17 @@ export default function LocationPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="font-medium">Monday - Friday</span>
-                  <span className="text-gray-600">9:00 AM - 7:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-medium">Saturday</span>
-                  <span className="text-gray-600">9:00 AM - 5:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-medium">Sunday</span>
-                  <span className="text-gray-600">10:00 AM - 4:00 PM</span>
-                </div>
+                {Object.entries(locationInfo.operatingHours).map(
+                  ([day, hours]) => (
+                    <div key={day} className="flex justify-between">
+                      <span className="font-medium">{day}</span>
+                      <span className="text-gray-600">{hours}</span>
+                    </div>
+                  )
+                )}
                 <div className="pt-2 border-t">
                   <p className="text-sm text-green-600 font-medium">
-                    Emergency consultations available 24/7
+                    {locationInfo.emergencyNote}
                   </p>
                 </div>
               </div>
@@ -312,6 +303,12 @@ export default function LocationPage() {
               variant="outline"
               className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white bg-transparent shadow-lg px-8 py-3"
               size="lg"
+              onClick={() =>
+                window.open(
+                  `https://www.google.com/maps/dir/?api=1&destination=${pharmacyLocation.lat},${pharmacyLocation.lng}`,
+                  "_blank"
+                )
+              }
             >
               Get Directions
             </Button>
