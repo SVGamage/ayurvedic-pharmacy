@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { X } from "lucide-react";
 
 interface ServiceFormData {
@@ -216,12 +217,13 @@ export function ServiceForm({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="image">Image URL</Label>
-            <Input
-              id="image"
+            <Label htmlFor="image">Service Image</Label>
+            <ImageUpload
               value={formData.image}
-              onChange={(e) => handleInputChange("image", e.target.value)}
-              placeholder="https://example.com/image.jpg"
+              onChange={(url) => handleInputChange("image", url)}
+              onRemove={() => handleInputChange("image", "")}
+              folder="services"
+              placeholder="Upload service image"
             />
           </div>
 

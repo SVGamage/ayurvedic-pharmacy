@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { Category } from "@/types/product";
 
 interface CategoryFormProps {
@@ -73,12 +74,13 @@ export function CategoryForm({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="image">Image URL</Label>
-            <Input
-              id="image"
+            <Label htmlFor="image">Category Image</Label>
+            <ImageUpload
               value={formData.image}
-              onChange={(e) => handleInputChange("image", e.target.value)}
-              placeholder="https://example.com/image.jpg"
+              onChange={(url) => handleInputChange("image", url)}
+              onRemove={() => handleInputChange("image", "")}
+              folder="categories"
+              placeholder="Upload category image"
             />
           </div>
 

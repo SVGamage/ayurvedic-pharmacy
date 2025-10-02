@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { Category, SubCategory } from "@/types/product";
 
 interface SubCategoryFormProps {
@@ -120,12 +121,13 @@ export function SubCategoryForm({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="image">Image URL</Label>
-            <Input
-              id="image"
+            <Label htmlFor="image">Subcategory Image</Label>
+            <ImageUpload
               value={formData.image}
-              onChange={(e) => handleInputChange("image", e.target.value)}
-              placeholder="https://example.com/image.jpg"
+              onChange={(url) => handleInputChange("image", url)}
+              onRemove={() => handleInputChange("image", "")}
+              folder="subcategories"
+              placeholder="Upload subcategory image"
             />
           </div>
 
