@@ -7,7 +7,11 @@ export default function SignOutButton() {
   const { data, isPending } = useSession();
   if (isPending) {
     return (
-      <Button disabled={isPending}>
+      <Button
+        disabled={isPending}
+        variant="outline"
+        className="bg-white/20 border-white/30 text-white opacity-50"
+      >
         <PendingCircle />
       </Button>
     );
@@ -22,6 +26,8 @@ export default function SignOutButton() {
         await signOut();
       }}
       disabled={isPending}
+      variant="outline"
+      className="bg-white/20 border-white/30 text-white hover:bg-white/30 hover:border-white/50 font-semibold transition-all duration-200"
     >
       Sign Out
     </Button>
