@@ -25,57 +25,71 @@ export default function SignIn() {
   const [rememberMe, setRememberMe] = useState(false);
 
   return (
-    <Card className="max-w-md">
-      <CardHeader>
-        <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
-        <CardDescription className="text-xs md:text-sm">
-          Enter your email below to login to your account
+    <Card className="border-2 border-emerald-200 shadow-xl bg-gradient-to-br from-white to-emerald-50 rounded-xl overflow-hidden backdrop-blur-sm">
+      <CardHeader className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-500 text-white">
+        <CardTitle className="text-xl font-bold flex items-center gap-3">
+          <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+            <span className="text-lg">🔓</span>
+          </div>
+          Welcome Back
+        </CardTitle>
+        <CardDescription className="text-emerald-100 font-medium">
+          Enter your credentials to access your wellness dashboard
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
+      <CardContent className="p-6">
+        <div className="grid gap-6">
+          <div className="grid gap-3">
+            <Label htmlFor="email" className="text-emerald-800 font-bold">
+              Email Address
+            </Label>
             <Input
               id="email"
               type="email"
-              placeholder="m@example.com"
+              placeholder="Enter your email address"
               required
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
               value={email}
+              className="border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400"
             />
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-3">
             <div className="flex items-center">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-emerald-800 font-bold">
+                Password
+              </Label>
             </div>
 
             <Input
               id="password"
               type="password"
-              placeholder="password"
+              placeholder="Enter your password"
               autoComplete="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400"
             />
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3 bg-emerald-50 p-3 rounded-lg border border-emerald-200">
             <Checkbox
               id="remember"
               onClick={() => {
                 setRememberMe(!rememberMe);
               }}
+              className="border-emerald-300 data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
             />
-            <Label htmlFor="remember">Remember me</Label>
+            <Label htmlFor="remember" className="text-emerald-800 font-medium">
+              Remember me for future visits
+            </Label>
           </div>
 
           <Button
             type="submit"
-            className="w-full"
+            className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold py-3 shadow-lg transform hover:scale-105 transition-all duration-200"
             disabled={loading}
             onClick={async () => {
               await signIn.email(
@@ -101,9 +115,15 @@ export default function SignIn() {
             }}
           >
             {loading ? (
-              <Loader2 size={16} className="animate-spin" />
+              <div className="flex items-center gap-2">
+                <Loader2 size={16} className="animate-spin" />
+                <span>Signing In...</span>
+              </div>
             ) : (
-              <p> Login </p>
+              <span className="flex items-center gap-2">
+                <span>🔐</span>
+                Access Wellness Dashboard
+              </span>
             )}
           </Button>
         </div>
