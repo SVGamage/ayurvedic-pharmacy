@@ -58,17 +58,27 @@ export function CategoryTable({
   };
 
   return (
-    <div className="border rounded-lg">
+    <div className="border-2 border-emerald-200 rounded-xl overflow-hidden bg-white/80 backdrop-blur-sm shadow-lg">
       <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead className="w-20">Image</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Subcategories</TableHead>
-            <TableHead>Products</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+          <TableRow className="bg-gradient-to-r from-emerald-50 to-green-50 border-b-2 border-emerald-200">
+            <TableHead className="w-20 font-bold text-emerald-800">
+              Image
+            </TableHead>
+            <TableHead className="font-bold text-emerald-800">Name</TableHead>
+            <TableHead className="font-bold text-emerald-800">
+              Description
+            </TableHead>
+            <TableHead className="font-bold text-emerald-800">Status</TableHead>
+            <TableHead className="font-bold text-emerald-800">
+              Subcategories
+            </TableHead>
+            <TableHead className="font-bold text-emerald-800">
+              Products
+            </TableHead>
+            <TableHead className="text-right font-bold text-emerald-800">
+              Actions
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -76,16 +86,27 @@ export function CategoryTable({
             <TableRow>
               <TableCell
                 colSpan={7}
-                className="text-center py-8 text-muted-foreground"
+                className="text-center py-12 text-emerald-600"
               >
-                No categories found. Create your first category to get started.
+                <div className="flex flex-col items-center">
+                  <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
+                    <span className="text-2xl">🌿</span>
+                  </div>
+                  <p className="text-lg font-medium">No categories found</p>
+                  <p className="text-sm text-emerald-500">
+                    Create your first Ayurvedic category to get started
+                  </p>
+                </div>
               </TableCell>
             </TableRow>
           ) : (
             categories.map((category) => (
-              <TableRow key={category.id}>
+              <TableRow
+                key={category.id}
+                className="hover:bg-emerald-50/50 transition-colors duration-200 border-b border-emerald-100"
+              >
                 <TableCell>
-                  <div className="w-12 h-12 relative rounded-md overflow-hidden bg-gray-100">
+                  <div className="w-14 h-14 relative rounded-xl overflow-hidden bg-emerald-100 border-2 border-emerald-200 shadow-sm">
                     {category.image ? (
                       <Image
                         src={category.image}
@@ -94,15 +115,17 @@ export function CategoryTable({
                         className="object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">
-                        No Image
+                      <div className="w-full h-full flex items-center justify-center text-lg text-emerald-600">
+                        🌱
                       </div>
                     )}
                   </div>
                 </TableCell>
-                <TableCell className="font-medium">{category.name}</TableCell>
+                <TableCell className="font-bold text-emerald-800">
+                  {category.name}
+                </TableCell>
                 <TableCell className="max-w-xs">
-                  <div className="truncate text-sm text-muted-foreground">
+                  <div className="truncate text-sm text-emerald-600">
                     {category.description || "No description"}
                   </div>
                 </TableCell>
@@ -110,7 +133,9 @@ export function CategoryTable({
                   <Badge
                     variant={category.isActive ? "default" : "secondary"}
                     className={
-                      category.isActive ? "bg-green-100 text-green-800" : ""
+                      category.isActive
+                        ? "bg-gradient-to-r from-emerald-600 to-green-600 text-white border-0 font-semibold"
+                        : "bg-gray-200 text-gray-600 border-0 font-semibold"
                     }
                   >
                     {category.isActive ? (
@@ -127,12 +152,12 @@ export function CategoryTable({
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <div className="text-sm">
+                  <div className="text-sm font-medium text-emerald-700 bg-emerald-100 px-2 py-1 rounded-full text-center">
                     {category.subcategories?.length || 0} subcategories
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="text-sm">
+                  <div className="text-sm font-medium text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full text-center">
                     {category._count?.products || 0} products
                   </div>
                 </TableCell>
@@ -142,6 +167,7 @@ export function CategoryTable({
                       variant="outline"
                       size="sm"
                       onClick={() => onEdit(category)}
+                      className="border-emerald-300 text-emerald-700 hover:bg-emerald-50 hover:border-emerald-400 font-semibold"
                       disabled={isLoading}
                     >
                       <Edit className="h-4 w-4" />
@@ -152,26 +178,31 @@ export function CategoryTable({
                           variant="outline"
                           size="sm"
                           disabled={isLoading || deletingId === category.id}
+                          className="border-red-300 text-red-700 hover:bg-red-50 hover:border-red-400 font-semibold"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </AlertDialogTrigger>
-                      <AlertDialogContent>
+                      <AlertDialogContent className="border-2 border-red-200 bg-gradient-to-br from-white to-red-50">
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Delete Category</AlertDialogTitle>
-                          <AlertDialogDescription>
+                          <AlertDialogTitle className="text-red-800 text-xl font-bold">
+                            Delete Category
+                          </AlertDialogTitle>
+                          <AlertDialogDescription className="text-red-600">
                             Are you sure you want to delete &ldquo;
-                            {category.name}&rdquo;? This action cannot be
-                            undone.
+                            {category.name}&rdquo;? This action cannot be undone
+                            and will affect all associated products.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogCancel className="border-gray-300 text-gray-700 hover:bg-gray-50">
+                            Cancel
+                          </AlertDialogCancel>
                           <AlertDialogAction
                             onClick={() => handleDelete(category.id)}
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            className="bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 font-semibold"
                           >
-                            Delete
+                            Delete Category
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
