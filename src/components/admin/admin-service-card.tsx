@@ -40,30 +40,36 @@ export function AdminServiceCard({
     switch (service.category) {
       case "ayurvedic":
         return {
-          iconBg: "bg-green-100",
-          iconColor: "text-green-600",
-          priceColor: "text-green-600",
-          checkColor: "text-green-600",
-          borderColor: "border-green-200 hover:border-green-300",
-          badgeBg: "bg-green-600",
+          iconBg: "bg-emerald-100",
+          iconColor: "text-emerald-600",
+          priceColor: "text-emerald-700",
+          checkColor: "text-emerald-600",
+          borderColor: "border-emerald-200 hover:border-emerald-300",
+          badgeBg: "bg-gradient-to-r from-emerald-600 to-green-600",
+          cardBg: "bg-gradient-to-br from-white to-emerald-50",
+          textAccent: "text-emerald-800",
         };
       case "nakshatra":
         return {
           iconBg: "bg-yellow-100",
           iconColor: "text-yellow-600",
-          priceColor: "text-yellow-600",
+          priceColor: "text-yellow-700",
           checkColor: "text-yellow-600",
           borderColor: "border-yellow-200 hover:border-yellow-300",
-          badgeBg: "bg-yellow-600",
+          badgeBg: "bg-gradient-to-r from-yellow-600 to-orange-600",
+          cardBg: "bg-gradient-to-br from-white to-yellow-50",
+          textAccent: "text-yellow-800",
         };
       default:
         return {
-          iconBg: "bg-blue-100",
-          iconColor: "text-blue-600",
-          priceColor: "text-blue-600",
-          checkColor: "text-blue-600",
-          borderColor: "border-blue-200 hover:border-blue-300",
-          badgeBg: "bg-blue-600",
+          iconBg: "bg-orange-100",
+          iconColor: "text-orange-600",
+          priceColor: "text-orange-700",
+          checkColor: "text-orange-600",
+          borderColor: "border-orange-200 hover:border-orange-300",
+          badgeBg: "bg-gradient-to-r from-orange-600 to-red-600",
+          cardBg: "bg-gradient-to-br from-white to-orange-50",
+          textAccent: "text-orange-800",
         };
     }
   };
@@ -76,80 +82,102 @@ export function AdminServiceCard({
   return (
     <Card
       className={cn(
-        "group border-2 hover:shadow-lg transition-all duration-300 relative overflow-hidden bg-white",
-        service.popular && "ring-2 ring-blue-500",
-        colors.borderColor
+        "group border-2 hover:shadow-2xl transition-all duration-300 relative overflow-hidden transform hover:-translate-y-2 rounded-xl",
+        service.popular && "ring-2 ring-emerald-400 shadow-lg",
+        colors.borderColor,
+        colors.cardBg
       )}
     >
       {service.popular && (
-        <Badge className={cn("absolute top-3 left-3 z-10", colors.badgeBg)}>
+        <Badge
+          className={cn(
+            "absolute top-3 left-3 z-10 text-white font-bold px-3 py-1 rounded-full animate-pulse",
+            colors.badgeBg
+          )}
+        >
           Most Popular
         </Badge>
       )}
 
-      {/* Background gradient */}
-      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-transparent to-gray-50 opacity-50" />
+      {/* Decorative background pattern */}
+      <div className="absolute top-0 right-0 w-32 h-32 opacity-10">
+        <div className="absolute top-4 right-4 w-6 h-6 border-2 border-current rounded-full animate-pulse"></div>
+        <div className="absolute top-8 right-8 w-4 h-4 border-2 border-current rounded-full animate-pulse animation-delay-200"></div>
+        <div className="absolute top-12 right-12 w-3 h-3 border-2 border-current rounded-full animate-pulse animation-delay-400"></div>
+      </div>
 
-      <CardHeader className="text-center pb-2 relative">
+      <CardHeader className="text-center pb-3 relative">
         <div
           className={cn(
-            "mx-auto w-12 h-12 rounded-full flex items-center justify-center mb-2",
+            "mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg",
             colors.iconBg
           )}
         >
-          <IconComponent className={cn("h-6 w-6", colors.iconColor)} />
+          <IconComponent className={cn("h-8 w-8", colors.iconColor)} />
         </div>
-        <CardTitle className="text-lg mb-1">{service.title}</CardTitle>
-        <p className="text-gray-600 text-sm line-clamp-2">
+        <CardTitle className={cn("text-xl mb-2 font-bold", colors.textAccent)}>
+          {service.title}
+        </CardTitle>
+        <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">
           {service.description}
         </p>
 
         {/* Rating Display */}
-        <div className="flex items-center justify-center space-x-1 mt-1">
+        <div className="flex items-center justify-center space-x-1 mt-3">
           <div className="flex items-center">
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
                 className={cn(
-                  "h-3 w-3",
+                  "h-4 w-4",
                   i < 4 ? "text-yellow-400 fill-current" : "text-gray-300"
                 )}
               />
             ))}
           </div>
-          <span className="text-xs text-gray-600 ml-1">(4.0)</span>
+          <span className="text-sm text-gray-600 ml-2 font-medium">(4.0)</span>
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-3 p-4">
-        <div className="flex items-center justify-between bg-gray-50 rounded-lg p-2">
+      <CardContent className="space-y-4 p-4">
+        <div
+          className={cn(
+            "flex items-center justify-between rounded-xl p-3 border",
+            colors.iconBg,
+            "border-current/20"
+          )}
+        >
           <div className="flex items-center space-x-2">
-            <Clock className="h-3 w-3 text-gray-500" />
-            <span className="text-xs text-gray-600">{service.duration}</span>
+            <Clock className="h-4 w-4 text-gray-600" />
+            <span className="text-sm text-gray-700 font-medium">
+              {service.duration}
+            </span>
           </div>
-          <span className={cn("text-lg font-bold", colors.priceColor)}>
+          <span className={cn("text-xl font-bold", colors.priceColor)}>
             {service.price}
           </span>
         </div>
 
         <div>
-          <h4 className="font-semibold mb-2 text-gray-900 text-sm">
+          <h4 className={cn("font-bold mb-3 text-sm", colors.textAccent)}>
             What&apos;s Included:
           </h4>
-          <ul className="space-y-1">
+          <ul className="space-y-2">
             {service.features.slice(0, 3).map((feature, idx) => (
               <li key={idx} className="flex items-start space-x-2">
                 <CheckCircle
                   className={cn(
-                    "h-3 w-3 flex-shrink-0 mt-0.5",
+                    "h-4 w-4 flex-shrink-0 mt-0.5",
                     colors.checkColor
                   )}
                 />
-                <span className="text-xs text-gray-700">{feature}</span>
+                <span className="text-sm text-gray-700 leading-relaxed">
+                  {feature}
+                </span>
               </li>
             ))}
             {service.features.length > 3 && (
-              <li className="text-xs text-gray-500 ml-5">
+              <li className="text-sm text-gray-500 ml-6 font-medium">
                 +{service.features.length - 3} more features
               </li>
             )}
@@ -157,23 +185,23 @@ export function AdminServiceCard({
         </div>
 
         {/* Admin Actions */}
-        <div className="flex space-x-2 pt-2">
+        <div className="flex space-x-3 pt-3">
           <Button
             variant="outline"
             size="sm"
-            className="flex-1 border-blue-600 text-blue-600 hover:bg-blue-50"
+            className="flex-1 border-emerald-300 text-emerald-700 hover:bg-emerald-50 hover:border-emerald-400 font-semibold transition-all duration-200"
             onClick={() => onEdit(service)}
           >
-            <Edit className="h-3 w-3 mr-1" />
+            <Edit className="h-4 w-4 mr-1" />
             Edit
           </Button>
           <Button
             variant="outline"
             size="sm"
-            className="flex-1 border-red-600 text-red-600 hover:bg-red-50"
+            className="flex-1 border-red-300 text-red-700 hover:bg-red-50 hover:border-red-400 font-semibold transition-all duration-200"
             onClick={() => onDelete(service)}
           >
-            <Trash2 className="h-3 w-3 mr-1" />
+            <Trash2 className="h-4 w-4 mr-1" />
             Delete
           </Button>
         </div>
