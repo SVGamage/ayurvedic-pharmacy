@@ -279,197 +279,232 @@ export default function AdminServicesPage() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto py-8">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <Briefcase className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-muted-foreground">
-              Loading services...
-            </h3>
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-yellow-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="relative">
+            <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+              <Briefcase className="h-10 w-10 text-yellow-600" />
+            </div>
+            <div className="absolute inset-0 w-20 h-20 border-4 border-yellow-200 rounded-full animate-spin border-t-yellow-600 mx-auto"></div>
           </div>
+          <h3 className="text-2xl font-bold text-yellow-800 mb-2">
+            Loading Healing Services...
+          </h3>
+          <p className="text-yellow-600">Preparing your wellness offerings</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="flex flex-col space-y-6">
-        <AdminHeader />
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Services Management</h1>
-            <p className="text-muted-foreground">
-              Manage your service offerings
-            </p>
-          </div>
-          <Button
-            onClick={handleCreateService}
-            className="bg-blue-600 hover:bg-blue-700"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Service
-          </Button>
-        </div>
-
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Total Services
-              </CardTitle>
-              <Briefcase className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{totalServices}</div>
-              <p className="text-xs text-muted-foreground">
-                Active services offered
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Ayurvedic Services
-              </CardTitle>
-              <Briefcase className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {services.filter((s) => s.category === "ayurvedic").length}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Traditional Ayurvedic treatments
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Nakshatra Services
-              </CardTitle>
-              <Briefcase className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {services.filter((s) => s.category === "nakshatra").length}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Astrological consultations
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Search */}
-        <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input
-            placeholder="Search services..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="pl-10"
-          />
-        </div>
-
-        {/* Services Grid */}
-        {services.length === 0 ? (
-          <Card className="text-center py-12">
-            <CardContent>
-              <Briefcase className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">
-                {searchQuery ? "No services found" : "No services yet"}
-              </h3>
-              <p className="text-muted-foreground mb-4">
-                {searchQuery
-                  ? "Try adjusting your search terms"
-                  : "Get started by creating your first service"}
-              </p>
-              {!searchQuery && (
-                <Button
-                  onClick={handleCreateService}
-                  className="bg-blue-600 hover:bg-blue-700"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Your First Service
-                </Button>
-              )}
-            </CardContent>
-          </Card>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {services.map((service: Service) => (
-                <AdminServiceCard
-                  key={service.id}
-                  service={service}
-                  onEdit={handleEditService}
-                  onDelete={handleDeleteService}
-                />
-              ))}
-            </div>
-
-            {/* Pagination */}
-            <AdminPagination
-              currentPage={paginationData.page}
-              totalPages={paginationData.totalPages}
-              totalItems={paginationData.total}
-              itemsPerPage={itemsPerPage}
-              hasNext={paginationData.hasNext}
-              hasPrev={paginationData.hasPrev}
-              onPageChange={handlePageChange}
-              onItemsPerPageChange={handleItemsPerPageChange}
-            />
-          </>
-        )}
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-yellow-50 relative overflow-hidden">
+      {/* Ayurvedic Pattern Background */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-10 left-10 w-32 h-32 border-2 border-emerald-300 rounded-full animate-pulse"></div>
+        <div className="absolute top-32 right-20 w-24 h-24 border-2 border-yellow-400 rounded-full animate-pulse animation-delay-200"></div>
+        <div className="absolute bottom-20 left-32 w-28 h-28 border-2 border-orange-300 rounded-full animate-pulse animation-delay-400"></div>
+        <div className="absolute bottom-40 right-40 w-20 h-20 border-2 border-emerald-400 rounded-full animate-pulse animation-delay-300"></div>
       </div>
 
-      {/* Create/Edit Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>
-              {editingService ? "Edit Service" : "Create New Service"}
-            </DialogTitle>
-          </DialogHeader>
-          <ServiceForm
-            service={
-              editingService ? serviceToFormData(editingService) : undefined
-            }
-            onSubmit={handleSubmit}
-            onCancel={handleDialogClose}
-            isLoading={isSubmitting}
-          />
-        </DialogContent>
-      </Dialog>
+      <div className="relative z-10">
+        <AdminHeader />
 
-      {/* Delete Confirmation Dialog */}
-      <AlertDialog
-        open={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the
-              service &quot;{deletingService?.title}&quot; from your offerings.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={confirmDelete}
-              className="bg-red-600 hover:bg-red-700"
-            >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        <div className="container mx-auto py-8 px-6">
+          <div className="flex flex-col space-y-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-4xl font-bold text-transparent bg-gradient-to-r from-emerald-600 via-green-600 to-yellow-600 bg-clip-text mb-2">
+                  Services Management
+                </h1>
+                <p className="text-lg text-emerald-700 font-medium">
+                  Manage your holistic healing and wellness services
+                </p>
+                <div className="w-24 h-1 bg-gradient-to-r from-emerald-400 to-yellow-400 mt-2 rounded-full"></div>
+              </div>
+              <Button
+                onClick={handleCreateService}
+                className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200 px-6 py-3"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                <span className="font-semibold">Add Service</span>
+              </Button>
+            </div>
+
+            {/* Stats Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card className="group bg-gradient-to-br from-white to-emerald-50 border-emerald-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                  <CardTitle className="text-lg font-bold text-emerald-800">
+                    Total Services
+                  </CardTitle>
+                  <div className="p-2 bg-emerald-100 rounded-full group-hover:bg-emerald-200 transition-colors">
+                    <Briefcase className="h-6 w-6 text-emerald-600" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-emerald-700 mb-2">
+                    {totalServices}
+                  </div>
+                  <p className="text-sm text-emerald-600">
+                    Holistic services offered
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="group bg-gradient-to-br from-white to-yellow-50 border-yellow-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                  <CardTitle className="text-lg font-bold text-yellow-800">
+                    Ayurvedic Services
+                  </CardTitle>
+                  <div className="p-2 bg-yellow-100 rounded-full group-hover:bg-yellow-200 transition-colors">
+                    <Briefcase className="h-6 w-6 text-yellow-600" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-yellow-700 mb-2">
+                    {services.filter((s) => s.category === "ayurvedic").length}
+                  </div>
+                  <p className="text-sm text-yellow-600">
+                    Traditional healing treatments
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="group bg-gradient-to-br from-white to-orange-50 border-orange-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                  <CardTitle className="text-lg font-bold text-orange-800">
+                    Nakshatra Services
+                  </CardTitle>
+                  <div className="p-2 bg-orange-100 rounded-full group-hover:bg-orange-200 transition-colors">
+                    <Briefcase className="h-6 w-6 text-orange-600" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-orange-700 mb-2">
+                    {services.filter((s) => s.category === "nakshatra").length}
+                  </div>
+                  <p className="text-sm text-orange-600">
+                    Astrological consultations
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Search */}
+            <div className="relative max-w-md">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-500 h-5 w-5" />
+              <Input
+                placeholder="Search healing services..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="pl-12 py-3 border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400 bg-white/80 backdrop-blur-sm rounded-xl shadow-md"
+              />
+            </div>
+
+            {/* Services Grid */}
+            {services.length === 0 ? (
+              <Card className="text-center py-16 bg-gradient-to-br from-white to-emerald-50 border-emerald-200 shadow-lg rounded-xl">
+                <CardContent>
+                  <div className="p-4 bg-yellow-100 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                    <Briefcase className="h-12 w-12 text-yellow-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3 text-emerald-800">
+                    {searchQuery ? "No services found" : "No services yet"}
+                  </h3>
+                  <p className="text-emerald-600 mb-6 text-lg">
+                    {searchQuery
+                      ? "Try adjusting your search terms"
+                      : "Begin your healing journey by adding your first service"}
+                  </p>
+                  {!searchQuery && (
+                    <Button
+                      onClick={handleCreateService}
+                      className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200 px-6 py-3"
+                    >
+                      <Plus className="h-5 w-5 mr-2" />
+                      <span className="font-semibold">
+                        Add Your First Service
+                      </span>
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {services.map((service: Service) => (
+                    <AdminServiceCard
+                      key={service.id}
+                      service={service}
+                      onEdit={handleEditService}
+                      onDelete={handleDeleteService}
+                    />
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-emerald-100 shadow-md">
+                  <AdminPagination
+                    currentPage={paginationData.page}
+                    totalPages={paginationData.totalPages}
+                    totalItems={paginationData.total}
+                    itemsPerPage={itemsPerPage}
+                    hasNext={paginationData.hasNext}
+                    hasPrev={paginationData.hasPrev}
+                    onPageChange={handlePageChange}
+                    onItemsPerPageChange={handleItemsPerPageChange}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Create/Edit Dialog */}
+          <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>
+                  {editingService ? "Edit Service" : "Create New Service"}
+                </DialogTitle>
+              </DialogHeader>
+              <ServiceForm
+                service={
+                  editingService ? serviceToFormData(editingService) : undefined
+                }
+                onSubmit={handleSubmit}
+                onCancel={handleDialogClose}
+                isLoading={isSubmitting}
+              />
+            </DialogContent>
+          </Dialog>
+
+          {/* Delete Confirmation Dialog */}
+          <AlertDialog
+            open={isDeleteDialogOpen}
+            onOpenChange={setIsDeleteDialogOpen}
+          >
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete the
+                  service &quot;{deletingService?.title}&quot; from your
+                  offerings.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={confirmDelete}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      </div>
     </div>
   );
 }

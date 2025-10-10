@@ -276,7 +276,6 @@ export default function AdminPage() {
     }
   };
 
-
   // Category handlers
   const handleCreateCategory = () => {
     setEditingCategory(null);
@@ -454,52 +453,80 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-yellow-50 relative overflow-hidden">
+      {/* Ayurvedic Pattern Background */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-10 left-10 w-32 h-32 border-2 border-emerald-300 rounded-full animate-pulse"></div>
+        <div className="absolute top-32 right-20 w-24 h-24 border-2 border-yellow-400 rounded-full animate-pulse animation-delay-200"></div>
+        <div className="absolute bottom-20 left-32 w-28 h-28 border-2 border-orange-300 rounded-full animate-pulse animation-delay-400"></div>
+        <div className="absolute bottom-40 right-40 w-20 h-20 border-2 border-emerald-400 rounded-full animate-pulse animation-delay-300"></div>
+      </div>
+
       <AdminHeader />
 
-      <main className="max-w-7xl mx-auto">
+      <main className="max-w-7xl mx-auto p-6 relative z-10">
+        {/* Welcome Section */}
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold text-transparent bg-gradient-to-r from-emerald-600 via-green-600 to-yellow-600 bg-clip-text mb-2">
+            Ayurvedic Admin Dashboard
+          </h1>
+          <p className="text-lg text-emerald-700 font-medium">
+            Manage your holistic wellness center with ancient wisdom and modern
+            efficiency
+          </p>
+          <div className="w-24 h-1 bg-gradient-to-r from-emerald-400 to-yellow-400 mx-auto mt-4 rounded-full"></div>
+        </div>
+
         {/* Quick Navigation */}
-        <div className="mb-6">
+        <div className="mb-8">
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/admin/products">
-              <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
-                <Package className="h-4 w-4" />
-                View All Products
+              <Button className="flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200 px-6 py-3">
+                <Package className="h-5 w-5" />
+                <span className="font-semibold">View All Products</span>
               </Button>
             </Link>
             <Link href="/admin/services">
-              <Button className="flex items-center gap-2 bg-green-600 hover:bg-green-700">
-                <Settings className="h-4 w-4" />
-                View All Services
+              <Button className="flex items-center gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white shadow-lg transform hover:scale-105 transition-all duration-200 px-6 py-3">
+                <Settings className="h-5 w-5" />
+                <span className="font-semibold">View All Services</span>
               </Button>
             </Link>
           </div>
         </div>
 
         {/* Overview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+          <Card className="group bg-gradient-to-br from-white to-emerald-50 border-emerald-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-lg font-bold text-emerald-800">
                 Total Products
               </CardTitle>
-              <Package className="h-4 w-4 text-muted-foreground" />
+              <div className="p-2 bg-emerald-100 rounded-full group-hover:bg-emerald-200 transition-colors">
+                <Package className="h-6 w-6 text-emerald-600" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{products.length}</div>
-              <p className="text-xs text-muted-foreground mb-3">
+              <div className="text-3xl font-bold text-emerald-700 mb-2">
+                {products.length}
+              </div>
+              <p className="text-sm text-emerald-600 mb-4">
                 {products.filter((p) => p.badge).length} featured products
               </p>
               <div className="flex gap-2">
-                <Link href="/admin/products">
-                  <Button size="sm" variant="outline" className="flex-1">
+                <Link href="/admin/products" className="flex-1">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+                  >
                     Manage Products
                   </Button>
                 </Link>
                 <Button
                   size="sm"
                   onClick={handleCreateProduct}
-                  className="flex-1"
+                  className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
                 >
                   <Plus className="h-4 w-4 mr-1" />
                   Add Product
@@ -508,28 +535,36 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+          <Card className="group bg-gradient-to-br from-white to-yellow-50 border-yellow-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-lg font-bold text-yellow-800">
                 Total Services
               </CardTitle>
-              <Settings className="h-4 w-4 text-muted-foreground" />
+              <div className="p-2 bg-yellow-100 rounded-full group-hover:bg-yellow-200 transition-colors">
+                <Settings className="h-6 w-6 text-yellow-600" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{services.length}</div>
-              <p className="text-xs text-muted-foreground mb-3">
+              <div className="text-3xl font-bold text-yellow-700 mb-2">
+                {services.length}
+              </div>
+              <p className="text-sm text-yellow-600 mb-4">
                 {services.filter((s) => s.popular).length} popular services
               </p>
               <div className="flex gap-2">
-                <Link href="/admin/services">
-                  <Button size="sm" variant="outline" className="flex-1">
+                <Link href="/admin/services" className="flex-1">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full border-yellow-300 text-yellow-700 hover:bg-yellow-50"
+                  >
                     Manage Services
                   </Button>
                 </Link>
                 <Button
                   size="sm"
                   onClick={handleCreateService}
-                  className="flex-1"
+                  className="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white"
                 >
                   <Plus className="h-4 w-4 mr-1" />
                   Add Service
@@ -538,15 +573,17 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+          <Card className="group bg-gradient-to-br from-white to-orange-50 border-orange-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-lg font-bold text-orange-800">
                 Average Rating
               </CardTitle>
-              <BarChart3 className="h-4 w-4 text-muted-foreground" />
+              <div className="p-2 bg-orange-100 rounded-full group-hover:bg-orange-200 transition-colors">
+                <BarChart3 className="h-6 w-6 text-orange-600" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
+              <div className="text-3xl font-bold text-orange-700 mb-2">
                 {products.length > 0
                   ? (
                       products.reduce((sum, p) => sum + p.rating, 0) /
@@ -554,95 +591,127 @@ export default function AdminPage() {
                     ).toFixed(1)
                   : "0.0"}
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm text-orange-600">
                 From {products.reduce((sum, p) => sum + p.reviews, 0)} reviews
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Total Categories
-              </CardTitle>
-              <Package className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{categories.length}</div>
-              <p className="text-xs text-muted-foreground">
-                Product categories
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Total Subcategories
-              </CardTitle>
-              <Package className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{subcategories.length}</div>
-              <p className="text-xs text-muted-foreground">
-                Product subcategories
               </p>
             </CardContent>
           </Card>
         </div>
 
+        {/* Extended Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+          <Card className="bg-gradient-to-br from-white to-emerald-50 border-emerald-200 shadow-md">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-lg font-bold text-emerald-800">
+                Categories
+              </CardTitle>
+              <div className="p-2 bg-emerald-100 rounded-full">
+                <FolderTree className="h-5 w-5 text-emerald-600" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-emerald-700 mb-1">
+                {categories.length}
+              </div>
+              <p className="text-sm text-emerald-600">Product categories</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-white to-yellow-50 border-yellow-200 shadow-md">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-lg font-bold text-yellow-800">
+                Subcategories
+              </CardTitle>
+              <div className="p-2 bg-yellow-100 rounded-full">
+                <Tags className="h-5 w-5 text-yellow-600" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-yellow-700 mb-1">
+                {subcategories.length}
+              </div>
+              <p className="text-sm text-yellow-600">Product subcategories</p>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Main Content */}
-        <Tabs defaultValue="categories" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="categories">Categories</TabsTrigger>
-            <TabsTrigger value="subcategories">Subcategories</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="categories" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <div>
-                <h2 className="text-2xl font-bold">Categories</h2>
-                <p className="text-muted-foreground">
-                  Manage product categories
-                </p>
-              </div>
-              <Button onClick={handleCreateCategory}>
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-emerald-100 p-6">
+          <Tabs defaultValue="categories" className="space-y-8">
+            <TabsList className="grid w-full grid-cols-2 bg-emerald-50 border border-emerald-200 rounded-xl p-1">
+              <TabsTrigger
+                value="categories"
+                className="data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-md rounded-lg font-semibold"
+              >
                 <FolderTree className="h-4 w-4 mr-2" />
-                Add Category
-              </Button>
-            </div>
-
-            <CategoryTable
-              categories={categories}
-              onEdit={handleEditCategory}
-              onDelete={handleDeleteCategory}
-              isLoading={isLoading}
-            />
-          </TabsContent>
-
-          <TabsContent value="subcategories" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <div>
-                <h2 className="text-2xl font-bold">Subcategories</h2>
-                <p className="text-muted-foreground">
-                  Manage product subcategories
-                </p>
-              </div>
-              <Button onClick={handleCreateSubCategory}>
+                Categories
+              </TabsTrigger>
+              <TabsTrigger
+                value="subcategories"
+                className="data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-md rounded-lg font-semibold"
+              >
                 <Tags className="h-4 w-4 mr-2" />
-                Add Subcategory
-              </Button>
-            </div>
+                Subcategories
+              </TabsTrigger>
+            </TabsList>
 
-            <SubCategoryTable
-              subcategories={subcategories}
-              categories={categories}
-              onEdit={handleEditSubCategory}
-              onDelete={handleDeleteSubCategory}
-              isLoading={isLoading}
-            />
-          </TabsContent>
-        </Tabs>
+            <TabsContent value="categories" className="space-y-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h2 className="text-3xl font-bold text-emerald-800">
+                    Categories
+                  </h2>
+                  <p className="text-emerald-600 text-lg">
+                    Organize your Ayurvedic products into meaningful categories
+                  </p>
+                </div>
+                <Button
+                  onClick={handleCreateCategory}
+                  className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200"
+                >
+                  <FolderTree className="h-4 w-4 mr-2" />
+                  Add Category
+                </Button>
+              </div>
+
+              <CategoryTable
+                categories={categories}
+                onEdit={handleEditCategory}
+                onDelete={handleDeleteCategory}
+                isLoading={isLoading}
+              />
+            </TabsContent>
+
+            <TabsContent value="subcategories" className="space-y-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h2 className="text-3xl font-bold text-yellow-800">
+                    Subcategories
+                  </h2>
+                  <p className="text-yellow-600 text-lg">
+                    Create detailed subcategories for precise product
+                    organization
+                  </p>
+                </div>
+                <Button
+                  onClick={handleCreateSubCategory}
+                  className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200"
+                >
+                  <Tags className="h-4 w-4 mr-2" />
+                  Add Subcategory
+                </Button>
+              </div>
+
+              <SubCategoryTable
+                subcategories={subcategories}
+                categories={categories}
+                onEdit={handleEditSubCategory}
+                onDelete={handleDeleteSubCategory}
+                isLoading={isLoading}
+              />
+            </TabsContent>
+          </Tabs>
+        </div>
       </main>
 
       {/* Product Dialog */}

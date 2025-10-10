@@ -234,204 +234,241 @@ export default function AdminProductsPage() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto py-8">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <Package className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-muted-foreground">
-              Loading products...
-            </h3>
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-yellow-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="relative">
+            <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+              <Package className="h-10 w-10 text-emerald-600" />
+            </div>
+            <div className="absolute inset-0 w-20 h-20 border-4 border-emerald-200 rounded-full animate-spin border-t-emerald-600 mx-auto"></div>
           </div>
+          <h3 className="text-2xl font-bold text-emerald-800 mb-2">
+            Loading Ayurvedic Products...
+          </h3>
+          <p className="text-emerald-600">Preparing your wellness catalog</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="flex flex-col space-y-6">
-        <AdminHeader />
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Products Management</h1>
-            <p className="text-muted-foreground">Manage your product catalog</p>
-          </div>
-          <Button
-            onClick={handleCreateProduct}
-            className="bg-blue-600 hover:bg-blue-700"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Product
-          </Button>
-        </div>
-
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Total Products
-              </CardTitle>
-              <Package className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{totalProducts}</div>
-              <p className="text-xs text-muted-foreground">
-                Active products in catalog
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Average Price
-              </CardTitle>
-              <Package className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                Rs.{" "}
-                {products.length > 0
-                  ? Math.round(
-                      products.reduce((sum, p) => sum + p.price, 0) /
-                        products.length
-                    )
-                  : 0}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Average product price
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Average Rating
-              </CardTitle>
-              <Package className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {products.length > 0
-                  ? (
-                      products.reduce((sum, p) => sum + p.rating, 0) /
-                      products.length
-                    ).toFixed(1)
-                  : "0.0"}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                From {products.reduce((sum, p) => sum + p.reviews, 0)} reviews
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Search */}
-        <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="pl-10"
-          />
-        </div>
-
-        {/* Products Grid */}
-        {products.length === 0 ? (
-          <Card className="text-center py-12">
-            <CardContent>
-              <Package className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">
-                {searchQuery ? "No products found" : "No products yet"}
-              </h3>
-              <p className="text-muted-foreground mb-4">
-                {searchQuery
-                  ? "Try adjusting your search terms"
-                  : "Get started by creating your first product"}
-              </p>
-              {!searchQuery && (
-                <Button
-                  onClick={handleCreateProduct}
-                  className="bg-blue-600 hover:bg-blue-700"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Your First Product
-                </Button>
-              )}
-            </CardContent>
-          </Card>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {products.map((product: Product) => (
-                <AdminProductCard
-                  key={product.id}
-                  product={product}
-                  onEdit={handleEditProduct}
-                  onDelete={handleDeleteProduct}
-                />
-              ))}
-            </div>
-
-            {/* Pagination */}
-            <AdminPagination
-              currentPage={paginationData.page}
-              totalPages={paginationData.totalPages}
-              totalItems={paginationData.total}
-              itemsPerPage={itemsPerPage}
-              hasNext={paginationData.hasNext}
-              hasPrev={paginationData.hasPrev}
-              onPageChange={handlePageChange}
-              onItemsPerPageChange={handleItemsPerPageChange}
-            />
-          </>
-        )}
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-yellow-50 relative overflow-hidden">
+      {/* Ayurvedic Pattern Background */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-10 left-10 w-32 h-32 border-2 border-emerald-300 rounded-full animate-pulse"></div>
+        <div className="absolute top-32 right-20 w-24 h-24 border-2 border-yellow-400 rounded-full animate-pulse animation-delay-200"></div>
+        <div className="absolute bottom-20 left-32 w-28 h-28 border-2 border-orange-300 rounded-full animate-pulse animation-delay-400"></div>
+        <div className="absolute bottom-40 right-40 w-20 h-20 border-2 border-emerald-400 rounded-full animate-pulse animation-delay-300"></div>
       </div>
 
-      {/* Create/Edit Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>
-              {editingProduct ? "Edit Product" : "Create New Product"}
-            </DialogTitle>
-          </DialogHeader>
-          <ProductForm
-            product={editingProduct}
-            onSubmit={handleSubmit}
-            onCancel={handleDialogClose}
-            isLoading={isSubmitting}
-          />
-        </DialogContent>
-      </Dialog>
+      <div className="relative z-10">
+        <AdminHeader />
 
-      {/* Delete Confirmation Dialog */}
-      <AlertDialog
-        open={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the
-              product &quot;{deletingProduct?.name}&quot; from your catalog.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={confirmDelete}
-              className="bg-red-600 hover:bg-red-700"
-            >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        <div className="container mx-auto py-8 px-6">
+          <div className="flex flex-col space-y-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-4xl font-bold text-transparent bg-gradient-to-r from-emerald-600 via-green-600 to-yellow-600 bg-clip-text mb-2">
+                  Products Management
+                </h1>
+                <p className="text-lg text-emerald-700 font-medium">
+                  Manage your Ayurvedic product catalog with natural wellness
+                </p>
+                <div className="w-24 h-1 bg-gradient-to-r from-emerald-400 to-yellow-400 mt-2 rounded-full"></div>
+              </div>
+              <Button
+                onClick={handleCreateProduct}
+                className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200 px-6 py-3"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                <span className="font-semibold">Add Product</span>
+              </Button>
+            </div>
+
+            {/* Stats Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card className="group bg-gradient-to-br from-white to-emerald-50 border-emerald-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                  <CardTitle className="text-lg font-bold text-emerald-800">
+                    Total Products
+                  </CardTitle>
+                  <div className="p-2 bg-emerald-100 rounded-full group-hover:bg-emerald-200 transition-colors">
+                    <Package className="h-6 w-6 text-emerald-600" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-emerald-700 mb-2">
+                    {totalProducts}
+                  </div>
+                  <p className="text-sm text-emerald-600">
+                    Active products in catalog
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="group bg-gradient-to-br from-white to-yellow-50 border-yellow-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                  <CardTitle className="text-lg font-bold text-yellow-800">
+                    Average Price
+                  </CardTitle>
+                  <div className="p-2 bg-yellow-100 rounded-full group-hover:bg-yellow-200 transition-colors">
+                    <Package className="h-6 w-6 text-yellow-600" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-yellow-700 mb-2">
+                    Rs.{" "}
+                    {products.length > 0
+                      ? Math.round(
+                          products.reduce((sum, p) => sum + p.price, 0) /
+                            products.length
+                        )
+                      : 0}
+                  </div>
+                  <p className="text-sm text-yellow-600">
+                    Average product price
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="group bg-gradient-to-br from-white to-orange-50 border-orange-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                  <CardTitle className="text-lg font-bold text-orange-800">
+                    Average Rating
+                  </CardTitle>
+                  <div className="p-2 bg-orange-100 rounded-full group-hover:bg-orange-200 transition-colors">
+                    <Package className="h-6 w-6 text-orange-600" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-orange-700 mb-2">
+                    {products.length > 0
+                      ? (
+                          products.reduce((sum, p) => sum + p.rating, 0) /
+                          products.length
+                        ).toFixed(1)
+                      : "0.0"}
+                  </div>
+                  <p className="text-sm text-orange-600">
+                    From {products.reduce((sum, p) => sum + p.reviews, 0)}{" "}
+                    reviews
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Search */}
+            <div className="relative max-w-md">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-500 h-5 w-5" />
+              <Input
+                placeholder="Search Ayurvedic products..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="pl-12 py-3 border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400 bg-white/80 backdrop-blur-sm rounded-xl shadow-md"
+              />
+            </div>
+
+            {/* Products Grid */}
+            {products.length === 0 ? (
+              <Card className="text-center py-16 bg-gradient-to-br from-white to-emerald-50 border-emerald-200 shadow-lg rounded-xl">
+                <CardContent>
+                  <div className="p-4 bg-emerald-100 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                    <Package className="h-12 w-12 text-emerald-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3 text-emerald-800">
+                    {searchQuery ? "No products found" : "No products yet"}
+                  </h3>
+                  <p className="text-emerald-600 mb-6 text-lg">
+                    {searchQuery
+                      ? "Try adjusting your search terms"
+                      : "Start your Ayurvedic journey by adding your first product"}
+                  </p>
+                  {!searchQuery && (
+                    <Button
+                      onClick={handleCreateProduct}
+                      className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200 px-6 py-3"
+                    >
+                      <Plus className="h-5 w-5 mr-2" />
+                      <span className="font-semibold">
+                        Add Your First Product
+                      </span>
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {products.map((product: Product) => (
+                    <AdminProductCard
+                      key={product.id}
+                      product={product}
+                      onEdit={handleEditProduct}
+                      onDelete={handleDeleteProduct}
+                    />
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-emerald-100 shadow-md">
+                  <AdminPagination
+                    currentPage={paginationData.page}
+                    totalPages={paginationData.totalPages}
+                    totalItems={paginationData.total}
+                    itemsPerPage={itemsPerPage}
+                    hasNext={paginationData.hasNext}
+                    hasPrev={paginationData.hasPrev}
+                    onPageChange={handlePageChange}
+                    onItemsPerPageChange={handleItemsPerPageChange}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Create/Edit Dialog */}
+          <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>
+                  {editingProduct ? "Edit Product" : "Create New Product"}
+                </DialogTitle>
+              </DialogHeader>
+              <ProductForm
+                product={editingProduct}
+                onSubmit={handleSubmit}
+                onCancel={handleDialogClose}
+                isLoading={isSubmitting}
+              />
+            </DialogContent>
+          </Dialog>
+
+          {/* Delete Confirmation Dialog */}
+          <AlertDialog
+            open={isDeleteDialogOpen}
+            onOpenChange={setIsDeleteDialogOpen}
+          >
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete the
+                  product &quot;{deletingProduct?.name}&quot; from your catalog.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={confirmDelete}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      </div>
     </div>
   );
 }
