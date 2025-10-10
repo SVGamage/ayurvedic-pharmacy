@@ -100,29 +100,23 @@ export function AdminPagination({
   };
 
   return (
-    <div className="flex flex-col gap-4 mt-6">
-      {/* Debug Info - Remove this in production */}
-      <div className="text-xs text-gray-500 bg-gray-100 p-2 rounded">
-        Debug: Page {safeCurrentPage}/{safeTotalPages}, Items: {safeTotalItems},
-        Per Page: {safeItemsPerPage}, ShowFull: {showFullPagination.toString()}
-      </div>
-
+    <div className="flex flex-col gap-6">
       {/* Pagination Info */}
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
+      <div className="flex items-center justify-between text-sm">
         <div className="flex items-center gap-2">
-          <span>
+          <span className="text-emerald-700 font-medium">
             Showing {startItem} to {endItem} of {safeTotalItems} entries
           </span>
         </div>
 
         {/* Items per page selector */}
-        <div className="flex items-center gap-2">
-          <span>Show</span>
+        <div className="flex items-center gap-3">
+          <span className="text-emerald-700 font-medium">Show</span>
           <Select
             value={safeItemsPerPage.toString()}
             onValueChange={(value) => onItemsPerPageChange(Number(value))}
           >
-            <SelectTrigger className="w-20">
+            <SelectTrigger className="w-20 border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -133,7 +127,7 @@ export function AdminPagination({
               ))}
             </SelectContent>
           </Select>
-          <span>per page</span>
+          <span className="text-emerald-700 font-medium">per page</span>
         </div>
       </div>
 
@@ -146,7 +140,9 @@ export function AdminPagination({
               <PaginationPrevious
                 onClick={() => hasPrev && onPageChange(safeCurrentPage - 1)}
                 className={
-                  !hasPrev ? "pointer-events-none opacity-50" : "cursor-pointer"
+                  !hasPrev
+                    ? "pointer-events-none opacity-50"
+                    : "cursor-pointer hover:bg-emerald-50 border-emerald-200 text-emerald-700 hover:text-emerald-800"
                 }
               />
             </PaginationItem>
@@ -156,7 +152,7 @@ export function AdminPagination({
               if (page === "ellipsis") {
                 return (
                   <PaginationItem key={`ellipsis-${index}-${safeCurrentPage}`}>
-                    <PaginationEllipsis />
+                    <PaginationEllipsis className="text-emerald-600" />
                   </PaginationItem>
                 );
               }
@@ -169,7 +165,11 @@ export function AdminPagination({
                   <PaginationLink
                     onClick={() => onPageChange(pageNum)}
                     isActive={isActive}
-                    className="cursor-pointer"
+                    className={`cursor-pointer transition-all duration-200 ${
+                      isActive
+                        ? "bg-gradient-to-r from-emerald-600 to-green-600 text-white border-emerald-600 hover:from-emerald-700 hover:to-green-700"
+                        : "hover:bg-emerald-50 border-emerald-200 text-emerald-700 hover:text-emerald-800 hover:border-emerald-300"
+                    }`}
                   >
                     {pageNum}
                   </PaginationLink>
@@ -182,7 +182,9 @@ export function AdminPagination({
               <PaginationNext
                 onClick={() => hasNext && onPageChange(safeCurrentPage + 1)}
                 className={
-                  !hasNext ? "pointer-events-none opacity-50" : "cursor-pointer"
+                  !hasNext
+                    ? "pointer-events-none opacity-50"
+                    : "cursor-pointer hover:bg-emerald-50 border-emerald-200 text-emerald-700 hover:text-emerald-800"
                 }
               />
             </PaginationItem>
