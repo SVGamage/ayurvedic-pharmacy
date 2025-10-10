@@ -178,12 +178,6 @@ export default function AdminPage() {
     setEditingProduct(null);
     setIsProductDialogOpen(true);
   };
-
-  const handleEditProduct = (product: Product) => {
-    setEditingProduct(product);
-    setIsProductDialogOpen(true);
-  };
-
   const handleProductSubmit = async (data: Partial<Product>) => {
     try {
       setIsFormLoading(true);
@@ -230,39 +224,9 @@ export default function AdminPage() {
     }
   };
 
-  const handleDeleteProduct = async (productId: string) => {
-    try {
-      const response = await fetch(`/api/admin/products/${productId}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        await fetchProducts();
-        toast({
-          title: "Success",
-          description: "Product deleted successfully",
-        });
-      } else {
-        throw new Error("Failed to delete product");
-      }
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      toast({
-        title: "Error",
-        description: "Failed to delete product",
-        variant: "destructive",
-      });
-    }
-  };
-
   // Service handlers
   const handleCreateService = () => {
     setEditingService(null);
-    setIsServiceDialogOpen(true);
-  };
-
-  const handleEditService = (service: ServiceData) => {
-    setEditingService(service);
     setIsServiceDialogOpen(true);
   };
 
@@ -312,30 +276,6 @@ export default function AdminPage() {
     }
   };
 
-  const handleDeleteService = async (serviceId: string) => {
-    try {
-      const response = await fetch(`/api/admin/services/${serviceId}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        await fetchServices();
-        toast({
-          title: "Success",
-          description: "Service deleted successfully",
-        });
-      } else {
-        throw new Error("Failed to delete service");
-      }
-    } catch (error) {
-      console.error("Error deleting service:", error);
-      toast({
-        title: "Error",
-        description: "Failed to delete service",
-        variant: "destructive",
-      });
-    }
-  };
 
   // Category handlers
   const handleCreateCategory = () => {
@@ -696,6 +636,7 @@ export default function AdminPage() {
 
             <SubCategoryTable
               subcategories={subcategories}
+              categories={categories}
               onEdit={handleEditSubCategory}
               onDelete={handleDeleteSubCategory}
               isLoading={isLoading}
