@@ -4,35 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Mail, Clock, Car, Bus, Train } from "lucide-react";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
-import CarouselGrid from "@/components/carousel-grid";
 import EmbeddedMap from "@/components/embedded-map";
 import { pharmacyLocation, locationInfo } from "@/config/location";
-import heroImage1 from "@/assets/hero-1.jpg";
-import heroImage2 from "@/assets/hero-2.png";
-import heroImage3 from "@/assets/hero-3.jpg";
 
-const heroSlides = [
-  {
-    id: 1,
-    image: heroImage1,
-    gradient: "from-black/80 via-black/60 to-transparent",
-  },
-  {
-    id: 2,
-    image: heroImage2, // Using same image for now - replace with different hero images
-    gradient: "from-black/80 via-black/60 to-transparent",
-  },
-  {
-    id: 3,
-    image: heroImage3, // Using same image for now - replace with different hero images
-    gradient: "from-black/80 via-black/60 to-transparent",
-  },
-];
 export default function LocationPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
-      <CarouselGrid heroSlidesArray={[heroSlides, heroSlides, heroSlides]} />
       {/* Enhanced Header Section */}
       <ReusableHeroSection
         preTitle="Find Our Sanctuary"
