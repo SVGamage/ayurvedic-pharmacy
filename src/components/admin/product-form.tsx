@@ -30,8 +30,11 @@ export function ProductForm({
   isLoading,
 }: ProductFormProps) {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
+  const [filteredSubcategories, setFilteredSubcategories] = useState<
+    SubCategory[]
+  >([]);
   const [loadingData, setLoadingData] = useState(true);
+  const [loadingSubcategories, setLoadingSubcategories] = useState(false);
 
   const [formData, setFormData] = useState<Partial<Product>>({
     name: product?.name || "",
@@ -50,19 +53,11 @@ export function ProductForm({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [categoriesRes, subcategoriesRes] = await Promise.all([
-          fetch("/api/admin/categories"),
-          fetch("/api/admin/subcategories"),
-        ]);
+        const categoriesRes = await fetch("/api/admin/categories");
 
         if (categoriesRes.ok) {
           const categoriesData = await categoriesRes.json();
           setCategories(categoriesData);
-        }
-
-        if (subcategoriesRes.ok) {
-          const subcategoriesData = await subcategoriesRes.json();
-          setSubcategories(subcategoriesData);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -74,6 +69,60 @@ export function ProductForm({
     fetchData();
   }, []);
 
+  // Fetch subcategories when category changes
+  useEffect(() => {
+    const fetchSubcategories = async () => {
+      if (!formData.categoryId) {
+        setFilteredSubcategories([]);
+        return;
+      }
+
+      setLoadingSubcategories(true);
+      try {
+        const response = await fetch(
+          `/api/admin/subcategories?categoryId=${formData.categoryId}`
+        );
+
+        if (response.ok) {
+          const subcategoriesData = await response.json();
+          setFilteredSubcategories(subcategoriesData);
+        }
+      } catch (error) {
+        console.error("Error fetching subcategories:", error);
+        setFilteredSubcategories([]);
+      } finally {
+        setLoadingSubcategories(false);
+      }
+    };
+
+    fetchSubcategories();
+  }, [formData.categoryId]);
+
+  // Load subcategories for existing product on mount
+  useEffect(() => {
+    if (product?.categoryId && categories.length > 0) {
+      const fetchInitialSubcategories = async () => {
+        setLoadingSubcategories(true);
+        try {
+          const response = await fetch(
+            `/api/admin/subcategories?categoryId=${product.categoryId}`
+          );
+
+          if (response.ok) {
+            const subcategoriesData = await response.json();
+            setFilteredSubcategories(subcategoriesData);
+          }
+        } catch (error) {
+          console.error("Error fetching initial subcategories:", error);
+        } finally {
+          setLoadingSubcategories(false);
+        }
+      };
+
+      fetchInitialSubcategories();
+    }
+  }, [product?.categoryId, categories]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await onSubmit(formData);
@@ -83,7 +132,16 @@ export function ProductForm({
     field: keyof Product,
     value: string | number | undefined
   ) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev) => {
+      const newData = { ...prev, [field]: value };
+
+      // Reset subcategory when category changes
+      if (field === "categoryId") {
+        newData.subcategoryId = "";
+      }
+
+      return newData;
+    });
   };
 
   return (
@@ -166,23 +224,34 @@ export function ProductForm({
                     onValueChange={(value) =>
                       handleInputChange("subcategoryId", value)
                     }
+                    disabled={!formData.categoryId || loadingSubcategories}
                   >
                     <SelectTrigger className="border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400">
-                      <SelectValue placeholder="Select subcategory" />
+                      <SelectValue
+                        placeholder={
+                          !formData.categoryId
+                            ? "Select category first"
+                            : loadingSubcategories
+                              ? "Loading subcategories..."
+                              : "Select subcategory"
+                        }
+                      />
                     </SelectTrigger>
                     <SelectContent>
-                      {subcategories.map((subcat) => (
+                      {filteredSubcategories.map((subcat) => (
                         <SelectItem key={subcat.id} value={subcat.id}>
                           {subcat.name}
-                          {subcat.category && (
-                            <span className="text-emerald-600 ml-2">
-                              ({subcat.category.name})
-                            </span>
-                          )}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
+                  {filteredSubcategories.length === 0 &&
+                    formData.categoryId &&
+                    !loadingSubcategories && (
+                      <p className="text-sm text-amber-600 mt-1">
+                        No subcategories available for this category
+                      </p>
+                    )}
                 </div>
 
                 <div className="space-y-3">
