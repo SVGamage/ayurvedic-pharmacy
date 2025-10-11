@@ -32,28 +32,7 @@ import {
 } from "@/lib/whatsapp";
 import { WHATSAPP_CONFIG } from "@/config/whatsapp";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
-import heroImage1 from "@/assets/hero-1.jpg";
-import heroImage2 from "@/assets/hero-2.png";
-import heroImage3 from "@/assets/hero-3.jpg";
-import CarouselGrid from "@/components/carousel-grid";
 
-const heroSlides = [
-  {
-    id: 1,
-    image: heroImage1,
-    gradient: "from-black/80 via-black/60 to-transparent",
-  },
-  {
-    id: 2,
-    image: heroImage2, // Using same image for now - replace with different hero images
-    gradient: "from-black/80 via-black/60 to-transparent",
-  },
-  {
-    id: 3,
-    image: heroImage3, // Using same image for now - replace with different hero images
-    gradient: "from-black/80 via-black/60 to-transparent",
-  },
-];
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
@@ -76,8 +55,6 @@ export default function ContactPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
-      <CarouselGrid heroSlidesArray={[heroSlides, heroSlides, heroSlides]} />
       {/* Enhanced Header Section */}
       <ReusableHeroSection
         preTitle="Connect With Us"
