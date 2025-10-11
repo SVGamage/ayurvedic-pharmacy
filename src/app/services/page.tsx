@@ -11,6 +11,7 @@ import heroImage2 from "@/assets/hero-2.png";
 import heroImage3 from "@/assets/hero-3.jpg";
 import CarouselGrid from "@/components/carousel-grid";
 import * as Icons from "lucide-react";
+import ServiceLoading from "@/components/service-loading";
 
 interface ApiService {
   id: string;
@@ -105,18 +106,7 @@ export default function ServicesPage() {
   );
 
   if (isLoading) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
-            <h3 className="text-lg font-semibold text-gray-600">
-              Loading services...
-            </h3>
-          </div>
-        </div>
-      </div>
-    );
+    return <ServiceLoading />;
   }
 
   if (error) {
