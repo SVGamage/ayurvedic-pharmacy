@@ -6,12 +6,17 @@ import { Service } from "@/types/service";
 import { bookServiceViaWhatsApp } from "@/lib/whatsapp";
 import { formatServicePrice } from "@/config/currency";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
-import heroImage1 from "@/assets/hero-1.jpg";
-import heroImage2 from "@/assets/hero-2.png";
-import heroImage3 from "@/assets/hero-3.jpg";
+import p10 from "@/assets/services/10.webp";
+import p11 from "@/assets/services/11.webp";
+import p12 from "@/assets/services/12.webp";
+import p13 from "@/assets/services/13.webp";
+import p14 from "@/assets/services/14.webp";
+import p15 from "@/assets/services/15.webp";
+import p16 from "@/assets/services/16.webp";
 import CarouselGrid from "@/components/carousel-grid";
 import * as Icons from "lucide-react";
 import ServiceLoading from "@/components/service-loading";
+import { HeroSlide } from "@/components/custom-carousel";
 
 interface ApiService {
   id: string;
@@ -26,21 +31,47 @@ interface ApiService {
   buttonText?: string;
 }
 
-const heroSlides = [
+const heroSlides1: HeroSlide[] = [
   {
     id: 1,
-    image: heroImage1,
-    gradient: "from-black/80 via-black/60 to-transparent",
+    image: p10,
+    gradient: "",
   },
   {
     id: 2,
-    image: heroImage2, // Using same image for now - replace with different hero images
-    gradient: "from-black/80 via-black/60 to-transparent",
+    image: p11, // Using same image for now - replace with different hero images
+    gradient: "",
   },
   {
     id: 3,
-    image: heroImage3, // Using same image for now - replace with different hero images
-    gradient: "from-black/80 via-black/60 to-transparent",
+    image: p12,
+    gradient: "",
+  },
+];
+
+const heroSlides2: HeroSlide[] = [
+  {
+    id: 1,
+    image: p13, // Using same image for now - replace with different hero images
+    gradient: "",
+  },
+  {
+    id: 2,
+    image: p14, // Using same image for now - replace with different hero images
+    gradient: "",
+  },
+];
+
+const heroSlides3: HeroSlide[] = [
+  {
+    id: 1,
+    image: p15,
+    gradient: "",
+  },
+  {
+    id: 2,
+    image: p16, // Using same image for now - replace with different hero images
+    gradient: "",
   },
 ];
 
@@ -135,7 +166,7 @@ export default function ServicesPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
-      <CarouselGrid heroSlidesArray={[heroSlides, heroSlides, heroSlides]} />
+      <CarouselGrid heroSlidesArray={[heroSlides1, heroSlides2, heroSlides3]} />
       {/* Enhanced Header Section */}
       <ReusableHeroSection
         preTitle="Expert Care"
