@@ -25,6 +25,7 @@ import p7 from "@/assets/7.webp";
 import p8 from "@/assets/8.webp";
 import p9 from "@/assets/9.webp";
 import { HeroSlide } from "@/components/custom-carousel";
+import ProductLoading from "@/components/product-loading";
 
 interface ApiProduct {
   id: string;
@@ -213,18 +214,7 @@ export default function ProductsPage() {
 
   // Add loading and error states
   if (isLoading) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
-            <h3 className="text-lg font-semibold text-gray-600">
-              Loading products...
-            </h3>
-          </div>
-        </div>
-      </div>
-    );
+    return <ProductLoading />;
   }
 
   if (error) {
