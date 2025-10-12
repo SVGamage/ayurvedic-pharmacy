@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { ProductForm } from "@/components/admin/product-form";
 import { ServiceForm } from "@/components/admin/service-form";
+import { CompanyForm } from "@/components/admin/company-form";
 import { CategoryForm } from "@/components/admin/category-form";
 import { SubCategoryForm } from "@/components/admin/subcategory-form";
 import { CategoryTable } from "@/components/admin/category-table";
@@ -47,6 +48,18 @@ interface ServiceData {
   updatedAt?: string;
 }
 
+interface CompanyFormData {
+  id?: string;
+  name: string;
+  companyProducts: Array<{
+    id?: string;
+    name: string;
+    code: string;
+    price: string;
+    categoryId?: string;
+  }>;
+}
+
 export default function AdminPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [services, setServices] = useState<ServiceData[]>([]);
@@ -55,12 +68,14 @@ export default function AdminPage() {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
   const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
+  const [isCompanyDialogOpen, setIsCompanyDialogOpen] = useState(false);
   const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
   const [isSubCategoryDialogOpen, setIsSubCategoryDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editingService, setEditingService] = useState<ServiceData | null>(
     null
   );
+  const [editingCompany, setEditingCompany] = useState<Company | null>(null);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [editingSubCategory, setEditingSubCategory] =
     useState<SubCategory | null>(null);
@@ -302,6 +317,65 @@ export default function AdminPage() {
       toast({
         title: "Error",
         description: `Failed to ${editingService ? "update" : "create"} service`,
+        variant: "destructive",
+      });
+    } finally {
+      setIsFormLoading(false);
+    }
+  };
+
+  // Company handlers
+  const handleCreateCompany = () => {
+    setEditingCompany(null);
+    setIsCompanyDialogOpen(true);
+  };
+
+  // Convert Company to CompanyFormData
+  const companyToFormData = (company: Company): CompanyFormData => ({
+    id: company.id,
+    name: company.name,
+    companyProducts: company.companyProducts,
+  });
+
+  const handleCompanySubmit = async (data: CompanyFormData) => {
+    try {
+      setIsFormLoading(true);
+      let response;
+
+      if (editingCompany) {
+        // Update existing company
+        response = await fetch(`/api/admin/company/${editingCompany.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+      } else {
+        // Create new company
+        response = await fetch("/api/admin/company", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+      }
+
+      if (response.ok) {
+        await fetchCompanies();
+        setIsCompanyDialogOpen(false);
+        setEditingCompany(null);
+        toast({
+          title: "Success",
+          description: `Company ${editingCompany ? "updated" : "created"} successfully`,
+        });
+      } else {
+        throw new Error(
+          `Failed to ${editingCompany ? "update" : "create"} company`
+        );
+      }
+    } catch (error) {
+      console.error("Error saving company:", error);
+      toast({
+        title: "Error",
+        description: `Failed to ${editingCompany ? "update" : "create"} company`,
         variant: "destructive",
       });
     } finally {
@@ -568,7 +642,6 @@ export default function AdminPage() {
                   className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
                 >
                   <Plus className="h-4 w-4 mr-1" />
-                  Add Product
                 </Button>
               </div>
             </CardContent>
@@ -606,7 +679,6 @@ export default function AdminPage() {
                   className="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white"
                 >
                   <Plus className="h-4 w-4 mr-1" />
-                  Add Service
                 </Button>
               </div>
             </CardContent>
@@ -642,6 +714,13 @@ export default function AdminPage() {
                     Manage Companies
                   </Button>
                 </Link>
+                <Button
+                  size="sm"
+                  onClick={handleCreateCompany}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <Plus className="h-4 w-4 mr-1" />
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -816,6 +895,25 @@ export default function AdminPage() {
             service={editingService || undefined}
             onSubmit={handleServiceSubmit}
             onCancel={() => setIsServiceDialogOpen(false)}
+            isLoading={isFormLoading}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* Company Dialog */}
+      <Dialog open={isCompanyDialogOpen} onOpenChange={setIsCompanyDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {editingCompany ? "Edit Company" : "Create New Company"}
+            </DialogTitle>
+          </DialogHeader>
+          <CompanyForm
+            company={
+              editingCompany ? companyToFormData(editingCompany) : undefined
+            }
+            onSubmit={handleCompanySubmit}
+            onCancel={() => setIsCompanyDialogOpen(false)}
             isLoading={isFormLoading}
           />
         </DialogContent>
