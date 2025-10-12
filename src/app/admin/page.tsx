@@ -19,6 +19,7 @@ import {
   BarChart3,
   FolderTree,
   Tags,
+  Building2,
 } from "lucide-react";
 import { ProductForm } from "@/components/admin/product-form";
 import { ServiceForm } from "@/components/admin/service-form";
@@ -27,6 +28,7 @@ import { SubCategoryForm } from "@/components/admin/subcategory-form";
 import { CategoryTable } from "@/components/admin/category-table";
 import { SubCategoryTable } from "@/components/admin/subcategory-table";
 import { Product, Category, SubCategory } from "@/types/product";
+import { Company } from "@/types/company";
 import { useToast } from "@/hooks/use-toast";
 
 interface ServiceData {
@@ -50,6 +52,7 @@ export default function AdminPage() {
   const [services, setServices] = useState<ServiceData[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
+  const [companies, setCompanies] = useState<Company[]>([]);
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
   const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
   const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
@@ -161,6 +164,29 @@ export default function AdminPage() {
     }
   }, [toast]);
 
+  // Fetch companies
+  const fetchCompanies = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("/api/admin/company");
+      if (response.ok) {
+        const data = await response.json();
+        setCompanies(data);
+      } else {
+        throw new Error("Failed to fetch companies");
+      }
+    } catch (error) {
+      console.error("Error fetching companies:", error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch companies",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [toast]);
+
   useEffect(() => {
     const loadData = async () => {
       await Promise.all([
@@ -168,10 +194,17 @@ export default function AdminPage() {
         fetchServices(),
         fetchCategories(),
         fetchSubcategories(),
+        fetchCompanies(),
       ]);
     };
     loadData();
-  }, [fetchProducts, fetchServices, fetchCategories, fetchSubcategories]);
+  }, [
+    fetchProducts,
+    fetchServices,
+    fetchCategories,
+    fetchSubcategories,
+    fetchCompanies,
+  ]);
 
   // Product handlers
   const handleCreateProduct = () => {
@@ -492,11 +525,17 @@ export default function AdminPage() {
                 <span className="font-semibold">View All Services</span>
               </Button>
             </Link>
+            <Link href="/admin/companies">
+              <Button className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white shadow-lg transform hover:scale-105 transition-all duration-200 px-6 py-3">
+                <Building2 className="h-5 w-5" />
+                <span className="font-semibold">View All Companies</span>
+              </Button>
+            </Link>
           </div>
         </div>
 
         {/* Overview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           <Card className="group bg-gradient-to-br from-white to-emerald-50 border-emerald-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-lg font-bold text-emerald-800">
@@ -569,6 +608,40 @@ export default function AdminPage() {
                   <Plus className="h-4 w-4 mr-1" />
                   Add Service
                 </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="group bg-gradient-to-br from-white to-blue-50 border-blue-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-lg font-bold text-blue-800">
+                Total Companies
+              </CardTitle>
+              <div className="p-2 bg-blue-100 rounded-full group-hover:bg-blue-200 transition-colors">
+                <Building2 className="h-6 w-6 text-blue-600" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-blue-700 mb-2">
+                {companies.length}
+              </div>
+              <p className="text-sm text-blue-600 mb-4">
+                {companies.reduce(
+                  (sum, c) => sum + c.companyProducts.length,
+                  0
+                )}{" "}
+                total products
+              </p>
+              <div className="flex gap-2">
+                <Link href="/admin/companies" className="flex-1">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full border-blue-300 text-blue-700 hover:bg-blue-50"
+                  >
+                    Manage Companies
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
