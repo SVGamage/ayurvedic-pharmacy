@@ -82,16 +82,17 @@ model Category {
 }
 
 model SubCategory {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String?
-  image       String?
-  isActive    Boolean   @default(true)
-  categoryId  String    @db.ObjectId
-  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  products    Product[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  description    String?
+  image          String?
+  isActive       Boolean          @default(true)
+  categoryId     String           @db.ObjectId
+  category       Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  products       Product[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  CompanyProduct CompanyProduct[]
 
   @@unique([name, categoryId])
   @@map("subcategory")
@@ -133,4 +134,26 @@ model Service {
   updatedAt   DateTime @updatedAt
 
   @@map("service")
+}
+
+model CompanyProduct {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  code  String
+  price String
+
+  subCategoryId String?      @db.ObjectId
+  subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: SetNull)
+  Company       Company?     @relation(fields: [companyId], references: [id])
+  companyId     String?      @db.ObjectId
+
+  @@map("company_product")
+}
+
+model Company {
+  id              String           @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  companyProducts CompanyProduct[]
+
+  @@map("company")
 }
