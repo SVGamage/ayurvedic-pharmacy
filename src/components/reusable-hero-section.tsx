@@ -30,7 +30,7 @@ interface HeroSectionProps {
   };
 }
 
-const themeColors = {
+export const themeColors = {
   green: {
     preTitle: "text-green-600",
     titleGradient1: "from-gray-900 via-green-800 to-gray-900",
@@ -129,8 +129,6 @@ export function ReusableHeroSection({
   titleLine1,
   titleLine2,
   subtitle,
-  description,
-  badges = [],
   backgroundDecorations,
   className,
   theme = "green",
@@ -146,7 +144,7 @@ export function ReusableHeroSection({
   };
 
   return (
-    <div className={cn("relative mb-16 text-center", className)}>
+    <div className={cn("relative mb-8 text-center", className)}>
       {/* Background decorations */}
       {backgroundDecorations || <DefaultBackgroundDecorations theme={theme} />}
 
@@ -192,31 +190,15 @@ export function ReusableHeroSection({
 
       {/* Enhanced subtitle */}
       <div className="max-w-4xl mx-auto mb-8">
-        <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-6">
-          {subtitle}
-        </p>
         <div
           className={cn(
-            "bg-gradient-to-r rounded-2xl p-6 max-w-3xl mx-auto",
+            "bg-gradient-to-r rounded-2xl p-6 max-w-4xl mx-auto flex justify-center items-center",
             colors.descriptionBg
           )}
         >
-          <p className="text-gray-700 leading-relaxed mb-4">{description}</p>
-          {badges.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-4 text-sm">
-              {badges.map((badge, index) => (
-                <span
-                  key={index}
-                  className={cn(
-                    "bg-white/80 px-3 py-1 rounded-full font-medium",
-                    colors.badgeColors[index % colors.badgeColors.length]
-                  )}
-                >
-                  {badge}
-                </span>
-              ))}
-            </div>
-          )}
+          <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-6">
+            {subtitle}
+          </p>
         </div>
       </div>
 
