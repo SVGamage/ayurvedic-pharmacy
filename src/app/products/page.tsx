@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,6 +21,7 @@ import { ProductCard } from "@/components/product-card";
 import { Product } from "@/types/product";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
 import CarouselGrid from "@/components/carousel-grid";
+import { AdminPagination } from "@/components/admin/admin-pagination";
 import p1 from "@/assets/products/1.webp";
 import p2 from "@/assets/products/2.webp";
 import p3 from "@/assets/products/3.webp";
@@ -72,6 +73,14 @@ interface ApiProduct {
   image?: string;
   badge?: string;
   description: string;
+}
+
+interface PaginationData {
+  page: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+  total: number;
 }
 
 const heroSlides1: HeroSlide[] = [
@@ -373,29 +382,33 @@ export default function ProductsPage() {
   const [isSupplierDialogOpen, setIsSupplierDialogOpen] = useState(false);
   const [selectedSupplierValue, setSelectedSupplierValue] = useState("");
 
-  const handleSupplierSelect = (supplierId: string) => {
-    const supplier = supplierCompanies.find((s) => s.id === supplierId);
-    if (supplier) {
-      setSelectedSupplier(supplier);
-      setSelectedSupplierValue(supplierId);
-      setIsSupplierDialogOpen(true);
-    }
-  };
+  // Pagination states
+  const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [paginationData, setPaginationData] = useState<PaginationData>({
+    page: 1,
+    totalPages: 1,
+    hasNext: false,
+    hasPrev: false,
+    total: 0,
+  });
 
-  const handleSupplierDialogClose = (open: boolean) => {
-    setIsSupplierDialogOpen(open);
-    if (!open) {
-      setSelectedSupplier(null);
-      setSelectedSupplierValue("");
-    }
-  };
-
-  // Fetch products from API
-  useEffect(() => {
-    const fetchProducts = async () => {
+  // Fetch products from API with pagination and filtering
+  const fetchProducts = useCallback(
+    async (
+      page = 1,
+      limit = itemsPerPage,
+      search = searchTerm,
+      category = selectedCategory
+    ) => {
       try {
         setIsLoading(true);
-        const response = await fetch("/api/admin/products?limit=100"); // Get all products
+        const params = new URLSearchParams({
+          page: page.toString(),
+          limit: limit.toString(),
+          ...(search && { search }),
+        });
+
+        const response = await fetch(`/api/admin/products?${params}`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch products");
@@ -404,7 +417,7 @@ export default function ProductsPage() {
         const data = await response.json();
 
         // Convert API data to Product format
-        const productsData = data.products.map((product: ApiProduct) => ({
+        let productsData = data.products.map((product: ApiProduct) => ({
           id: product.id,
           name: product.name,
           categoryId: product.category?.id,
@@ -430,17 +443,74 @@ export default function ProductsPage() {
           badge: product.badge,
           description: product.description,
         }));
+
+        // Apply category filtering if not "All Products"
+        if (category !== "All Products") {
+          productsData = productsData.filter(
+            (product: Product) => product.category?.name === category
+          );
+        }
+
         setProducts(productsData);
+        setPaginationData({
+          page: data.pagination.page,
+          totalPages: data.pagination.totalPages,
+          hasNext: data.pagination.hasNext,
+          hasPrev: data.pagination.hasPrev,
+          total: data.pagination.total,
+        });
       } catch (err) {
         console.error("Error fetching products:", err);
         setError("Failed to load products");
       } finally {
         setIsLoading(false);
       }
-    };
+    },
+    [itemsPerPage, searchTerm, selectedCategory]
+  );
 
-    fetchProducts();
-  }, []);
+  // Fetch products from API
+  useEffect(() => {
+    fetchProducts(1, itemsPerPage, searchTerm, selectedCategory);
+  }, [fetchProducts, itemsPerPage, searchTerm, selectedCategory]);
+
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    fetchProducts(page, itemsPerPage, searchTerm, selectedCategory);
+  };
+
+  // Handle items per page change
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage);
+    fetchProducts(1, newItemsPerPage, searchTerm, selectedCategory);
+  };
+
+  // Handle search change
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+  };
+
+  // Handle category change
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+  };
+
+  const handleSupplierSelect = (supplierId: string) => {
+    const supplier = supplierCompanies.find((s) => s.id === supplierId);
+    if (supplier) {
+      setSelectedSupplier(supplier);
+      setSelectedSupplierValue(supplierId);
+      setIsSupplierDialogOpen(true);
+    }
+  };
+
+  const handleSupplierDialogClose = (open: boolean) => {
+    setIsSupplierDialogOpen(open);
+    if (!open) {
+      setSelectedSupplier(null);
+      setSelectedSupplierValue("");
+    }
+  };
 
   // Add loading and error states
   if (isLoading) {
@@ -470,19 +540,8 @@ export default function ProductsPage() {
     );
   }
 
-  // Filter products based on search term and selected category
-  const filteredProducts = products.filter((product) => {
-    const matchesSearch =
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (product.description &&
-        product.description.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesCategory =
-      selectedCategory === "All Products" ||
-      product.category?.name === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
-
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
+  // Apply sorting to the products from API
+  const sortedProducts = [...products].sort((a, b) => {
     switch (sortBy) {
       case "price-low":
         return a.price - b.price;
@@ -529,11 +588,11 @@ export default function ProductsPage() {
             <Input
               placeholder="Search products..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               className="pl-10"
             />
           </div>
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+          <Select value={selectedCategory} onValueChange={handleCategoryChange}>
             <SelectTrigger>
               <SelectValue placeholder="Category" />
             </SelectTrigger>
@@ -595,6 +654,23 @@ export default function ProductsPage() {
           <p className="text-gray-500 text-lg">
             No products found matching your criteria.
           </p>
+        </div>
+      )}
+
+      {/* Pagination */}
+      {sortedProducts.length > 0 && (
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-green-100 shadow-md">
+          <AdminPagination
+            currentPage={paginationData.page}
+            totalPages={paginationData.totalPages}
+            totalItems={paginationData.total}
+            itemsPerPage={itemsPerPage}
+            hasNext={paginationData.hasNext}
+            hasPrev={paginationData.hasPrev}
+            onPageChange={handlePageChange}
+            onItemsPerPageChange={handleItemsPerPageChange}
+            pageSizeOptions={[6, 12, 24, 48]}
+          />
         </div>
       )}
 
