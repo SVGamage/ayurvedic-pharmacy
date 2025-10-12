@@ -56,7 +56,7 @@ interface CompanyFormData {
     name: string;
     code: string;
     price: string;
-    categoryId?: string;
+    subCategoryId?: string;
   }>;
 }
 
