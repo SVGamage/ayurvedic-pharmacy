@@ -16,7 +16,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Search, Building2, Package } from "lucide-react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  Search,
+  Building2,
+  Package,
+  ChevronDown,
+  ChevronRight,
+} from "lucide-react";
 import { ProductCard } from "@/components/product-card";
 import { Product } from "@/types/product";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
@@ -34,6 +45,7 @@ import p9 from "@/assets/products/9.webp";
 import { HeroSlide } from "@/components/custom-carousel";
 import ProductLoading from "@/components/product-loading";
 import { cn } from "@/lib/utils";
+import { Company, CompanyProduct } from "@/types/company";
 
 interface ApiProduct {
   id: string;
@@ -144,208 +156,6 @@ const productCategories = [
   "Traditional Products",
 ];
 
-// Sample supplier companies data
-interface SupplierCompany {
-  id: string;
-  name: string;
-  description: string;
-  logo?: string;
-  location: string;
-  established: string;
-  products: Product[];
-}
-
-// Helper to create category objects
-const createCategory = (id: string, name: string) => ({
-  id,
-  name,
-  isActive: true,
-  createdAt: "2024-01-01T00:00:00Z",
-  updatedAt: "2024-01-01T00:00:00Z",
-});
-
-const supplierCompanies: SupplierCompany[] = [
-  {
-    id: "ayurgenix",
-    name: "AyurGenix Solutions",
-    description:
-      "Leading manufacturer of authentic Ayurvedic medicines and wellness products",
-    location: "Kandy, Sri Lanka",
-    established: "1995",
-    products: [
-      {
-        id: "ayur-1",
-        name: "Brahmi Hair Oil",
-        price: 850,
-        originalPrice: 1200,
-        rating: 4.8,
-        reviews: 245,
-        image: "/placeholder.svg?height=300&width=300",
-        badge: "Best Seller",
-        description:
-          "Premium Brahmi hair oil for healthy hair growth and scalp nourishment",
-        category: createCategory("ayur", "Ayurvedic Products"),
-      },
-      {
-        id: "ayur-2",
-        name: "Ashwagandha Capsules",
-        price: 2850,
-        originalPrice: 3200,
-        rating: 4.7,
-        reviews: 189,
-        image: "/placeholder.svg?height=300&width=300",
-        badge: "Organic",
-        description:
-          "Pure Ashwagandha extract capsules for stress relief and vitality",
-        category: createCategory("ayur", "Ayurvedic Products"),
-      },
-      {
-        id: "ayur-3",
-        name: "Triphala Powder",
-        price: 1200,
-        rating: 4.6,
-        reviews: 156,
-        image: "/placeholder.svg?height=300&width=300",
-        description:
-          "Traditional Triphala powder for digestive health and detoxification",
-        category: createCategory("ayur", "Ayurvedic Products"),
-      },
-    ],
-  },
-  {
-    id: "herbanova",
-    name: "HerbaNova Pharmaceuticals",
-    description: "Modern Ayurvedic formulations with traditional wisdom",
-    location: "Colombo, Sri Lanka",
-    established: "2008",
-    products: [
-      {
-        id: "herb-1",
-        name: "Neem Face Wash",
-        price: 650,
-        originalPrice: 850,
-        rating: 4.5,
-        reviews: 312,
-        image: "/placeholder.svg?height=300&width=300",
-        badge: "Natural",
-        description: "Gentle neem-based face wash for clear and healthy skin",
-        category: createCategory("ayur", "Ayurvedic Products"),
-      },
-      {
-        id: "herb-2",
-        name: "Turmeric Capsules",
-        price: 1850,
-        rating: 4.4,
-        reviews: 98,
-        image: "/placeholder.svg?height=300&width=300",
-        description:
-          "High-potency turmeric capsules for inflammation and immunity",
-        category: createCategory("ayur", "Ayurvedic Products"),
-      },
-      {
-        id: "herb-3",
-        name: "Ginger Honey Syrup",
-        price: 950,
-        rating: 4.7,
-        reviews: 156,
-        image: "/placeholder.svg?height=300&width=300",
-        badge: "Traditional",
-        description: "Natural ginger and honey syrup for cough and cold relief",
-        category: createCategory("disease", "Disease-Related Products"),
-      },
-    ],
-  },
-  {
-    id: "naturacare",
-    name: "NaturaCare Wellness",
-    description: "Certified organic Ayurvedic products for holistic wellness",
-    location: "Galle, Sri Lanka",
-    established: "2012",
-    products: [
-      {
-        id: "nat-1",
-        name: "Moringa Leaf Powder",
-        price: 1450,
-        originalPrice: 1650,
-        rating: 4.9,
-        reviews: 87,
-        image: "/placeholder.svg?height=300&width=300",
-        badge: "Superfood",
-        description:
-          "Organic moringa leaf powder packed with nutrients and antioxidants",
-        category: createCategory("ayur", "Ayurvedic Products"),
-      },
-      {
-        id: "nat-2",
-        name: "Coconut Oil (Virgin)",
-        price: 1200,
-        rating: 4.6,
-        reviews: 234,
-        image: "/placeholder.svg?height=300&width=300",
-        badge: "Organic",
-        description:
-          "Cold-pressed virgin coconut oil for cooking and beauty care",
-        category: createCategory("traditional", "Traditional Products"),
-      },
-      {
-        id: "nat-3",
-        name: "Gotukola Tea",
-        price: 850,
-        rating: 4.5,
-        reviews: 145,
-        image: "/placeholder.svg?height=300&width=300",
-        description: "Organic Gotukola tea for mental clarity and brain health",
-        category: createCategory("ayur", "Ayurvedic Products"),
-      },
-    ],
-  },
-  {
-    id: "traditional-remedies",
-    name: "Traditional Remedies Co.",
-    description: "Preserving ancient formulations for modern wellness needs",
-    location: "Matara, Sri Lanka",
-    established: "1987",
-    products: [
-      {
-        id: "trad-1",
-        name: "Paspanguwa Herbal Tea",
-        price: 750,
-        originalPrice: 950,
-        rating: 4.8,
-        reviews: 278,
-        image: "/placeholder.svg?height=300&width=300",
-        badge: "Traditional",
-        description:
-          "Traditional Sri Lankan herbal tea blend for respiratory wellness",
-        category: createCategory("traditional", "Traditional Products"),
-      },
-      {
-        id: "trad-2",
-        name: "Siddhalepa Balm",
-        price: 450,
-        rating: 4.7,
-        reviews: 412,
-        image: "/placeholder.svg?height=300&width=300",
-        badge: "Popular",
-        description:
-          "Traditional herbal balm for muscle pain and headache relief",
-        category: createCategory("disease", "Disease-Related Products"),
-      },
-      {
-        id: "trad-3",
-        name: "Sarpagandhadi Kashaya",
-        price: 1850,
-        rating: 4.6,
-        reviews: 67,
-        image: "/placeholder.svg?height=300&width=300",
-        description:
-          "Classical Ayurvedic decoction for hypertension management",
-        category: createCategory("disease", "Disease-Related Products"),
-      },
-    ],
-  },
-];
-
 // const ayurvedicSubcategories = [
 //   "Cosmetics",
 //   "Oils",
@@ -377,10 +187,13 @@ export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [sortBy, setSortBy] = useState("name");
-  const [selectedSupplier, setSelectedSupplier] =
-    useState<SupplierCompany | null>(null);
-  const [isSupplierDialogOpen, setIsSupplierDialogOpen] = useState(false);
-  const [selectedSupplierValue, setSelectedSupplierValue] = useState("");
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
+  const [isCompanyDialogOpen, setIsCompanyDialogOpen] = useState(false);
+  const [selectedCompanyValue, setSelectedCompanyValue] = useState("");
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
+    new Set()
+  );
 
   // Pagination states
   const [itemsPerPage, setItemsPerPage] = useState(12);
@@ -469,6 +282,25 @@ export default function ProductsPage() {
     [itemsPerPage, searchTerm, selectedCategory]
   );
 
+  const fetchCompanies = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("/api/admin/company");
+      if (response.ok) {
+        const data = await response.json();
+        setCompanies(data);
+      }
+    } catch (error) {
+      console.error("Error fetching companies:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCompanies();
+  }, [fetchCompanies]);
+
   // Fetch products from API
   useEffect(() => {
     fetchProducts(1, itemsPerPage, searchTerm, selectedCategory);
@@ -495,21 +327,34 @@ export default function ProductsPage() {
     setSelectedCategory(category);
   };
 
-  const handleSupplierSelect = (supplierId: string) => {
-    const supplier = supplierCompanies.find((s) => s.id === supplierId);
-    if (supplier) {
-      setSelectedSupplier(supplier);
-      setSelectedSupplierValue(supplierId);
-      setIsSupplierDialogOpen(true);
+  const handleCompanySelect = (companyId: string) => {
+    const company = companies.find((s) => s.id === companyId);
+    if (company) {
+      setSelectedCompany(company);
+      setSelectedCompanyValue(companyId);
+      setIsCompanyDialogOpen(true);
     }
   };
 
-  const handleSupplierDialogClose = (open: boolean) => {
-    setIsSupplierDialogOpen(open);
+  const handleCompanyDialogClose = (open: boolean) => {
+    setIsCompanyDialogOpen(open);
     if (!open) {
-      setSelectedSupplier(null);
-      setSelectedSupplierValue("");
+      setSelectedCompany(null);
+      setSelectedCompanyValue("");
+      setExpandedCategories(new Set());
     }
+  };
+
+  const toggleCategory = (categoryId: string) => {
+    setExpandedCategories((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(categoryId)) {
+        newSet.delete(categoryId);
+      } else {
+        newSet.add(categoryId);
+      }
+      return newSet;
+    });
   };
 
   // Add loading and error states
@@ -605,18 +450,18 @@ export default function ProductsPage() {
             </SelectContent>
           </Select>
           <Select
-            value={selectedSupplierValue}
-            onValueChange={handleSupplierSelect}
+            value={selectedCompanyValue}
+            onValueChange={handleCompanySelect}
           >
             <SelectTrigger>
               <SelectValue placeholder="Shop By Brand" />
             </SelectTrigger>
             <SelectContent>
-              {supplierCompanies.map((supplier) => (
-                <SelectItem key={supplier.id} value={supplier.id}>
+              {companies.map((company) => (
+                <SelectItem key={company.id} value={company.id}>
                   <div className="flex items-center space-x-2">
                     <Building2 className="h-4 w-4 text-green-600" />
-                    <span>{supplier.name}</span>
+                    <span>{company.name}</span>
                   </div>
                 </SelectItem>
               ))}
@@ -674,72 +519,168 @@ export default function ProductsPage() {
         </div>
       )}
 
-      {/* Supplier Dialog */}
+      {/* Company Dialog */}
       <Dialog
-        open={isSupplierDialogOpen}
-        onOpenChange={handleSupplierDialogClose}
+        open={isCompanyDialogOpen}
+        onOpenChange={handleCompanyDialogClose}
       >
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-green-800 mb-4">
-              {selectedSupplier?.name}
-            </DialogTitle>
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="p-3 bg-green-100 rounded-full">
+                <Building2 className="h-6 w-6 text-green-600" />
+              </div>
+              <DialogTitle className="text-2xl font-bold text-green-800">
+                {selectedCompany?.name}
+              </DialogTitle>
+            </div>
           </DialogHeader>
 
-          {selectedSupplier && (
+          {selectedCompany && (
             <div className="space-y-6">
-              {/* Supplier Information */}
+              {/* Company Information */}
               <div className="bg-green-50 rounded-lg p-6">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <h4 className="font-semibold text-green-800">
-                      About Company
-                    </h4>
-                    <p className="text-green-700">
-                      {selectedSupplier.description}
-                    </p>
+                    <div className="flex items-center space-x-2">
+                      <Package className="h-4 w-4 text-green-600" />
+                      <span className="text-sm text-green-700">
+                        <strong>Total Products:</strong>{" "}
+                        {selectedCompany.companyProducts.length} items
+                      </span>
+                    </div>
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <Building2 className="h-4 w-4 text-green-600" />
                       <span className="text-sm text-green-700">
-                        <strong>Location:</strong> {selectedSupplier.location}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Package className="h-4 w-4 text-green-600" />
-                      <span className="text-sm text-green-700">
-                        <strong>Established:</strong>{" "}
-                        {selectedSupplier.established}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Package className="h-4 w-4 text-green-600" />
-                      <span className="text-sm text-green-700">
-                        <strong>Products:</strong>{" "}
-                        {selectedSupplier.products.length} items
+                        <strong>Subcategories:</strong>{" "}
+                        {
+                          new Set(
+                            selectedCompany.companyProducts
+                              .filter((p) => p.subCategory)
+                              .map((p) => p.subCategory!.name)
+                          ).size
+                        }{" "}
+                        subcategories
                       </span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Products Grid */}
+              {/* Products by Category */}
               <div>
                 <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                  Products from {selectedSupplier.name}
+                  Products by Subcategory
                 </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {selectedSupplier.products.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      variant="default"
-                      showQuickAdd={true}
-                      showDescription={true}
-                    />
-                  ))}
-                </div>
+
+                {/* Group products by subcategory */}
+                {(() => {
+                  const productsBySubCategory =
+                    selectedCompany.companyProducts.reduce(
+                      (acc, product) => {
+                        if (product.subCategory) {
+                          const subCategoryName = product.subCategory.name;
+                          if (!acc[subCategoryName]) {
+                            acc[subCategoryName] = {
+                              subCategory: product.subCategory,
+                              products: [],
+                            };
+                          }
+                          acc[subCategoryName].products.push(product);
+                        } else {
+                          // Handle products without subcategory
+                          const uncategorizedKey = "Uncategorized";
+                          if (!acc[uncategorizedKey]) {
+                            acc[uncategorizedKey] = {
+                              subCategory: {
+                                id: "uncategorized",
+                                name: "Uncategorized",
+                              },
+                              products: [],
+                            };
+                          }
+                          acc[uncategorizedKey].products.push(product);
+                        }
+                        return acc;
+                      },
+                      {} as Record<
+                        string,
+                        {
+                          subCategory: { id: string; name: string };
+                          products: CompanyProduct[];
+                        }
+                      >
+                    );
+
+                  return Object.entries(productsBySubCategory).map(
+                    ([subCategoryName, { subCategory, products }]) => (
+                      <Collapsible
+                        key={subCategory.id}
+                        open={expandedCategories.has(subCategory.id)}
+                        onOpenChange={() => toggleCategory(subCategory.id)}
+                        className="w-full"
+                      >
+                        <CollapsibleTrigger className="flex items-center justify-between w-full p-4 bg-white rounded-lg border border-green-200 hover:bg-green-50 transition-colors mb-2">
+                          <div className="flex items-center space-x-3">
+                            <div className="p-2 bg-green-100 rounded-full">
+                              <Package className="h-4 w-4 text-green-600" />
+                            </div>
+                            <div className="text-left">
+                              <h5 className="font-semibold text-gray-900">
+                                {subCategoryName}
+                              </h5>
+                              <p className="text-sm text-gray-600">
+                                {products.length} products
+                              </p>
+                            </div>
+                          </div>
+                          {expandedCategories.has(subCategory.id) ? (
+                            <ChevronDown className="h-5 w-5 text-green-600" />
+                          ) : (
+                            <ChevronRight className="h-5 w-5 text-green-600" />
+                          )}
+                        </CollapsibleTrigger>
+
+                        <CollapsibleContent className="space-y-2">
+                          <div className="ml-4 p-4 bg-gray-50 rounded-lg border-l-4 border-green-300">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                              {products.map((product) => (
+                                <div
+                                  key={product.id}
+                                  className="bg-white p-3 rounded-lg border border-gray-200 hover:border-green-300 transition-colors"
+                                >
+                                  <div className="space-y-2">
+                                    <div className="flex justify-between items-center">
+                                      <h6 className="font-medium text-gray-900 text-sm">
+                                        {product.name}
+                                      </h6>
+                                      <span className="text-sm font-semibold text-green-600">
+                                        Rs. {product.price}
+                                      </span>
+                                      <span className="text-xs text-gray-600">
+                                        Code: {product.code}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </CollapsibleContent>
+                      </Collapsible>
+                    )
+                  );
+                })()}
+
+                {/* Show message if no products */}
+                {selectedCompany.companyProducts.length === 0 && (
+                  <div className="text-center py-8 text-gray-500">
+                    <Package className="h-12 w-12 mx-auto mb-3 text-gray-400" />
+                    <p>No products available for this company.</p>
+                  </div>
+                )}
               </div>
 
               {/* Company Stats */}
@@ -750,41 +691,45 @@ export default function ProductsPage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-green-600">
-                      {selectedSupplier.products.length}
+                      {selectedCompany.companyProducts.length}
                     </div>
                     <div className="text-sm text-gray-600">Total Products</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-green-600">
-                      {Math.round(
-                        (selectedSupplier.products.reduce(
-                          (acc, p) => acc + p.rating,
-                          0
-                        ) /
-                          selectedSupplier.products.length) *
-                          10
-                      ) / 10}
+                      {
+                        new Set(
+                          selectedCompany.companyProducts
+                            .filter((p) => p.subCategory)
+                            .map((p) => p.subCategory!.name)
+                        ).size
+                      }
                     </div>
-                    <div className="text-sm text-gray-600">Avg. Rating</div>
+                    <div className="text-sm text-gray-600">Subcategories</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-green-600">
-                      {selectedSupplier.products.reduce(
-                        (acc, p) => acc + p.reviews,
-                        0
-                      )}
+                      {
+                        selectedCompany.companyProducts.filter(
+                          (p) => parseFloat(p.price) > 0
+                        ).length
+                      }
                     </div>
-                    <div className="text-sm text-gray-600">Total Reviews</div>
+                    <div className="text-sm text-gray-600">Priced Products</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-green-600">
-                      {new Date().getFullYear() -
-                        parseInt(selectedSupplier.established)}
-                      +
+                      Rs.{" "}
+                      {selectedCompany.companyProducts.length > 0
+                        ? Math.round(
+                            selectedCompany.companyProducts.reduce(
+                              (sum, p) => sum + parseFloat(p.price),
+                              0
+                            ) / selectedCompany.companyProducts.length
+                          )
+                        : 0}
                     </div>
-                    <div className="text-sm text-gray-600">
-                      Years Experience
-                    </div>
+                    <div className="text-sm text-gray-600">Avg. Price</div>
                   </div>
                 </div>
               </div>
