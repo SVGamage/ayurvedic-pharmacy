@@ -32,6 +32,7 @@ import p8 from "@/assets/products/8.webp";
 import p9 from "@/assets/products/9.webp";
 import { HeroSlide } from "@/components/custom-carousel";
 import ProductLoading from "@/components/product-loading";
+import { cn } from "@/lib/utils";
 
 interface ApiProduct {
   id: string;
@@ -514,7 +515,14 @@ export default function ProductsPage() {
       />
 
       {/* Filters */}
-      <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
+
+      <div
+        className={cn(
+          "bg-gradient-to-r p-6 rounded-lg mb-10",
+          "from-green-600 via-emerald-500 to-green-500",
+          "[filter:drop-shadow(0_10px_10px_rgba(0,0,0,0.40))]"
+        )}
+      >
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
