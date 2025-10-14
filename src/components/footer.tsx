@@ -9,9 +9,9 @@ export function Footer() {
   return (
     <footer className="bg-green-900 text-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-20 justify-items-center md:justify-items-center">
+        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-20 justify-items-center md:justify-items-center">
           <FooterBadge />
-          {/* <div className="text-center md:text-center">
+          <div className="text-center md:text-center">
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
@@ -31,20 +31,23 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-green-100 hover:text-white">
-                  Blog
+                <Link
+                  href="/location"
+                  className="text-green-100 hover:text-white"
+                >
+                  Location
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/reviews"
+                  href="/contact"
                   className="text-green-100 hover:text-white"
                 >
-                  Reviews
+                  Contact
                 </Link>
               </li>
             </ul>
-          </div> */}
+          </div>
 
           <div className="text-center md:text-center">
             <h3 className="text-lg font-semibold mb-4">Services</h3>
@@ -67,23 +70,23 @@ export function Footer() {
           <div className="text-center md:text-center">
             <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
             <div className="space-y-3">
-              <div className="flex items-center justify-center space-x-2">
+              <div className="flex items-center space-x-2">
                 <MessageCircle className="h-4 w-4 text-green-400" />
                 <span className="text-green-100">
                   {WHATSAPP_CONFIG.displayNumber}
                 </span>
               </div>
-              <div className="flex items-center justify-center space-x-2">
+              <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4 text-green-400" />
                 <span className="text-green-100">+1 (555) 123-4567</span>
               </div>
-              <div className="flex items-center justify-center space-x-2">
+              <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4 text-green-400" />
                 <span className="text-green-100">
                   info@ayurvedapharmacy.com
                 </span>
               </div>
-              <div className="flex items-center justify-center space-x-2">
+              <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4 text-green-400" />
                 <span className="text-green-100">
                   123 Wellness St, Natural City
