@@ -78,7 +78,7 @@ export function Footer() {
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4 text-green-400" />
-                <span className="text-green-100">+1 (555) 123-4567</span>
+                <span className="text-green-100">+94 (047) 347-7938</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4 text-green-400" />
@@ -86,12 +86,12 @@ export function Footer() {
                   info@ayurvedapharmacy.com
                 </span>
               </div>
-              <div className="flex items-center space-x-2">
+              {/* <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4 text-green-400" />
                 <span className="text-green-100">
-                  123 Wellness St, Natural City
+                  Rathndeepa osu hala, Hambantota Rd, Tissamaharama
                 </span>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
