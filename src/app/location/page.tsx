@@ -127,9 +127,11 @@ export default function LocationPage() {
               <div>
                 <h3 className="font-semibold mb-2">By Car</h3>
                 <p className="text-gray-600 text-sm">
-                  Free parking available on-site. Take Exit 15 from Highway 101,
-                  then follow Wellness Street for 2 miles. Our center is on the
-                  right side.
+                  Our shop is conveniently located along the
+                  Tissamaharama–Matara main road. From the Highway: Exit at the
+                  Mattala Interchange, then continue towards Tissamaharama to
+                  reach the Tissa–Matara main road. Free parking available
+                  on-site.
                 </p>
               </div>
             </div>
@@ -139,7 +141,7 @@ export default function LocationPage() {
               <div>
                 <h3 className="font-semibold mb-2">By Bus</h3>
                 <p className="text-gray-600 text-sm">
-                  Bus routes 42, 67, and 89 stop directly in front of our
+                  Bus routes 2, 334/1, and 32 stop directly in front of our
                   center. The &ldquo;Wellness Center&rdquo; stop is announced on
                   all routes.
                 </p>
@@ -151,93 +153,9 @@ export default function LocationPage() {
               <div>
                 <h3 className="font-semibold mb-2">By Train</h3>
                 <p className="text-gray-600 text-sm">
-                  Natural Healing Station is 0.5 miles away. Take the Green Line
-                  and exit at Natural Healing Station, then walk or take bus 42.
+                  Train services are not available in this area.
                 </p>
               </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Enhanced Facilities */}
-      <Card className="mb-8 shadow-sm border-green-100">
-        <CardHeader className="pb-4">
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center mb-3">
-              <div className="h-px bg-gradient-to-r from-transparent via-green-400 to-transparent w-12"></div>
-              <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
-                Wellness Spaces
-              </span>
-              <div className="h-px bg-gradient-to-r from-transparent via-green-400 to-transparent w-12"></div>
-            </div>
-            <CardTitle className="text-2xl font-bold">
-              <span className="bg-gradient-to-r from-green-700 to-emerald-600 bg-clip-text text-transparent">
-                Our Healing Facilities
-              </span>
-            </CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="text-center p-4">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl">🏥</span>
-              </div>
-              <h3 className="font-semibold mb-2">Consultation Rooms</h3>
-              <p className="text-gray-600 text-sm">
-                Private, comfortable rooms for personalized consultations
-              </p>
-            </div>
-
-            <div className="text-center p-4">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl">🌿</span>
-              </div>
-              <h3 className="font-semibold mb-2">Herbal Pharmacy</h3>
-              <p className="text-gray-600 text-sm">
-                Fresh, authentic herbs and medicines prepared daily
-              </p>
-            </div>
-
-            <div className="text-center p-4">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl">🧘</span>
-              </div>
-              <h3 className="font-semibold mb-2">Meditation Hall</h3>
-              <p className="text-gray-600 text-sm">
-                Peaceful space for meditation and yoga sessions
-              </p>
-            </div>
-
-            <div className="text-center p-4">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl">💆</span>
-              </div>
-              <h3 className="font-semibold mb-2">Treatment Rooms</h3>
-              <p className="text-gray-600 text-sm">
-                Specialized rooms for Panchakarma and other therapies
-              </p>
-            </div>
-
-            <div className="text-center p-4">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl">📚</span>
-              </div>
-              <h3 className="font-semibold mb-2">Library</h3>
-              <p className="text-gray-600 text-sm">
-                Extensive collection of Ayurvedic texts and resources
-              </p>
-            </div>
-
-            <div className="text-center p-4">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl">🌱</span>
-              </div>
-              <h3 className="font-semibold mb-2">Herb Garden</h3>
-              <p className="text-gray-600 text-sm">
-                On-site medicinal plant garden for fresh ingredients
-              </p>
             </div>
           </div>
         </CardContent>
@@ -256,33 +174,27 @@ export default function LocationPage() {
 
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">
             <span className="bg-gradient-to-r from-gray-900 to-green-800 bg-clip-text text-transparent">
-              Ready to Visit Our
+              Ready to Visit
             </span>
             <br />
             <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-              Wellness Sanctuary?
+              Our Rathnadeepa Ayurvedic Shop?
             </span>
           </h2>
 
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Schedule your appointment today and begin your journey to natural
-            wellness in our peaceful healing environment.
+            Visit us anytime to explore our wide range of authentic Ayurvedic
+            products. No appointment needed, all are welcome.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              className="bg-green-600 hover:bg-green-700 shadow-lg px-8 py-3"
-              size="lg"
-            >
-              Book Appointment
-            </Button>
             <Button
               variant="outline"
               className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white bg-transparent shadow-lg px-8 py-3"
               size="lg"
               onClick={() =>
                 window.open(
-                  `https://www.google.com/maps/dir/?api=1&destination=${pharmacyLocation.lat},${pharmacyLocation.lng}`,
+                  `https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d991.4650981398622!2d81.266109!3d6.282077!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae69d4cb29100cd%3A0xbc057c7a6a52befa!2sRathnadeepa%20Aurvedic%20Pharmacy!5e0!3m2!1sen!2sus!4v1759433053036!5m2!1sen!2sus`,
                   "_blank"
                 )
               }
