@@ -15,7 +15,6 @@ const services: Service[] = [
       "Meet with our experienced Ayurvedic doctors for personalized treatment plans and comprehensive health assessments.",
     features: [
       "Comprehensive health assessment",
-      "Pulse diagnosis (Nadi Pariksha)",
       "Personalized treatment plan",
       "Prescription medicines",
       "Follow-up support",
