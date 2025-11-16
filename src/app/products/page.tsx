@@ -29,7 +29,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { ProductCard } from "@/components/product-card";
-import { Product } from "@/types/product";
+import { Product, SubCategory } from "@/types/product";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
 import CarouselGrid from "@/components/carousel-grid";
 import { AdminPagination } from "@/components/admin/admin-pagination";
@@ -186,7 +186,8 @@ export default function ProductsPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Products");
-  const [sortBy, setSortBy] = useState("name");
+  const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
+  const [selectedSubcategory, setSelectedSubcategory] = useState("all");
   const [companies, setCompanies] = useState<Company[]>([]);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [isCompanyDialogOpen, setIsCompanyDialogOpen] = useState(false);
@@ -297,9 +298,22 @@ export default function ProductsPage() {
     }
   }, []);
 
+  const fetchSubcategories = useCallback(async () => {
+    try {
+      const response = await fetch("/api/admin/subcategories");
+      if (response.ok) {
+        const data = await response.json();
+        setSubcategories(data.subcategories || data);
+      }
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+    }
+  }, []);
+
   useEffect(() => {
     fetchCompanies();
-  }, [fetchCompanies]);
+    fetchSubcategories();
+  }, [fetchCompanies, fetchSubcategories]);
 
   // Fetch products from API
   useEffect(() => {
@@ -325,6 +339,12 @@ export default function ProductsPage() {
   // Handle category change
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
+    setSelectedSubcategory("all"); // Reset subcategory when category changes
+  };
+
+  // Handle subcategory change
+  const handleSubcategoryChange = (subcategoryId: string) => {
+    setSelectedSubcategory(subcategoryId);
   };
 
   const handleCompanySelect = (companyId: string) => {
@@ -385,18 +405,12 @@ export default function ProductsPage() {
     );
   }
 
-  // Apply sorting to the products from API
-  const sortedProducts = [...products].sort((a, b) => {
-    switch (sortBy) {
-      case "price-low":
-        return a.price - b.price;
-      case "price-high":
-        return b.price - a.price;
-      case "rating":
-        return b.rating - a.rating;
-      default:
-        return a.name.localeCompare(b.name);
+  // Apply subcategory filtering to the products from API
+  const filteredProducts = products.filter((product) => {
+    if (selectedSubcategory === "all") {
+      return true;
     }
+    return product.subcategory?.id === selectedSubcategory;
   });
 
   return (
@@ -406,9 +420,9 @@ export default function ProductsPage() {
       {/* Enhanced Header Section */}
       <ReusableHeroSection
         preTitle="Authentic Wellness"
-        titleLine1="Our Premium"
-        titleLine2="Ayurvedic Products"
-        subtitle="Discover our comprehensive range of authentic Ayurvedic products, traditional remedies, and wellness solutions"
+        titleLine1="Let's Shop"
+        titleLine2="Premium Ayurvedic Products"
+        subtitle="Bringing together Sri Lanka’s trusted Ayurvedic brands for your wellness journey"
         description="Carefully crafted with time-honored formulations to support your natural healing journey"
         badges={[
           "Organic Certified",
@@ -467,15 +481,25 @@ export default function ProductsPage() {
               ))}
             </SelectContent>
           </Select>
-          <Select value={sortBy} onValueChange={setSortBy}>
+          <Select
+            value={selectedSubcategory}
+            onValueChange={handleSubcategoryChange}
+          >
             <SelectTrigger>
-              <SelectValue placeholder="Sort by" />
+              <SelectValue placeholder="Filter by Subcategory" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="name">Name A-Z</SelectItem>
-              <SelectItem value="price-low">Price: Low to High</SelectItem>
-              <SelectItem value="price-high">Price: High to Low</SelectItem>
-              <SelectItem value="rating">Highest Rated</SelectItem>
+              <SelectItem value="all">Product Categories</SelectItem>
+              {subcategories.map((subcategory) => (
+                <SelectItem key={subcategory.id} value={subcategory.id}>
+                  {subcategory.name}
+                  {subcategory.category && (
+                    <span className="text-xs text-gray-500 ml-2">
+                      ({subcategory.category.name})
+                    </span>
+                  )}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -483,7 +507,7 @@ export default function ProductsPage() {
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
-        {sortedProducts.map((product) => (
+        {filteredProducts.map((product) => (
           <ProductCard
             key={product.id}
             product={product}
@@ -494,7 +518,7 @@ export default function ProductsPage() {
         ))}
       </div>
 
-      {sortedProducts.length === 0 && (
+      {filteredProducts.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-500 text-lg">
             No products found matching your criteria.
@@ -503,7 +527,7 @@ export default function ProductsPage() {
       )}
 
       {/* Pagination */}
-      {sortedProducts.length > 0 && (
+      {filteredProducts.length > 0 && (
         <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-green-100 shadow-md">
           <AdminPagination
             currentPage={paginationData.page}
