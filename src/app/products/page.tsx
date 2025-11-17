@@ -417,7 +417,9 @@ export default function ProductsPage() {
     <div className="min-h-screen bg-gradient-to-b from-white via-green-50/30 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
-        <CarouselGrid heroSlidesArray={[heroSlides1, heroSlides2, heroSlides3]} />
+        <CarouselGrid
+          heroSlidesArray={[heroSlides1, heroSlides2, heroSlides3]}
+        />
         {/* Enhanced Header Section */}
         <ReusableHeroSection
           preTitle="Authentic Wellness"
@@ -438,72 +440,75 @@ export default function ProductsPage() {
         <div
           className={cn(
             "bg-gradient-to-r p-8 rounded-2xl mb-12 shadow-2xl border border-green-400/20",
-            "from-green-600 via-emerald-500 to-green-600",
+            "from-green-600 via-emerald-500 to-green-600"
           )}
         >
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-            <Input
-              placeholder="Search products..."
-              value={searchTerm}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              className="pl-10"
-            />
+            <div className="relative">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Input
+                placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Select
+              value={selectedCategory}
+              onValueChange={handleCategoryChange}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Category" />
+              </SelectTrigger>
+              <SelectContent>
+                {productCategories.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select
+              value={selectedCompanyValue}
+              onValueChange={handleCompanySelect}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Shop By Brand" />
+              </SelectTrigger>
+              <SelectContent>
+                {companies.map((company) => (
+                  <SelectItem key={company.id} value={company.id}>
+                    <div className="flex items-center space-x-2">
+                      <Building2 className="h-4 w-4 text-green-600" />
+                      <span>{company.name}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select
+              value={selectedSubcategory}
+              onValueChange={handleSubcategoryChange}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Filter by Subcategory" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Product Categories</SelectItem>
+                {subcategories.map((subcategory) => (
+                  <SelectItem key={subcategory.id} value={subcategory.id}>
+                    {subcategory.name}
+                    {subcategory.category && (
+                      <span className="text-xs text-gray-500 ml-2">
+                        ({subcategory.category.name})
+                      </span>
+                    )}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-          <Select value={selectedCategory} onValueChange={handleCategoryChange}>
-            <SelectTrigger>
-              <SelectValue placeholder="Category" />
-            </SelectTrigger>
-            <SelectContent>
-              {productCategories.map((category) => (
-                <SelectItem key={category} value={category}>
-                  {category}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select
-            value={selectedCompanyValue}
-            onValueChange={handleCompanySelect}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Shop By Brand" />
-            </SelectTrigger>
-            <SelectContent>
-              {companies.map((company) => (
-                <SelectItem key={company.id} value={company.id}>
-                  <div className="flex items-center space-x-2">
-                    <Building2 className="h-4 w-4 text-green-600" />
-                    <span>{company.name}</span>
-                  </div>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select
-            value={selectedSubcategory}
-            onValueChange={handleSubcategoryChange}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Filter by Subcategory" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Product Categories</SelectItem>
-              {subcategories.map((subcategory) => (
-                <SelectItem key={subcategory.id} value={subcategory.id}>
-                  {subcategory.name}
-                  {subcategory.category && (
-                    <span className="text-xs text-gray-500 ml-2">
-                      ({subcategory.category.name})
-                    </span>
-                  )}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
-      </div>
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 mb-12">
@@ -528,7 +533,8 @@ export default function ProductsPage() {
                 No Products Found
               </h3>
               <p className="text-gray-500 text-lg">
-                No products found matching your criteria. Try adjusting your filters.
+                No products found matching your criteria. Try adjusting your
+                filters.
               </p>
             </div>
           </div>
@@ -550,227 +556,230 @@ export default function ProductsPage() {
             />
           </div>
         )}
-      </div>
-    </div>
 
-      {/* Company Dialog */}
-      <Dialog
-        open={isCompanyDialogOpen}
-        onOpenChange={handleCompanyDialogClose}
-      >
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="p-3 bg-green-100 rounded-full">
-                <Building2 className="h-6 w-6 text-green-600" />
+        {/* Company Dialog */}
+        <Dialog
+          open={isCompanyDialogOpen}
+          onOpenChange={handleCompanyDialogClose}
+        >
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="p-3 bg-green-100 rounded-full">
+                  <Building2 className="h-6 w-6 text-green-600" />
+                </div>
+                <DialogTitle className="text-2xl font-bold text-green-800">
+                  {selectedCompany?.name}
+                </DialogTitle>
               </div>
-              <DialogTitle className="text-2xl font-bold text-green-800">
-                {selectedCompany?.name}
-              </DialogTitle>
-            </div>
-          </DialogHeader>
+            </DialogHeader>
 
-          {selectedCompany && (
-            <div className="space-y-6">
-              {/* Company Information */}
-              <div className="bg-green-50 rounded-lg p-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <Package className="h-4 w-4 text-green-600" />
-                      <span className="text-sm text-green-700">
-                        <strong>Total Products:</strong>{" "}
-                        {selectedCompany.companyProducts.length} items
-                      </span>
+            {selectedCompany && (
+              <div className="space-y-6">
+                {/* Company Information */}
+                <div className="bg-green-50 rounded-lg p-6">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2">
+                        <Package className="h-4 w-4 text-green-600" />
+                        <span className="text-sm text-green-700">
+                          <strong>Total Products:</strong>{" "}
+                          {selectedCompany.companyProducts.length} items
+                        </span>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2">
+                        <Building2 className="h-4 w-4 text-green-600" />
+                        <span className="text-sm text-green-700">
+                          <strong>Subcategories:</strong>{" "}
+                          {
+                            new Set(
+                              selectedCompany.companyProducts
+                                .filter((p) => p.subCategory)
+                                .map((p) => p.subCategory!.name)
+                            ).size
+                          }{" "}
+                          subcategories
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <Building2 className="h-4 w-4 text-green-600" />
-                      <span className="text-sm text-green-700">
-                        <strong>Subcategories:</strong>{" "}
+                </div>
+
+                {/* Products by Category */}
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                    Products by Subcategory
+                  </h4>
+
+                  {/* Group products by subcategory */}
+                  {(() => {
+                    const productsBySubCategory =
+                      selectedCompany.companyProducts.reduce(
+                        (acc, product) => {
+                          if (product.subCategory) {
+                            const subCategoryName = product.subCategory.name;
+                            if (!acc[subCategoryName]) {
+                              acc[subCategoryName] = {
+                                subCategory: product.subCategory,
+                                products: [],
+                              };
+                            }
+                            acc[subCategoryName].products.push(product);
+                          } else {
+                            // Handle products without subcategory
+                            const uncategorizedKey = "Uncategorized";
+                            if (!acc[uncategorizedKey]) {
+                              acc[uncategorizedKey] = {
+                                subCategory: {
+                                  id: "uncategorized",
+                                  name: "Uncategorized",
+                                },
+                                products: [],
+                              };
+                            }
+                            acc[uncategorizedKey].products.push(product);
+                          }
+                          return acc;
+                        },
+                        {} as Record<
+                          string,
+                          {
+                            subCategory: { id: string; name: string };
+                            products: CompanyProduct[];
+                          }
+                        >
+                      );
+
+                    return Object.entries(productsBySubCategory).map(
+                      ([subCategoryName, { subCategory, products }]) => (
+                        <Collapsible
+                          key={subCategory.id}
+                          open={expandedCategories.has(subCategory.id)}
+                          onOpenChange={() => toggleCategory(subCategory.id)}
+                          className="w-full"
+                        >
+                          <CollapsibleTrigger className="flex items-center justify-between w-full p-4 bg-white rounded-lg border border-green-200 hover:bg-green-50 transition-colors mb-2">
+                            <div className="flex items-center space-x-3">
+                              <div className="p-2 bg-green-100 rounded-full">
+                                <Package className="h-4 w-4 text-green-600" />
+                              </div>
+                              <div className="text-left">
+                                <h5 className="font-semibold text-gray-900">
+                                  {subCategoryName}
+                                </h5>
+                                <p className="text-sm text-gray-600">
+                                  {products.length} products
+                                </p>
+                              </div>
+                            </div>
+                            {expandedCategories.has(subCategory.id) ? (
+                              <ChevronDown className="h-5 w-5 text-green-600" />
+                            ) : (
+                              <ChevronRight className="h-5 w-5 text-green-600" />
+                            )}
+                          </CollapsibleTrigger>
+
+                          <CollapsibleContent className="space-y-2">
+                            <div className="ml-4 p-4 bg-gray-50 rounded-lg border-l-4 border-green-300">
+                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                {products.map((product) => (
+                                  <div
+                                    key={product.id}
+                                    className="bg-white p-3 rounded-lg border border-gray-200 hover:border-green-300 transition-colors"
+                                  >
+                                    <div className="space-y-2">
+                                      <div className="flex justify-between items-center">
+                                        <h6 className="font-medium text-gray-900 text-sm">
+                                          {product.name}
+                                        </h6>
+                                        <span className="text-sm font-semibold text-green-600">
+                                          Rs. {product.price}
+                                        </span>
+                                        <span className="text-xs text-gray-600">
+                                          Code: {product.code}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </CollapsibleContent>
+                        </Collapsible>
+                      )
+                    );
+                  })()}
+
+                  {/* Show message if no products */}
+                  {selectedCompany.companyProducts.length === 0 && (
+                    <div className="text-center py-8 text-gray-500">
+                      <Package className="h-12 w-12 mx-auto mb-3 text-gray-400" />
+                      <p>No products available for this company.</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Company Stats */}
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                    Company Statistics
+                  </h4>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-600">
+                        {selectedCompany.companyProducts.length}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        Total Products
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-600">
                         {
                           new Set(
                             selectedCompany.companyProducts
                               .filter((p) => p.subCategory)
                               .map((p) => p.subCategory!.name)
                           ).size
-                        }{" "}
-                        subcategories
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Products by Category */}
-              <div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                  Products by Subcategory
-                </h4>
-
-                {/* Group products by subcategory */}
-                {(() => {
-                  const productsBySubCategory =
-                    selectedCompany.companyProducts.reduce(
-                      (acc, product) => {
-                        if (product.subCategory) {
-                          const subCategoryName = product.subCategory.name;
-                          if (!acc[subCategoryName]) {
-                            acc[subCategoryName] = {
-                              subCategory: product.subCategory,
-                              products: [],
-                            };
-                          }
-                          acc[subCategoryName].products.push(product);
-                        } else {
-                          // Handle products without subcategory
-                          const uncategorizedKey = "Uncategorized";
-                          if (!acc[uncategorizedKey]) {
-                            acc[uncategorizedKey] = {
-                              subCategory: {
-                                id: "uncategorized",
-                                name: "Uncategorized",
-                              },
-                              products: [],
-                            };
-                          }
-                          acc[uncategorizedKey].products.push(product);
                         }
-                        return acc;
-                      },
-                      {} as Record<
-                        string,
+                      </div>
+                      <div className="text-sm text-gray-600">Subcategories</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-600">
                         {
-                          subCategory: { id: string; name: string };
-                          products: CompanyProduct[];
+                          selectedCompany.companyProducts.filter(
+                            (p) => parseFloat(p.price) > 0
+                          ).length
                         }
-                      >
-                    );
-
-                  return Object.entries(productsBySubCategory).map(
-                    ([subCategoryName, { subCategory, products }]) => (
-                      <Collapsible
-                        key={subCategory.id}
-                        open={expandedCategories.has(subCategory.id)}
-                        onOpenChange={() => toggleCategory(subCategory.id)}
-                        className="w-full"
-                      >
-                        <CollapsibleTrigger className="flex items-center justify-between w-full p-4 bg-white rounded-lg border border-green-200 hover:bg-green-50 transition-colors mb-2">
-                          <div className="flex items-center space-x-3">
-                            <div className="p-2 bg-green-100 rounded-full">
-                              <Package className="h-4 w-4 text-green-600" />
-                            </div>
-                            <div className="text-left">
-                              <h5 className="font-semibold text-gray-900">
-                                {subCategoryName}
-                              </h5>
-                              <p className="text-sm text-gray-600">
-                                {products.length} products
-                              </p>
-                            </div>
-                          </div>
-                          {expandedCategories.has(subCategory.id) ? (
-                            <ChevronDown className="h-5 w-5 text-green-600" />
-                          ) : (
-                            <ChevronRight className="h-5 w-5 text-green-600" />
-                          )}
-                        </CollapsibleTrigger>
-
-                        <CollapsibleContent className="space-y-2">
-                          <div className="ml-4 p-4 bg-gray-50 rounded-lg border-l-4 border-green-300">
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                              {products.map((product) => (
-                                <div
-                                  key={product.id}
-                                  className="bg-white p-3 rounded-lg border border-gray-200 hover:border-green-300 transition-colors"
-                                >
-                                  <div className="space-y-2">
-                                    <div className="flex justify-between items-center">
-                                      <h6 className="font-medium text-gray-900 text-sm">
-                                        {product.name}
-                                      </h6>
-                                      <span className="text-sm font-semibold text-green-600">
-                                        Rs. {product.price}
-                                      </span>
-                                      <span className="text-xs text-gray-600">
-                                        Code: {product.code}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </CollapsibleContent>
-                      </Collapsible>
-                    )
-                  );
-                })()}
-
-                {/* Show message if no products */}
-                {selectedCompany.companyProducts.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
-                    <Package className="h-12 w-12 mx-auto mb-3 text-gray-400" />
-                    <p>No products available for this company.</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Company Stats */}
-              <div className="bg-gray-50 rounded-lg p-6">
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                  Company Statistics
-                </h4>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">
-                      {selectedCompany.companyProducts.length}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        Priced Products
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-600">Total Products</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">
-                      {
-                        new Set(
-                          selectedCompany.companyProducts
-                            .filter((p) => p.subCategory)
-                            .map((p) => p.subCategory!.name)
-                        ).size
-                      }
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-600">
+                        Rs.{" "}
+                        {selectedCompany.companyProducts.length > 0
+                          ? Math.round(
+                              selectedCompany.companyProducts.reduce(
+                                (sum, p) => sum + parseFloat(p.price),
+                                0
+                              ) / selectedCompany.companyProducts.length
+                            )
+                          : 0}
+                      </div>
+                      <div className="text-sm text-gray-600">Avg. Price</div>
                     </div>
-                    <div className="text-sm text-gray-600">Subcategories</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">
-                      {
-                        selectedCompany.companyProducts.filter(
-                          (p) => parseFloat(p.price) > 0
-                        ).length
-                      }
-                    </div>
-                    <div className="text-sm text-gray-600">Priced Products</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">
-                      Rs.{" "}
-                      {selectedCompany.companyProducts.length > 0
-                        ? Math.round(
-                            selectedCompany.companyProducts.reduce(
-                              (sum, p) => sum + parseFloat(p.price),
-                              0
-                            ) / selectedCompany.companyProducts.length
-                          )
-                        : 0}
-                    </div>
-                    <div className="text-sm text-gray-600">Avg. Price</div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+            )}
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   );
 }
