@@ -3,6 +3,7 @@ import { Inter, Tangerine } from "next/font/google";
 import "./globals.css";
 import LayoutComponent from "./_components/layout-components";
 import { Metadata } from "next";
+import LayoutEffects from "@/components/layout-effects";
 
 export const metadata: Metadata = {
   title: "Rathnadeepa Herbals - Natural Healing & Traditional Medicine",
@@ -42,6 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${tangerine.variable} font-sans`}>
+        <LayoutEffects />
         <LayoutComponent>{children}</LayoutComponent>
       </body>
     </html>

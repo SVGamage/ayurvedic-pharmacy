@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 // ============================================================================
 // FALLING LEAVES EFFECT
@@ -16,22 +16,37 @@ interface Leaf {
   size: number;
 }
 
+// Predefined leaf configurations to avoid hydration mismatch
+const LEAF_CONFIGS: Leaf[] = [
+  { id: 0, startX: 12, duration: 15, delay: 0, size: 28 },
+  { id: 1, startX: 28, duration: 18, delay: 1, size: 35 },
+  { id: 2, startX: 45, duration: 16, delay: 2, size: 25 },
+  { id: 3, startX: 62, duration: 19, delay: 0.5, size: 32 },
+  { id: 4, startX: 78, duration: 14, delay: 1.5, size: 22 },
+  { id: 5, startX: 8, duration: 17, delay: 3, size: 38 },
+  { id: 6, startX: 88, duration: 15, delay: 2.5, size: 30 },
+  { id: 7, startX: 35, duration: 20, delay: 1, size: 26 },
+  { id: 8, startX: 55, duration: 16, delay: 3.5, size: 34 },
+  { id: 9, startX: 20, duration: 18, delay: 2, size: 24 },
+  { id: 10, startX: 70, duration: 17, delay: 0.8, size: 29 },
+  { id: 11, startX: 42, duration: 19, delay: 4, size: 36 },
+  { id: 12, startX: 15, duration: 15, delay: 1.2, size: 27 },
+  { id: 13, startX: 85, duration: 16, delay: 2.8, size: 31 },
+  { id: 14, startX: 50, duration: 18, delay: 0.3, size: 23 },
+];
+
 export function FallingLeaves({ count = 15 }: { count?: number }) {
   const [leaves, setLeaves] = useState<Leaf[]>([]);
+  const [mounted, setMounted] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    const newLeaves: Leaf[] = Array.from({ length: count }, (_, i) => ({
-      id: i,
-      startX: Math.random() * 100,
-      duration: 10 + Math.random() * 10,
-      delay: Math.random() * 5,
-      size: 20 + Math.random() * 20,
-    }));
-    setLeaves(newLeaves);
+    setMounted(true);
+    setLeaves(LEAF_CONFIGS.slice(0, count));
   }, [count]);
 
-  if (prefersReducedMotion) return null;
+  // Don't render anything until mounted to avoid hydration mismatch
+  if (!mounted || prefersReducedMotion) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
@@ -41,11 +56,11 @@ export function FallingLeaves({ count = 15 }: { count?: number }) {
           className="absolute text-green-600/30"
           style={{
             left: `${leaf.startX}%`,
-            top: '-50px',
+            top: "-50px",
             fontSize: `${leaf.size}px`,
           }}
           animate={{
-            y: ['0vh', '110vh'],
+            y: ["0vh", "110vh"],
             x: [0, Math.sin(leaf.id) * 100, 0],
             rotate: [0, 360, 720],
             opacity: [0, 0.6, 0.6, 0],
@@ -54,7 +69,7 @@ export function FallingLeaves({ count = 15 }: { count?: number }) {
             duration: leaf.duration,
             delay: leaf.delay,
             repeat: Infinity,
-            ease: 'linear',
+            ease: "linear",
           }}
         >
           🍃
@@ -81,7 +96,7 @@ export function HerbParticles({
   x,
   y,
   count = 20,
-  colors = ['#34a85a', '#86efac', '#dcfce7'],
+  colors = ["#34a85a", "#86efac", "#dcfce7"],
 }: {
   x: number;
   y: number;
@@ -89,19 +104,21 @@ export function HerbParticles({
   colors?: string[];
 }) {
   const [particles, setParticles] = useState<Particle[]>([]);
+  const [mounted, setMounted] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
+    setMounted(true);
     const newParticles: Particle[] = Array.from({ length: count }, (_, i) => {
       const angle = (Math.PI * 2 * i) / count;
-      const velocity = 50 + Math.random() * 50;
+      const velocity = 50 + (i % 5) * 10; // Deterministic velocity
       return {
         id: i,
         x: Math.cos(angle) * velocity,
         y: Math.sin(angle) * velocity,
-        size: 4 + Math.random() * 6,
-        duration: 0.5 + Math.random() * 0.5,
-        color: colors[Math.floor(Math.random() * colors.length)],
+        size: 4 + (i % 6),
+        duration: 0.5 + (i % 5) * 0.1,
+        color: colors[i % colors.length],
       };
     });
     setParticles(newParticles);
@@ -111,7 +128,7 @@ export function HerbParticles({
     return () => clearTimeout(timer);
   }, [x, y, count, colors]);
 
-  if (prefersReducedMotion || particles.length === 0) return null;
+  if (!mounted || prefersReducedMotion || particles.length === 0) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none z-50">
@@ -135,7 +152,7 @@ export function HerbParticles({
           }}
           transition={{
             duration: particle.duration,
-            ease: 'easeOut',
+            ease: "easeOut",
           }}
         />
       ))}
@@ -147,7 +164,7 @@ export function HerbParticles({
 // CHAKRA ROTATION EFFECT
 // ============================================================================
 
-export function ChakraSpinner({ className = '' }: { className?: string }) {
+export function ChakraSpinner({ className = "" }: { className?: string }) {
   const prefersReducedMotion = useReducedMotion();
 
   return (
@@ -157,7 +174,7 @@ export function ChakraSpinner({ className = '' }: { className?: string }) {
       transition={{
         duration: 20,
         repeat: Infinity,
-        ease: 'linear',
+        ease: "linear",
       }}
     >
       <svg
@@ -183,7 +200,13 @@ export function ChakraSpinner({ className = '' }: { className?: string }) {
         <circle cx="72" cy="28" r="3" fill="currentColor" opacity="0.7" />
         <circle cx="28" cy="72" r="3" fill="currentColor" opacity="0.7" />
         <defs>
-          <linearGradient id="chakraGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient
+            id="chakraGradient"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+          >
             <stop offset="0%" stopColor="#34a85a" />
             <stop offset="50%" stopColor="#f59e0b" />
             <stop offset="100%" stopColor="#dc2626" />
@@ -202,14 +225,17 @@ export function MortarPestleLoader({ size = 60 }: { size?: number }) {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
+    <div
+      className="relative flex items-center justify-center"
+      style={{ width: size, height: size }}
+    >
       {/* Mortar (Bowl) */}
       <div className="absolute bottom-0 w-full h-3/5 bg-gradient-to-b from-amber-700 to-amber-900 rounded-b-full border-4 border-amber-800" />
 
       {/* Pestle (Grinding stick) */}
       <motion.div
         className="absolute z-10 w-2 h-2/3 bg-gradient-to-b from-amber-600 to-amber-800 rounded-full origin-bottom"
-        style={{ transformOrigin: 'bottom center' }}
+        style={{ transformOrigin: "bottom center" }}
         animate={
           prefersReducedMotion
             ? {}
@@ -220,7 +246,7 @@ export function MortarPestleLoader({ size = 60 }: { size?: number }) {
         transition={{
           duration: 2,
           repeat: Infinity,
-          ease: 'easeInOut',
+          ease: "easeInOut",
         }}
       />
 
@@ -229,13 +255,13 @@ export function MortarPestleLoader({ size = 60 }: { size?: number }) {
         <>
           <motion.div
             className="absolute w-1 h-1 bg-green-600 rounded-full"
-            style={{ left: '40%', bottom: '30%' }}
+            style={{ left: "40%", bottom: "30%" }}
             animate={{ scale: [1, 0, 1], opacity: [1, 0, 1] }}
             transition={{ duration: 2, repeat: Infinity, delay: 0.2 }}
           />
           <motion.div
             className="absolute w-1 h-1 bg-green-600 rounded-full"
-            style={{ right: '40%', bottom: '30%' }}
+            style={{ right: "40%", bottom: "30%" }}
             animate={{ scale: [1, 0, 1], opacity: [1, 0, 1] }}
             transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
           />
@@ -269,7 +295,7 @@ export function WaterRipple() {
             duration: 2,
             repeat: Infinity,
             delay: i * 0.7,
-            ease: 'easeOut',
+            ease: "easeOut",
           }}
           style={{ width: 100, height: 100 }}
         />
@@ -303,7 +329,7 @@ export function SteamRising({ count = 5 }: { count?: number }) {
             duration: 3,
             repeat: Infinity,
             delay: i * 0.6,
-            ease: 'easeOut',
+            ease: "easeOut",
           }}
         />
       ))}
@@ -350,7 +376,13 @@ export function GrowingHerb({ delay = 0 }: { delay?: number }) {
 // SANSKRIT TEXT SHIMMER
 // ============================================================================
 
-export function SanskritShimmer({ text, className = '' }: { text: string; className?: string }) {
+export function SanskritShimmer({
+  text,
+  className = "",
+}: {
+  text: string;
+  className?: string;
+}) {
   const prefersReducedMotion = useReducedMotion();
 
   return (
@@ -360,20 +392,21 @@ export function SanskritShimmer({ text, className = '' }: { text: string; classN
         prefersReducedMotion
           ? {}
           : {
-              backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
             }
       }
       transition={{
         duration: 3,
         repeat: Infinity,
-        ease: 'linear',
+        ease: "linear",
       }}
       style={{
-        background: 'linear-gradient(90deg, #34a85a, #f59e0b, #dc2626, #34a85a)',
-        backgroundSize: '200% auto',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        backgroundClip: 'text',
+        background:
+          "linear-gradient(90deg, #34a85a, #f59e0b, #dc2626, #34a85a)",
+        backgroundSize: "200% auto",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        backgroundClip: "text",
       }}
     >
       {text}
@@ -390,7 +423,7 @@ export function FloatingElement({
   duration = 6,
   yOffset = 20,
   xOffset = 10,
-  className = '',
+  className = "",
 }: {
   children: React.ReactNode;
   duration?: number;
@@ -415,7 +448,7 @@ export function FloatingElement({
       transition={{
         duration,
         repeat: Infinity,
-        ease: 'easeInOut',
+        ease: "easeInOut",
       }}
     >
       {children}
@@ -429,8 +462,8 @@ export function FloatingElement({
 
 export function PulseGlow({
   children,
-  color = 'rgba(52, 168, 90, 0.3)',
-  className = '',
+  color = "rgba(52, 168, 90, 0.3)",
+  className = "",
 }: {
   children: React.ReactNode;
   color?: string;
@@ -455,7 +488,7 @@ export function PulseGlow({
       transition={{
         duration: 2,
         repeat: Infinity,
-        ease: 'easeInOut',
+        ease: "easeInOut",
       }}
     >
       {children}

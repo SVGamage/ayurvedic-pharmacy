@@ -3,19 +3,16 @@ import { FeaturedProducts } from "@/components/featured-products";
 import { ServiceHighlights } from "@/components/service-highlights";
 import { TestimonialsPreview } from "@/components/testimonials-preview";
 import WelcomeNote from "@/components/welcome-note";
-import { FallingLeaves } from "@/components/ayurvedic-effects";
-import { SectionBackground, AnimatedSectionDivider, FloatingHerbsParticles } from "@/components/background-effects";
+
+import {
+  SectionBackground,
+  AnimatedSectionDivider,
+} from "@/components/background-effects";
 // import { BlogPreview } from "@/components/blog-preview"
 
 export default function HomePage() {
   return (
     <div className="relative overflow-hidden">
-      {/* Ayurvedic Falling Leaves Effect */}
-      <FallingLeaves count={20} />
-
-      {/* Floating Herbs Background Particles */}
-      <FloatingHerbsParticles />
-
       <div className="relative z-10">
         {/* Hero Section - No background */}
         <HeroSection />
@@ -35,14 +32,20 @@ export default function HomePage() {
         <AnimatedSectionDivider />
 
         {/* Service Highlights Section */}
-        <SectionBackground variant="pattern" className="py-16 bg-gradient-to-b from-amber-50/30 to-orange-50/30">
+        <SectionBackground
+          variant="pattern"
+          className="py-16 bg-gradient-to-b from-amber-50/30 to-orange-50/30"
+        >
           <ServiceHighlights />
         </SectionBackground>
 
         <AnimatedSectionDivider />
 
         {/* Testimonials Section */}
-        <SectionBackground variant="dots" className="py-16 bg-gradient-to-b from-blue-50/30 to-indigo-50/30">
+        <SectionBackground
+          variant="dots"
+          className="py-16 bg-gradient-to-b from-blue-50/30 to-indigo-50/30"
+        >
           <TestimonialsPreview />
         </SectionBackground>
 
