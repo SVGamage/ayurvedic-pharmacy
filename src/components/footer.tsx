@@ -7,103 +7,120 @@ import FooterBadge from "./footer-badge";
 
 export function Footer() {
   return (
-    <footer className="bg-green-900 text-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-20 justify-items-center md:justify-items-center">
-          <FooterBadge />
-          <div className="text-center md:text-center">
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
+    <footer className="bg-gradient-to-br from-green-900 via-green-800 to-emerald-900 text-white relative overflow-hidden">
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-0" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+          {/* Brand Section */}
+          <div className="flex flex-col items-center md:items-start">
+            <FooterBadge />
+          </div>
+
+          {/* Quick Links */}
+          <div className="text-center md:text-left">
+            <h3 className="text-lg font-bold mb-6 text-green-100 border-b border-green-700/50 pb-2">Quick Links</h3>
+            <ul className="space-y-3">
               <li>
                 <Link
                   href="/products"
-                  className="text-green-100 hover:text-white"
+                  className="text-green-200 hover:text-white transition-all duration-300 hover:translate-x-1 inline-block group"
                 >
-                  Products
+                  <span className="group-hover:underline underline-offset-4">Products</span>
                 </Link>
               </li>
               <li>
                 <Link
                   href="/services"
-                  className="text-green-100 hover:text-white"
+                  className="text-green-200 hover:text-white transition-all duration-300 hover:translate-x-1 inline-block group"
                 >
-                  Services
+                  <span className="group-hover:underline underline-offset-4">Services</span>
                 </Link>
               </li>
               <li>
                 <Link
                   href="/location"
-                  className="text-green-100 hover:text-white"
+                  className="text-green-200 hover:text-white transition-all duration-300 hover:translate-x-1 inline-block group"
                 >
-                  Location
+                  <span className="group-hover:underline underline-offset-4">Location</span>
                 </Link>
               </li>
               <li>
                 <Link
                   href="/contact"
-                  className="text-green-100 hover:text-white"
+                  className="text-green-200 hover:text-white transition-all duration-300 hover:translate-x-1 inline-block group"
                 >
-                  Contact
+                  <span className="group-hover:underline underline-offset-4">Contact</span>
                 </Link>
               </li>
             </ul>
           </div>
 
-          <div className="text-center md:text-center">
-            <h3 className="text-lg font-semibold mb-4">Services</h3>
-            <ul className="space-y-2">
-              <li>
-                <span className="text-green-100">Ayurvedic Consultation</span>
+          {/* Services */}
+          <div className="text-center md:text-left">
+            <h3 className="text-lg font-bold mb-6 text-green-100 border-b border-green-700/50 pb-2">Our Services</h3>
+            <ul className="space-y-3">
+              <li className="text-green-200 hover:text-white transition-colors duration-300 cursor-default">
+                Ayurvedic Consultation
               </li>
-              <li>
-                <span className="text-green-100">Online Consultation</span>
+              <li className="text-green-200 hover:text-white transition-colors duration-300 cursor-default">
+                Online Consultation
               </li>
-              <li>
-                <span className="text-green-100">Nakshatra Services</span>
+              <li className="text-green-200 hover:text-white transition-colors duration-300 cursor-default">
+                Nakshatra Services
               </li>
-              <li>
-                <span className="text-green-100">Custom Remedies</span>
+              <li className="text-green-200 hover:text-white transition-colors duration-300 cursor-default">
+                Custom Remedies
               </li>
             </ul>
           </div>
 
-          <div className="text-center md:text-center">
-            <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-2">
-                <MessageCircle className="h-4 w-4 text-green-400" />
-                <span className="text-green-100">
+          {/* Contact Info */}
+          <div className="text-center md:text-left">
+            <h3 className="text-lg font-bold mb-6 text-green-100 border-b border-green-700/50 pb-2">Get in Touch</h3>
+            <div className="space-y-4">
+              <a
+                href={`https://wa.me/${WHATSAPP_CONFIG.phoneNumber}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-3 text-green-200 hover:text-white transition-all duration-300 group justify-center md:justify-start"
+              >
+                <MessageCircle className="h-5 w-5 text-green-400 group-hover:scale-110 transition-transform" />
+                <span className="group-hover:underline underline-offset-4">
                   {WHATSAPP_CONFIG.displayNumber}
                 </span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Phone className="h-4 w-4 text-green-400" />
-                <span className="text-green-100">+94 (047) 347-7938</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Mail className="h-4 w-4 text-green-400" />
-                <span className="text-green-100">
+              </a>
+              <a
+                href="tel:+94473477938"
+                className="flex items-center space-x-3 text-green-200 hover:text-white transition-all duration-300 group justify-center md:justify-start"
+              >
+                <Phone className="h-5 w-5 text-green-400 group-hover:scale-110 transition-transform" />
+                <span className="group-hover:underline underline-offset-4">+94 (047) 347-7938</span>
+              </a>
+              <a
+                href="mailto:info@ayurvedapharmacy.com"
+                className="flex items-center space-x-3 text-green-200 hover:text-white transition-all duration-300 group justify-center md:justify-start"
+              >
+                <Mail className="h-5 w-5 text-green-400 group-hover:scale-110 transition-transform" />
+                <span className="group-hover:underline underline-offset-4 text-sm">
                   info@ayurvedapharmacy.com
                 </span>
-              </div>
-              {/* <div className="flex items-center space-x-2">
-                <MapPin className="h-4 w-4 text-green-400" />
-                <span className="text-green-100">
-                  Rathndeepa osu hala, Hambantota Rd, Tissamaharama
-                </span>
-              </div> */}
+              </a>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-green-800 mt-8 pt-8 text-center">
-          <p className="text-green-100">
-            © 2024 AyurVeda Pharmacy. All rights reserved. |
-            <Link href="/privacy" className="hover:text-white ml-1">
+        {/* Bottom Bar */}
+        <div className="border-t border-green-700/50 mt-12 pt-8 text-center">
+          <p className="text-green-200 text-sm">
+            © {new Date().getFullYear()} AyurVeda Pharmacy. All rights reserved.
+            <span className="mx-2 text-green-600">|</span>
+            <Link href="/privacy" className="hover:text-white transition-colors duration-300 underline-offset-4 hover:underline">
               Privacy Policy
-            </Link>{" "}
-            |
-            <Link href="/terms" className="hover:text-white ml-1">
+            </Link>
+            <span className="mx-2 text-green-600">|</span>
+            <Link href="/terms" className="hover:text-white transition-colors duration-300 underline-offset-4 hover:underline">
               Terms of Service
             </Link>
           </p>
@@ -111,13 +128,13 @@ export function Footer() {
       </div>
 
       {/* Leaf decoration in bottom right corner */}
-      <div className="absolute bottom-0 right-0 pointer-events-none opacity-25 md:opacity-50 z-10">
+      <div className="absolute bottom-0 right-0 pointer-events-none opacity-20 md:opacity-30 z-0">
         <Image
           src={leafDecoration}
           alt="Ayurvedic leaf decoration"
           width={400}
           height={250}
-          className="object-contain "
+          className="object-contain"
           priority={false}
           style={{
             filter: "brightness(1.3) contrast(1.2) hue-rotate(10deg)",

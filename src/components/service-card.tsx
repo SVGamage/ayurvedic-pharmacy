@@ -108,7 +108,7 @@ export function ServiceCard({
       <>
         <Card
           className={cn(
-            "group border-2 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer relative hover:ring-2 hover:ring-opacity-50",
+            "group border hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer relative hover:ring-4 hover:ring-opacity-50 rounded-2xl",
             service.popular && "ring-2",
             service.popular && colors.ringColor,
             colors.borderColor,
@@ -119,7 +119,7 @@ export function ServiceCard({
           onClick={handleCardClick}
         >
           {service.popular && (
-            <Badge className={cn("absolute top-3 left-3 z-10", colors.badgeBg)}>
+            <Badge className={cn("absolute top-4 left-4 z-10 rounded-full px-4 py-1.5 text-xs font-bold shadow-lg", colors.badgeBg)}>
               Most Popular
             </Badge>
           )}
@@ -173,7 +173,7 @@ export function ServiceCard({
 
             <Button
               onClick={handleBookClick}
-              className={cn("w-full text-sm", colors.buttonBg)}
+              className={cn("w-full text-sm rounded-xl shadow-md hover:shadow-lg transition-all duration-300", colors.buttonBg)}
               size="sm"
             >
               {service.buttonText || "Book via WhatsApp"}
@@ -371,7 +371,7 @@ export function ServiceCard({
     <>
       <Card
         className={cn(
-          "group border-2 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden hover:ring-2 hover:ring-opacity-50 cursor-pointer",
+          "group border hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden hover:ring-4 hover:ring-opacity-50 cursor-pointer rounded-2xl",
           service.popular && "ring-2",
           service.popular && colors.ringColor,
           colors.borderColor,
@@ -383,13 +383,13 @@ export function ServiceCard({
         onClick={handleCardClick}
       >
         {service.popular && (
-          <Badge className={cn("absolute top-4 left-4 z-10", colors.badgeBg)}>
+          <Badge className={cn("absolute top-4 left-4 z-10 rounded-full px-4 py-1.5 text-xs font-bold shadow-lg", colors.badgeBg)}>
             Most Popular
           </Badge>
         )}
 
         {/* Background gradient */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-transparent to-gray-50 opacity-50" />
+        <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-transparent via-gray-50/30 to-gray-100/50 opacity-50 blur-2xl" />
 
         <CardHeader className="text-center pb-4 relative">
           <div
@@ -462,7 +462,7 @@ export function ServiceCard({
           <Button
             onClick={handleBookClick}
             className={cn(
-              "w-full group-hover:shadow-lg transition-all duration-300",
+              "w-full rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 group-hover:scale-[1.02]",
               colors.buttonBg
             )}
             size="lg"

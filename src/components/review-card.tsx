@@ -98,7 +98,7 @@ export function ReviewCard({
     return (
       <Card
         className={cn(
-          "group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full flex flex-col",
+          "group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 h-full flex flex-col rounded-2xl border",
           colors.bgColor,
           colors.borderColor,
           className
@@ -160,7 +160,7 @@ export function ReviewCard({
   return (
     <Card
       className={cn(
-        "group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden h-full flex flex-col",
+        "group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden h-full flex flex-col rounded-2xl border",
         colors.bgColor,
         colors.borderColor,
         isFeatured && "lg:col-span-2 lg:row-span-2",
@@ -168,7 +168,7 @@ export function ReviewCard({
       )}
     >
       {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-white/30 to-transparent opacity-50" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/40 via-white/20 to-transparent opacity-60 blur-xl" />
 
       <CardContent
         className={cn("p-6 flex flex-col h-full", isFeatured && "p-8")}

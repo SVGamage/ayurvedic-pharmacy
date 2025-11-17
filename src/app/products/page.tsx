@@ -414,34 +414,34 @@ export default function ProductsPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
-      <CarouselGrid heroSlidesArray={[heroSlides1, heroSlides2, heroSlides3]} />
-      {/* Enhanced Header Section */}
-      <ReusableHeroSection
-        preTitle="Authentic Wellness"
-        titleLine1="Let's Shop"
-        titleLine2="Premium Ayurvedic Products"
-        subtitle="Bringing together Sri Lanka’s trusted Ayurvedic brands for your wellness journey"
-        description="Carefully crafted with time-honored formulations to support your natural healing journey"
-        badges={[
-          "Organic Certified",
-          "Traditional Methods",
-          "Expert Formulated",
-        ]}
-        theme="green"
-      />
+    <div className="min-h-screen bg-gradient-to-b from-white via-green-50/30 to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
+        <CarouselGrid heroSlidesArray={[heroSlides1, heroSlides2, heroSlides3]} />
+        {/* Enhanced Header Section */}
+        <ReusableHeroSection
+          preTitle="Authentic Wellness"
+          titleLine1="Let's Shop"
+          titleLine2="Premium Ayurvedic Products"
+          subtitle="Bringing together Sri Lanka's trusted Ayurvedic brands for your wellness journey"
+          description="Carefully crafted with time-honored formulations to support your natural healing journey"
+          badges={[
+            "Organic Certified",
+            "Traditional Methods",
+            "Expert Formulated",
+          ]}
+          theme="green"
+        />
 
-      {/* Filters */}
+        {/* Filters */}
 
-      <div
-        className={cn(
-          "bg-gradient-to-r p-6 rounded-lg mb-10",
-          "from-green-600 via-emerald-500 to-green-500",
-          "[filter:drop-shadow(0_10px_10px_rgba(0,0,0,0.40))]"
-        )}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div
+          className={cn(
+            "bg-gradient-to-r p-8 rounded-2xl mb-12 shadow-2xl border border-green-400/20",
+            "from-green-600 via-emerald-500 to-green-600",
+          )}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
             <Input
@@ -505,43 +505,53 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
-        {filteredProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            variant="default"
-            showQuickAdd={true}
-            showDescription={true}
-          />
-        ))}
+        {/* Product Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 mb-12">
+          {filteredProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              variant="default"
+              showQuickAdd={true}
+              showDescription={true}
+            />
+          ))}
+        </div>
+
+        {filteredProducts.length === 0 && (
+          <div className="text-center py-20">
+            <div className="max-w-md mx-auto">
+              <div className="w-24 h-24 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center">
+                <Package className="h-12 w-12 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                No Products Found
+              </h3>
+              <p className="text-gray-500 text-lg">
+                No products found matching your criteria. Try adjusting your filters.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {filteredProducts.length > 0 && (
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-green-100 shadow-xl">
+            <AdminPagination
+              currentPage={paginationData.page}
+              totalPages={paginationData.totalPages}
+              totalItems={paginationData.total}
+              itemsPerPage={itemsPerPage}
+              hasNext={paginationData.hasNext}
+              hasPrev={paginationData.hasPrev}
+              onPageChange={handlePageChange}
+              onItemsPerPageChange={handleItemsPerPageChange}
+              pageSizeOptions={[6, 12, 24, 48]}
+            />
+          </div>
+        )}
       </div>
-
-      {filteredProducts.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">
-            No products found matching your criteria.
-          </p>
-        </div>
-      )}
-
-      {/* Pagination */}
-      {filteredProducts.length > 0 && (
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-green-100 shadow-md">
-          <AdminPagination
-            currentPage={paginationData.page}
-            totalPages={paginationData.totalPages}
-            totalItems={paginationData.total}
-            itemsPerPage={itemsPerPage}
-            hasNext={paginationData.hasNext}
-            hasPrev={paginationData.hasPrev}
-            onPageChange={handlePageChange}
-            onItemsPerPageChange={handleItemsPerPageChange}
-            pageSizeOptions={[6, 12, 24, 48]}
-          />
-        </div>
-      )}
+    </div>
 
       {/* Company Dialog */}
       <Dialog

@@ -54,7 +54,8 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-white via-purple-50/20 to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Enhanced Header Section */}
       <ReusableHeroSection
         preTitle="Connect With Us"
@@ -69,7 +70,7 @@ export default function ContactPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
         {/* Enhanced Contact Form */}
         <div className="lg:col-span-2">
-          <Card className="shadow-lg border-purple-100">
+          <Card className="shadow-2xl border-purple-100 rounded-2xl">
             <CardHeader className="pb-4">
               <div className="text-center">
                 <div className="inline-flex items-center justify-center mb-3">
@@ -178,7 +179,7 @@ export default function ContactPage() {
                 <div className="flex gap-4">
                   <Button
                     type="submit"
-                    className="flex-1 bg-green-600 hover:bg-green-700"
+                    className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 shadow-lg hover:shadow-xl transition-all rounded-xl"
                     size="lg"
                   >
                     Send Message
@@ -186,7 +187,7 @@ export default function ContactPage() {
                   <Button
                     type="button"
                     variant="outline"
-                    className="flex-1 border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
+                    className="flex-1 border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white shadow-lg hover:shadow-xl transition-all rounded-xl"
                     size="lg"
                     onClick={() =>
                       contactViaWhatsApp(formData.subject, formData.message)
@@ -404,6 +405,7 @@ export default function ContactPage() {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }

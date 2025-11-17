@@ -57,15 +57,15 @@ export function ProductCard({
   return (
     <>
       <Card
-        className={`group !border-2 !border-green-200 shadow-sm hover:shadow-xl hover:shadow-green-200/30 transition-all duration-500 bg-white rounded-xl overflow-hidden hover:-translate-y-1 flex flex-col h-full hover:!border-green-300  hover:ring-green-100 hover:ring-opacity-50 focus:outline-none focus:ring-2 focus:ring-green-200 focus:!border-green-300 cursor-pointer ${
-          isCompact ? "hover:shadow-lg hover:shadow-green-200/20" : ""
+        className={`group !border !border-green-100 shadow-md hover:shadow-2xl hover:shadow-green-200/40 transition-all duration-500 bg-white rounded-2xl overflow-hidden hover:-translate-y-2 flex flex-col h-full hover:!border-green-400 hover:ring-4 hover:ring-green-100/50 focus:outline-none focus:ring-2 focus:ring-green-200 focus:!border-green-300 cursor-pointer ${
+          isCompact ? "hover:shadow-lg hover:shadow-green-200/30" : ""
         }`}
         onClick={handleCardClick}
       >
         <CardHeader className="p-0 relative">
           <div
-            className={`relative w-full overflow-hidden rounded-t-xl ${
-              isCompact ? "h-48" : "h-52"
+            className={`relative w-full overflow-hidden rounded-t-2xl ${
+              isCompact ? "h-48" : "h-56"
             }`}
           >
             <Image
@@ -76,16 +76,16 @@ export function ProductCard({
               className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
             />
             {!isCompact && (
-              <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             )}
           </div>
 
           {product.badge && (
             <Badge
-              className={`absolute top-3 left-3 text-white border-0 shadow-lg px-3 py-1 text-xs font-semibold ${
+              className={`absolute top-4 left-4 text-white border-0 shadow-lg px-4 py-1.5 text-xs font-bold rounded-full ${
                 isCompact
-                  ? "bg-green-600"
-                  : "bg-gradient-to-r from-green-600 to-green-700"
+                  ? "bg-gradient-to-r from-green-600 to-emerald-600"
+                  : "bg-gradient-to-r from-green-600 via-emerald-600 to-green-700"
               }`}
             >
               {product.badge}
@@ -93,17 +93,17 @@ export function ProductCard({
           )}
 
           {showQuickAdd && !isCompact && (
-            <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
               <Button
                 size="sm"
                 variant="secondary"
-                className="bg-white/90 hover:bg-white shadow-md rounded-full h-8 w-8 p-0"
+                className="bg-white/95 backdrop-blur-sm hover:bg-white shadow-lg hover:shadow-xl rounded-full h-10 w-10 p-0 hover:scale-110 transition-all"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleQuickAdd();
                 }}
               >
-                <MessageCircle className="h-4 w-4 text-green-600" />
+                <MessageCircle className="h-5 w-5 text-green-600" />
               </Button>
             </div>
           )}
@@ -187,10 +187,10 @@ export function ProductCard({
 
         <CardFooter className={`pt-0 mt-auto ${isCompact ? "p-4" : "p-5"}`}>
           <Button
-            className={`w-full text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-[1.02] ${
+            className={`w-full text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 group-hover:scale-[1.03] ${
               isCompact
-                ? "bg-green-600 hover:bg-green-700 py-2"
-                : "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 py-2.5"
+                ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 py-2.5"
+                : "bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 hover:from-green-700 hover:via-emerald-700 hover:to-green-800 py-3"
             }`}
             onClick={(e) => {
               e.stopPropagation();

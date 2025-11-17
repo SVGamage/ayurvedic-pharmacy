@@ -164,7 +164,8 @@ export default function ServicesPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-white via-green-50/20 to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
       <CarouselGrid heroSlidesArray={[heroSlides1, heroSlides2, heroSlides3]} />
       {/* Enhanced Header Section */}
@@ -285,7 +286,7 @@ export default function ServicesPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              className="bg-green-600 hover:bg-green-700 shadow-lg px-8 py-3"
+              className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 shadow-xl hover:shadow-2xl px-8 py-6 rounded-xl text-base hover:scale-105 transition-all"
               onClick={() =>
                 bookServiceViaWhatsApp(
                   "Ayurvedic Consultation",
@@ -299,7 +300,7 @@ export default function ServicesPage() {
             <Button
               size="lg"
               variant="outline"
-              className="border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-white bg-transparent shadow-lg px-8 py-3"
+              className="border-2 border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-white bg-transparent shadow-xl hover:shadow-2xl px-8 py-6 rounded-xl text-base hover:scale-105 transition-all"
               onClick={() =>
                 bookServiceViaWhatsApp(
                   "Nakshatra Reading",
@@ -313,6 +314,7 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }

@@ -7,13 +7,15 @@ import WelcomeNote from "@/components/welcome-note";
 
 export default function HomePage() {
   return (
-    <div className="space-y-8">
+    <div className="min-h-screen">
       <HeroSection />
-      <WelcomeNote />
-      <FeaturedProducts />
-      <ServiceHighlights />
-      <TestimonialsPreview />
-      {/* <BlogPreview /> */}
+      <div className="space-y-20 pb-20">
+        <WelcomeNote />
+        <FeaturedProducts />
+        <ServiceHighlights />
+        <TestimonialsPreview />
+        {/* <BlogPreview /> */}
+      </div>
     </div>
   );
 }

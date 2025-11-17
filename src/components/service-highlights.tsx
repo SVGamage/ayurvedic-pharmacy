@@ -65,13 +65,22 @@ const services: Service[] = [
 
 export function ServiceHighlights() {
   return (
-    <section className="bg-green-50 py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+    <section className="relative bg-gradient-to-br from-green-50 via-emerald-50 to-green-50 py-20 overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-green-200/20 to-transparent rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-emerald-200/20 to-transparent rounded-full blur-3xl" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-16">
+          <div className="inline-block mb-4">
+            <span className="bg-white text-green-700 font-semibold px-4 py-2 rounded-full text-sm shadow-md">
+              🌟 Expert Care
+            </span>
+          </div>
+          <h2 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 via-green-800 to-gray-900 bg-clip-text text-transparent mb-4">
             Our Services
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
             Experience holistic healing through our comprehensive Ayurvedic and
             traditional services designed for your wellness journey.
           </p>
@@ -84,7 +93,7 @@ export function ServiceHighlights() {
               service={service}
               showRating={true}
               rating={5}
-              className="bg-white"
+              className="bg-white shadow-lg hover:shadow-2xl"
             />
           ))}
         </div>
@@ -94,9 +103,9 @@ export function ServiceHighlights() {
             <Button
               variant="outline"
               size="lg"
-              className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white bg-transparent"
+              className="border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white bg-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 px-8 py-6 text-base rounded-xl"
             >
-              <Calendar className="h-4 w-4 mr-2" />
+              <Calendar className="h-5 w-5 mr-2" />
               View All Services
             </Button>
           </Link>
