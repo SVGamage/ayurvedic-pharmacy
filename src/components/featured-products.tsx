@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ProductCard } from "@/components/product-card";
 import { Product } from "@/types/product";
+import { motion } from "framer-motion";
+import { staggerContainer, fadeInUp, scaleInView } from "@/lib/animation-variants";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 
 const featuredProducts: Product[] = [
   {
@@ -86,38 +89,67 @@ const featuredProducts: Product[] = [
 ];
 
 export function FeaturedProducts() {
+  const { ref: headerRef, inView: headerInView } = useScrollAnimation();
+  const { ref: gridRef, inView: gridInView } = useScrollAnimation({ threshold: 0.1 });
+  const { ref: buttonRef, inView: buttonInView } = useScrollAnimation();
+
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-      <div className="text-center mb-12">
+      <motion.div
+        ref={headerRef}
+        className="text-center mb-12"
+        initial="offscreen"
+        animate={headerInView ? "onscreen" : "offscreen"}
+        variants={fadeInUp}
+      >
         <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
           Featured Products
         </h2>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
           Discover the best of Sri Lankan Ayurveda Products
         </p>
-      </div>
+      </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {featuredProducts.map((product) => (
-          <ProductCard
+      <motion.div
+        ref={gridRef}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+        variants={staggerContainer}
+        initial="hidden"
+        animate={gridInView ? "visible" : "hidden"}
+      >
+        {featuredProducts.map((product, index) => (
+          <motion.div
             key={product.id}
-            product={product}
-            variant="featured"
-            showQuickAdd={false}
-            showDescription={false}
-          />
+            variants={scaleInView}
+            custom={index}
+          >
+            <ProductCard
+              product={product}
+              variant="featured"
+              showQuickAdd={false}
+              showDescription={false}
+            />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
-      <div className="text-center">
-        <Button
-          variant="outline"
-          size="lg"
-          className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white bg-transparent"
-        >
-          <Link href="/products">View All Products</Link>
-        </Button>
-      </div>
+      <motion.div
+        ref={buttonRef}
+        className="text-center"
+        initial="offscreen"
+        animate={buttonInView ? "onscreen" : "offscreen"}
+        variants={scaleInView}
+      >
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Button
+            variant="outline"
+            size="lg"
+            className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white bg-transparent"
+          >
+            <Link href="/products">View All Products</Link>
+          </Button>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
