@@ -13,10 +13,6 @@ import {
 } from "lucide-react";
 import { Review } from "@/types/review";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { useState } from "react";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
-import { cardHover } from "@/lib/animation-variants";
 
 interface ReviewCardProps {
   review: Review;
@@ -39,8 +35,6 @@ export function ReviewCard({
   showHelpful = false,
   showVerified = true,
 }: ReviewCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const prefersReducedMotion = useReducedMotion();
   const isCompact = variant === "compact";
   const isFeatured = variant === "featured";
 
@@ -164,23 +158,15 @@ export function ReviewCard({
   }
 
   return (
-    <motion.div
-      variants={cardHover}
-      initial="rest"
-      whileHover={!prefersReducedMotion ? "hover" : "rest"}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      className="h-full"
+    <Card
+      className={cn(
+        "group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden h-full flex flex-col",
+        colors.bgColor,
+        colors.borderColor,
+        isFeatured && "lg:col-span-2 lg:row-span-2",
+        className
+      )}
     >
-      <Card
-        className={cn(
-          "group relative overflow-hidden h-full flex flex-col transition-colors duration-300",
-          colors.bgColor,
-          colors.borderColor,
-          isFeatured && "lg:col-span-2 lg:row-span-2",
-          className
-        )}
-      >
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-white/30 to-transparent opacity-50" />
 
@@ -233,42 +219,18 @@ export function ReviewCard({
             <div className="flex items-center space-x-2 mb-2">
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
-                  <motion.div
+                  <Star
                     key={i}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{
-                      delay: i * 0.1,
-                      duration: 0.3,
-                      type: "spring",
-                      stiffness: 200,
-                    }}
-                  >
-                    <motion.div
-                      animate={isHovered && i < review.rating && !prefersReducedMotion ? {
-                        rotate: [0, -10, 10, -10, 0],
-                        scale: [1, 1.2, 1],
-                      } : {}}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <Star
-                        className={cn(
-                          isFeatured ? "h-5 w-5" : "h-4 w-4",
-                          i < review.rating
-                            ? "text-yellow-400 fill-current drop-shadow-sm"
-                            : "text-gray-300"
-                        )}
-                      />
-                    </motion.div>
-                  </motion.div>
+                    className={cn(
+                      isFeatured ? "h-5 w-5" : "h-4 w-4",
+                      i < review.rating
+                        ? "text-yellow-400 fill-current"
+                        : "text-gray-300"
+                    )}
+                  />
                 ))}
               </div>
-              <motion.span
-                className="text-sm text-gray-600 font-medium"
-                animate={isHovered ? { scale: 1.1 } : { scale: 1 }}
-              >
-                ({review.rating}.0)
-              </motion.span>
+              <span className="text-sm text-gray-600">({review.rating}.0)</span>
             </div>
 
             {showLocation && review.location && (
@@ -325,6 +287,5 @@ export function ReviewCard({
         </div>
       </CardContent>
     </Card>
-    </motion.div>
   );
 }
