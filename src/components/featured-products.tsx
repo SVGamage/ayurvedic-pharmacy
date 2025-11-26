@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ProductCard } from "@/components/product-card";
 import { Product } from "@/types/product";
+import { ArrowRight } from "lucide-react";
 
 const featuredProducts: Product[] = [
   {
@@ -87,36 +88,53 @@ const featuredProducts: Product[] = [
 
 export function FeaturedProducts() {
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-          Featured Products
-        </h2>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Discover the best of Sri Lankan Ayurveda Products
-        </p>
-      </div>
+    <section className="py-20 bg-stone-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+          <div className="max-w-2xl">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-800 mb-4">
+              Featured <span className="text-emerald-700 italic">Products</span>
+            </h2>
+            <p className="text-lg text-stone-600">
+              Discover our most popular natural remedies, carefully selected for
+              your well-being.
+            </p>
+          </div>
+          <Button
+            variant="outline"
+            className="hidden md:flex border-emerald-600 text-emerald-700 hover:bg-emerald-50"
+            asChild
+          >
+            <Link href="/products">
+              View All Products <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {featuredProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            variant="featured"
-            showQuickAdd={false}
-            showDescription={false}
-          />
-        ))}
-      </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          {featuredProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              variant="featured"
+              showQuickAdd={false}
+              showDescription={false}
+            />
+          ))}
+        </div>
 
-      <div className="text-center">
-        <Button
-          variant="outline"
-          size="lg"
-          className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white bg-transparent"
-        >
-          <Link href="/products">View All Products</Link>
-        </Button>
+        <div className="text-center md:hidden">
+          <Button
+            variant="outline"
+            size="lg"
+            className="w-full border-emerald-600 text-emerald-700 hover:bg-emerald-50"
+            asChild
+          >
+            <Link href="/products">
+              View All Products <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
       </div>
     </section>
   );

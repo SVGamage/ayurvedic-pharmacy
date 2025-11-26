@@ -9,7 +9,7 @@ import { pharmacyLocation, locationInfo } from "@/config/location";
 
 export default function LocationPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-8 md:pt-40">
       {/* Enhanced Header Section */}
       <ReusableHeroSection
         preTitle="Find Our Sanctuary"
@@ -23,10 +23,10 @@ export default function LocationPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
         {/* Map Section */}
-        <Card className="overflow-hidden">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <MapPin className="h-5 w-5 text-green-600" />
+        <Card className="overflow-hidden border-stone-200 shadow-sm">
+          <CardHeader className="bg-stone-50 border-b border-stone-100">
+            <CardTitle className="flex items-center space-x-2 font-serif text-stone-800">
+              <MapPin className="h-5 w-5 text-emerald-600" />
               <span>Our Location</span>
             </CardTitle>
           </CardHeader>
@@ -37,36 +37,44 @@ export default function LocationPage() {
 
         {/* Contact Information */}
         <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Contact Information</CardTitle>
+          <Card className="border-stone-200 shadow-sm">
+            <CardHeader className="bg-stone-50 border-b border-stone-100">
+              <CardTitle className="font-serif text-stone-800">
+                Contact Information
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 pt-6">
               <div className="flex items-center space-x-3">
-                <MapPin className="h-5 w-5 text-green-600 flex-shrink-0" />
+                <div className="p-2 bg-emerald-100 rounded-full">
+                  <MapPin className="h-5 w-5 text-emerald-600 flex-shrink-0" />
+                </div>
                 <div>
-                  <p className="font-medium">Address</p>
-                  <p className="text-gray-600">{pharmacyLocation.address}</p>
+                  <p className="font-medium text-stone-900">Address</p>
+                  <p className="text-stone-600">{pharmacyLocation.address}</p>
                 </div>
               </div>
 
               <div className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-green-600 flex-shrink-0" />
+                <div className="p-2 bg-emerald-100 rounded-full">
+                  <Phone className="h-5 w-5 text-emerald-600 flex-shrink-0" />
+                </div>
                 <div>
-                  <p className="font-medium">Phone</p>
-                  <p className="text-gray-600">{pharmacyLocation.phone}</p>
-                  <p className="text-gray-600">
+                  <p className="font-medium text-stone-900">Phone</p>
+                  <p className="text-stone-600">{pharmacyLocation.phone}</p>
+                  <p className="text-stone-600">
                     {locationInfo.emergencyPhone} (Emergency)
                   </p>
                 </div>
               </div>
 
               <div className="flex items-center space-x-3">
-                <Mail className="h-5 w-5 text-green-600 flex-shrink-0" />
+                <div className="p-2 bg-emerald-100 rounded-full">
+                  <Mail className="h-5 w-5 text-emerald-600 flex-shrink-0" />
+                </div>
                 <div>
-                  <p className="font-medium">Email</p>
-                  <p className="text-gray-600">{locationInfo.email.general}</p>
-                  <p className="text-gray-600">
+                  <p className="font-medium text-stone-900">Email</p>
+                  <p className="text-stone-600">{locationInfo.email.general}</p>
+                  <p className="text-stone-600">
                     {locationInfo.email.appointments}
                   </p>
                 </div>
@@ -74,25 +82,28 @@ export default function LocationPage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Clock className="h-5 w-5 text-green-600" />
+          <Card className="border-stone-200 shadow-sm">
+            <CardHeader className="bg-stone-50 border-b border-stone-100">
+              <CardTitle className="flex items-center space-x-2 font-serif text-stone-800">
+                <Clock className="h-5 w-5 text-emerald-600" />
                 <span>Operating Hours</span>
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
+            <CardContent className="pt-6">
+              <div className="space-y-3">
                 {Object.entries(locationInfo.operatingHours).map(
                   ([day, hours]) => (
-                    <div key={day} className="flex justify-between">
-                      <span className="font-medium">{day}</span>
-                      <span className="text-gray-600">{hours}</span>
+                    <div
+                      key={day}
+                      className="flex justify-between items-center border-b border-stone-100 pb-2 last:border-0"
+                    >
+                      <span className="font-medium text-stone-700">{day}</span>
+                      <span className="text-stone-600">{hours}</span>
                     </div>
                   )
                 )}
-                <div className="pt-2 border-t">
-                  <p className="text-sm text-green-600 font-medium">
+                <div className="pt-4">
+                  <p className="text-sm text-emerald-700 font-medium bg-emerald-50 p-3 rounded-lg border border-emerald-100 text-center">
                     {locationInfo.emergencyNote}
                   </p>
                 </div>
@@ -103,30 +114,30 @@ export default function LocationPage() {
       </div>
 
       {/* Enhanced Transportation Options */}
-      <Card className="mb-8 shadow-sm border-green-100">
-        <CardHeader className="pb-4">
+      <Card className="mb-8 shadow-sm border-stone-200">
+        <CardHeader className="pb-4 bg-stone-50 border-b border-stone-100">
           <div className="text-center">
-            <div className="inline-flex items-center justify-center mb-3">
-              <div className="h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent w-12"></div>
-              <span className="mx-4 text-sm font-medium text-blue-600 tracking-wider uppercase">
+            <div className="inline-flex items-center justify-center mb-3 bg-white px-3 py-1 rounded-full border border-stone-200">
+              <span className="text-sm font-medium text-stone-600 tracking-wider uppercase">
                 Transportation
               </span>
-              <div className="h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent w-12"></div>
             </div>
-            <CardTitle className="text-2xl font-bold">
-              <span className="bg-gradient-to-r from-blue-700 to-green-600 bg-clip-text text-transparent">
-                How to Reach Us
-              </span>
+            <CardTitle className="text-2xl font-serif font-bold text-stone-800">
+              How to Reach Us
             </CardTitle>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex items-start space-x-3">
-              <Car className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
+            <div className="flex items-start space-x-3 p-4 rounded-xl hover:bg-stone-50 transition-colors border border-transparent hover:border-stone-100">
+              <div className="p-2 bg-emerald-100 rounded-full mt-1">
+                <Car className="h-5 w-5 text-emerald-600 flex-shrink-0" />
+              </div>
               <div>
-                <h3 className="font-semibold mb-2">By Car</h3>
-                <p className="text-gray-600 text-sm">
+                <h3 className="font-serif font-semibold mb-2 text-stone-800">
+                  By Car
+                </h3>
+                <p className="text-stone-600 text-sm leading-relaxed">
                   Our shop is conveniently located along the
                   Tissamaharama–Matara main road. From the Highway: Exit at the
                   Mattala Interchange, then continue towards Tissamaharama to
@@ -136,11 +147,15 @@ export default function LocationPage() {
               </div>
             </div>
 
-            <div className="flex items-start space-x-3">
-              <Bus className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
+            <div className="flex items-start space-x-3 p-4 rounded-xl hover:bg-stone-50 transition-colors border border-transparent hover:border-stone-100">
+              <div className="p-2 bg-emerald-100 rounded-full mt-1">
+                <Bus className="h-5 w-5 text-emerald-600 flex-shrink-0" />
+              </div>
               <div>
-                <h3 className="font-semibold mb-2">By Bus</h3>
-                <p className="text-gray-600 text-sm">
+                <h3 className="font-serif font-semibold mb-2 text-stone-800">
+                  By Bus
+                </h3>
+                <p className="text-stone-600 text-sm leading-relaxed">
                   Bus routes 2, 334/1, and 32 stop directly in front of our
                   center. The &ldquo;Wellness Center&rdquo; stop is announced on
                   all routes.
@@ -148,11 +163,15 @@ export default function LocationPage() {
               </div>
             </div>
 
-            <div className="flex items-start space-x-3">
-              <Train className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
+            <div className="flex items-start space-x-3 p-4 rounded-xl hover:bg-stone-50 transition-colors border border-transparent hover:border-stone-100">
+              <div className="p-2 bg-emerald-100 rounded-full mt-1">
+                <Train className="h-5 w-5 text-emerald-600 flex-shrink-0" />
+              </div>
               <div>
-                <h3 className="font-semibold mb-2">By Train</h3>
-                <p className="text-gray-600 text-sm">
+                <h3 className="font-serif font-semibold mb-2 text-stone-800">
+                  By Train
+                </h3>
+                <p className="text-stone-600 text-sm leading-relaxed">
                   Train services are not available in this area.
                 </p>
               </div>
@@ -162,27 +181,25 @@ export default function LocationPage() {
       </Card>
 
       {/* Enhanced CTA Section */}
-      <Card className="bg-gradient-to-br from-green-50 to-blue-50 border-0 shadow-lg">
-        <CardContent className="p-10 text-center">
-          <div className="inline-flex items-center justify-center mb-6">
-            <div className="h-px bg-gradient-to-r from-transparent via-green-400 to-transparent w-16"></div>
-            <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
+      <Card className="bg-stone-50 border border-stone-200 shadow-sm overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-100 rounded-full -mr-20 -mt-20 opacity-30 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-amber-100 rounded-full -ml-10 -mb-10 opacity-30 blur-3xl"></div>
+
+        <CardContent className="p-10 text-center relative z-10">
+          <div className="inline-flex items-center justify-center mb-6 bg-white px-4 py-1.5 rounded-full shadow-sm border border-stone-100">
+            <span className="text-sm font-medium text-emerald-700 tracking-wider uppercase">
               Visit Us Today
             </span>
-            <div className="h-px bg-gradient-to-r from-transparent via-green-400 to-transparent w-16"></div>
           </div>
 
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-gray-900 to-green-800 bg-clip-text text-transparent">
-              Ready to Visit
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+          <h2 className="text-3xl lg:text-4xl font-serif font-bold mb-4 text-stone-800">
+            Ready to Visit <br />
+            <span className="text-emerald-700 italic">
               Our Rathnadeepa Ayurvedic Shop?
             </span>
           </h2>
 
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-stone-600 mb-8 max-w-2xl mx-auto leading-relaxed font-light">
             Visit us anytime to explore our wide range of authentic Ayurvedic
             products. No appointment needed, all are welcome.
           </p>
@@ -190,7 +207,7 @@ export default function LocationPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               variant="outline"
-              className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white bg-transparent shadow-lg px-8 py-3"
+              className="border-emerald-600 text-emerald-700 hover:bg-emerald-50 bg-transparent shadow-sm px-8 py-6 text-lg font-serif"
               size="lg"
               onClick={() =>
                 window.open(

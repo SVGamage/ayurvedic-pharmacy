@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Calendar, User, Clock, Search, ArrowRight } from "lucide-react";
+import { ReusableHeroSection } from "@/components/reusable-hero-section";
 
 const blogCategories = [
   "All Categories",
@@ -118,84 +119,30 @@ export default function BlogPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Enhanced Header Section */}
-      <div className="relative mb-16 text-center">
-        {/* Background decoration */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-44 h-44 bg-green-100 rounded-full opacity-30 blur-3xl"></div>
-          <div className="absolute top-10 left-1/4 w-20 h-20 bg-emerald-100 rounded-full opacity-20 blur-2xl"></div>
-          <div className="absolute top-16 right-1/3 w-16 h-16 bg-teal-100 rounded-full opacity-25 blur-2xl"></div>
-        </div>
-
-        {/* Main title with gradient */}
-        <div className="mb-6">
-          <div className="inline-flex items-center justify-center mb-4">
-            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
-            <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
-              Ancient Wisdom Hub
-            </span>
-            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
-          </div>
-
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-gray-900 via-green-800 to-gray-900 bg-clip-text text-transparent">
-              Wellness
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-green-500 bg-clip-text text-transparent">
-              Knowledge Center
-            </span>
-          </h1>
-        </div>
-
-        {/* Enhanced subtitle */}
-        <div className="max-w-4xl mx-auto mb-8">
-          <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-6">
-            Discover the wisdom of Ayurveda through our comprehensive articles
-          </p>
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 max-w-3xl mx-auto">
-            <p className="text-gray-700 leading-relaxed mb-4">
-              Explore natural healing, herbal remedies, and holistic wellness
-              practices through expertly crafted articles by our experienced
-              practitioners.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="bg-white/80 px-3 py-1 rounded-full text-green-700 font-medium">
-                Expert Articles
-              </span>
-              <span className="bg-white/80 px-3 py-1 rounded-full text-emerald-700 font-medium">
-                Daily Wisdom
-              </span>
-              <span className="bg-white/80 px-3 py-1 rounded-full text-teal-700 font-medium">
-                Practical Tips
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Decorative elements */}
-        <div className="flex justify-center items-center space-x-2">
-          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-          <div className="w-1 h-1 bg-emerald-400 rounded-full"></div>
-          <div className="w-3 h-3 bg-green-600 rounded-full"></div>
-          <div className="w-1 h-1 bg-emerald-400 rounded-full"></div>
-          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-        </div>
-      </div>
+      <ReusableHeroSection
+        preTitle="Ancient Wisdom Hub"
+        titleLine1="Wellness"
+        titleLine2="Knowledge Center"
+        subtitle="Discover the wisdom of Ayurveda through our comprehensive articles"
+        description="Explore natural healing, herbal remedies, and holistic wellness practices through expertly crafted articles by our experienced practitioners."
+        badges={["Expert Articles", "Daily Wisdom", "Practical Tips"]}
+        theme="green"
+      />
 
       {/* Search and Filter */}
-      <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
+      <div className="bg-stone-50 p-6 rounded-xl shadow-sm border border-stone-200 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="relative md:col-span-2">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-3 h-4 w-4 text-stone-400" />
             <Input
               placeholder="Search articles..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-10 border-stone-200 focus:border-emerald-500 focus:ring-emerald-500 bg-white"
             />
           </div>
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger>
+            <SelectTrigger className="border-stone-200 focus:ring-emerald-500 bg-white">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
@@ -212,10 +159,10 @@ export default function BlogPage() {
       {/* Featured Article */}
       {featuredPost && selectedCategory === "All Categories" && !searchTerm && (
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          <h2 className="text-2xl font-serif font-bold text-stone-800 mb-6">
             Featured Article
           </h2>
-          <Card className="overflow-hidden">
+          <Card className="overflow-hidden border-stone-200 shadow-sm">
             <div className="md:flex">
               <div className="md:w-1/2">
                 <Image
@@ -226,18 +173,18 @@ export default function BlogPage() {
                   height={250}
                 />
               </div>
-              <div className="md:w-1/2 p-8">
-                <Badge className="bg-green-600 mb-4">
+              <div className="md:w-1/2 p-8 bg-stone-50">
+                <Badge className="bg-emerald-700 hover:bg-emerald-800 mb-4">
                   {featuredPost.category}
                 </Badge>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
                   {featuredPost.title}
                 </h3>
-                <p className="text-gray-600 mb-6 text-lg">
+                <p className="text-stone-600 mb-6 text-lg leading-relaxed">
                   {featuredPost.excerpt}
                 </p>
                 <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
+                  <div className="flex items-center space-x-4 text-sm text-stone-500">
                     <div className="flex items-center space-x-1">
                       <User className="h-4 w-4" />
                       <span>{featuredPost.author}</span>
@@ -252,7 +199,7 @@ export default function BlogPage() {
                     </div>
                   </div>
                 </div>
-                <Button className="bg-green-600 hover:bg-green-700">
+                <Button className="bg-emerald-700 hover:bg-emerald-800 text-white shadow-md">
                   Read Full Article
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
@@ -265,27 +212,32 @@ export default function BlogPage() {
       {/* Regular Articles Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {regularPosts.map((post) => (
-          <Card key={post.id} className="group cursor-pointer overflow-hidden">
+          <Card
+            key={post.id}
+            className="group cursor-pointer overflow-hidden border-stone-200 shadow-sm hover:shadow-md transition-all duration-300"
+          >
             <CardHeader className="p-0 relative">
               <div className="overflow-hidden">
                 <Image
                   src={post.image || "/placeholder.svg"}
                   alt={post.title}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
                   width={400}
                   height={250}
                 />
-                <Badge className="absolute top-4 left-4 bg-green-600">
+                <Badge className="absolute top-4 left-4 bg-emerald-700/90 backdrop-blur-sm">
                   {post.category}
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent className="p-6">
-              <CardTitle className="text-xl mb-3 group-hover:text-green-600 transition-colors">
+            <CardContent className="p-6 bg-white">
+              <CardTitle className="text-xl font-serif mb-3 text-stone-800 group-hover:text-emerald-700 transition-colors">
                 {post.title}
               </CardTitle>
-              <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt}</p>
-              <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+              <p className="text-stone-600 mb-4 line-clamp-3 text-sm leading-relaxed">
+                {post.excerpt}
+              </p>
+              <div className="flex items-center justify-between text-sm text-stone-500 mb-4">
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-1">
                     <User className="h-4 w-4" />
@@ -303,7 +255,7 @@ export default function BlogPage() {
               </div>
               <Button
                 variant="ghost"
-                className="p-0 h-auto text-green-600 hover:text-green-700"
+                className="p-0 h-auto text-emerald-700 hover:text-emerald-800 hover:bg-transparent font-medium"
               >
                 Read More
                 <ArrowRight className="h-4 w-4 ml-1" />
@@ -315,34 +267,28 @@ export default function BlogPage() {
 
       {filteredPosts.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">
+          <p className="text-stone-500 text-lg">
             No articles found matching your criteria.
           </p>
         </div>
       )}
 
       {/* Enhanced Newsletter Signup */}
-      <section className="bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-50 rounded-3xl p-10 mt-16 border-0 shadow-lg">
+      <section className="bg-stone-50 rounded-3xl p-10 mt-16 border border-stone-200 shadow-sm">
         <div className="text-center">
-          <div className="inline-flex items-center justify-center mb-6">
-            <div className="h-px bg-gradient-to-r from-transparent via-indigo-400 to-transparent w-16"></div>
-            <span className="mx-4 text-sm font-medium text-indigo-600 tracking-wider uppercase">
+          <div className="inline-flex items-center justify-center mb-6 bg-white px-3 py-1 rounded-full border border-stone-200">
+            <span className="text-sm font-medium text-stone-600 tracking-wider uppercase">
               Stay Connected
             </span>
-            <div className="h-px bg-gradient-to-r from-transparent via-indigo-400 to-transparent w-16"></div>
           </div>
 
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-gray-900 to-indigo-800 bg-clip-text text-transparent">
-              Stay Updated with Our
-            </span>
+          <h2 className="text-3xl lg:text-4xl font-serif font-bold mb-4 text-stone-800">
+            Stay Updated with Our
             <br />
-            <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Wellness Newsletter
-            </span>
+            <span className="text-emerald-700">Wellness Newsletter</span>
           </h2>
 
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-stone-600 mb-8 max-w-2xl mx-auto leading-relaxed font-light">
             Get the latest articles on Ayurveda, natural healing, and wellness
             tips delivered to your inbox every week.
           </p>
@@ -350,9 +296,9 @@ export default function BlogPage() {
           <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <Input
               placeholder="Enter your email"
-              className="flex-1 h-12 border-indigo-200 focus:border-indigo-500"
+              className="flex-1 h-12 border-stone-200 focus:border-emerald-500 focus:ring-emerald-500 bg-white"
             />
-            <Button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg px-8 h-12">
+            <Button className="bg-emerald-700 hover:bg-emerald-800 text-white shadow-md px-8 h-12">
               Subscribe
             </Button>
           </div>

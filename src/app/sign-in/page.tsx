@@ -1,43 +1,44 @@
 import React from "react";
 import Link from "next/link";
 import SignIn from "../_components/sign-in-form";
+import { Leaf } from "lucide-react";
 
 const SignInPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-yellow-50 relative overflow-hidden flex items-center justify-center">
-      {/* Ayurvedic Pattern Background */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-20 w-40 h-40 border-2 border-emerald-300 rounded-full animate-pulse"></div>
-        <div className="absolute top-40 right-32 w-32 h-32 border-2 border-yellow-400 rounded-full animate-pulse animation-delay-200"></div>
-        <div className="absolute bottom-32 left-40 w-36 h-36 border-2 border-orange-300 rounded-full animate-pulse animation-delay-400"></div>
-        <div className="absolute bottom-20 right-20 w-28 h-28 border-2 border-emerald-400 rounded-full animate-pulse animation-delay-300"></div>
-        <div className="absolute top-1/2 left-1/4 w-24 h-24 border-2 border-green-300 rounded-full animate-pulse animation-delay-500"></div>
-        <div className="absolute top-1/3 right-1/3 w-20 h-20 border-2 border-amber-300 rounded-full animate-pulse animation-delay-600"></div>
+    <div className="min-h-screen bg-stone-50 flex items-center justify-center relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23064e3b' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        />
       </div>
 
       <div className="w-full max-w-md p-6 relative z-10">
         {/* Welcome Header */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <span className="text-2xl">🧘‍♀️</span>
+          <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm border border-emerald-200">
+            <Leaf className="w-8 h-8 text-emerald-700" />
           </div>
-          <h1 className="text-3xl font-bold text-transparent bg-gradient-to-r from-emerald-600 via-green-600 to-yellow-600 bg-clip-text mb-2">
+          <h1 className="text-3xl font-serif font-bold text-emerald-900 mb-3">
             Welcome Back
           </h1>
-          <p className="text-emerald-700 font-medium">
+          <p className="text-stone-600 font-medium">
             Continue your Ayurvedic wellness journey
           </p>
-          <div className="w-16 h-1 bg-gradient-to-r from-emerald-400 to-yellow-400 mx-auto mt-3 rounded-full"></div>
+          <div className="w-16 h-1 bg-emerald-700 mx-auto mt-4 rounded-full opacity-20"></div>
         </div>
 
         <SignIn />
 
-        <div className="text-center mt-6 p-4 bg-white/50 backdrop-blur-sm rounded-xl border border-emerald-100">
-          <p className="text-emerald-800 font-medium">
+        <div className="text-center mt-8">
+          <p className="text-stone-600">
             New to our wellness center?{" "}
             <Link
               href="/sign-up"
-              className="text-emerald-600 hover:text-emerald-800 font-bold hover:underline transition-colors duration-200"
+              className="text-emerald-700 font-semibold hover:text-emerald-800 hover:underline transition-colors duration-200"
             >
               Begin Your Journey
             </Link>
