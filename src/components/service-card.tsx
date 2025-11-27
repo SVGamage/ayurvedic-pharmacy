@@ -111,6 +111,26 @@ export function ServiceCard({
           {service.description}
         </p>
 
+        {/* Features Preview */}
+        {service.features && service.features.length > 0 && (
+          <div className="space-y-1.5 pt-1">
+            {service.features.slice(0, 2).map((feature, idx) => (
+              <div
+                key={idx}
+                className="flex items-start gap-2 text-xs text-stone-600"
+              >
+                <CheckCircle className="h-3.5 w-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                <span className="line-clamp-1">{feature}</span>
+              </div>
+            ))}
+            {service.features.length > 2 && (
+              <p className="text-xs text-emerald-600 pl-5.5 font-medium">
+                +{service.features.length - 2} more included
+              </p>
+            )}
+          </div>
+        )}
+
         <div className="flex items-center justify-between pt-2 border-t border-stone-100">
           <div className="flex items-center text-stone-500 text-sm">
             <Clock className="h-4 w-4 mr-1.5" />
