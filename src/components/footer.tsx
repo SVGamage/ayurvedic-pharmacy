@@ -3,7 +3,6 @@ import Image from "next/image";
 import {
   Phone,
   Mail,
-  MapPin,
   MessageCircle,
   Instagram,
   Twitter,
@@ -20,14 +19,34 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand Column */}
           <div className="col-span-1 md:col-span-2 lg:col-span-1">
-            <Link href="/" className="inline-block mb-6">
-              <Brand isFooter={false} width={120} height={120} />
+            <Link href="/" className="flex justify-center mb-6">
+              <Brand
+                isFooter={false}
+                isColumn={true}
+                width={120}
+                height={120}
+              />
             </Link>
-            <p className="text-xs text-stone-500 leading-relaxed max-w-xs">
-              Bringing the ancient science of life to the modern world with
-              purity, authenticity, and care. Experience holistic wellness with
-              Rathnadeepa Herbals.
-            </p>
+            <div className="flex space-x-6 mt-4 md:mt-0 justify-center">
+              <Link
+                href="#"
+                className="text-stone-400 hover:text-emerald-700 transition-colors"
+              >
+                <Instagram className="w-4 h-4" />
+              </Link>
+              <Link
+                href="#"
+                className="text-stone-400 hover:text-emerald-700 transition-colors"
+              >
+                <Twitter className="w-4 h-4" />
+              </Link>
+              <Link
+                href="#"
+                className="text-stone-400 hover:text-emerald-700 transition-colors"
+              >
+                <Facebook className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
 
           {/* Shop Links */}
@@ -146,30 +165,10 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-stone-200 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-stone-200 pt-8 flex flex-col md:flex-row justify-center items-center">
           <p className="text-[10px] text-stone-400">
             © 2024 Rathnadeepa Herbals. All rights reserved.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link
-              href="#"
-              className="text-stone-400 hover:text-emerald-700 transition-colors"
-            >
-              <Instagram className="w-4 h-4" />
-            </Link>
-            <Link
-              href="#"
-              className="text-stone-400 hover:text-emerald-700 transition-colors"
-            >
-              <Twitter className="w-4 h-4" />
-            </Link>
-            <Link
-              href="#"
-              className="text-stone-400 hover:text-emerald-700 transition-colors"
-            >
-              <Facebook className="w-4 h-4" />
-            </Link>
-          </div>
         </div>
       </div>
 
