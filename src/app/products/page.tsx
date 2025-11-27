@@ -414,7 +414,7 @@ export default function ProductsPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-8 md:pt-40">
       {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
       <CarouselGrid heroSlidesArray={[heroSlides1, heroSlides2, heroSlides3]} />
       {/* Enhanced Header Section */}
@@ -436,23 +436,21 @@ export default function ProductsPage() {
 
       <div
         className={cn(
-          "bg-gradient-to-r p-6 rounded-lg mb-10",
-          "from-green-600 via-emerald-500 to-green-500",
-          "[filter:drop-shadow(0_10px_10px_rgba(0,0,0,0.40))]"
+          "bg-white p-6 rounded-xl mb-10 border border-stone-200 shadow-sm"
         )}
       >
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-stone-400" />
             <Input
               placeholder="Search products..."
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="pl-10"
+              className="pl-10 border-stone-200 focus:border-emerald-500 focus:ring-emerald-500 bg-stone-50"
             />
           </div>
           <Select value={selectedCategory} onValueChange={handleCategoryChange}>
-            <SelectTrigger>
+            <SelectTrigger className="border-stone-200 focus:ring-emerald-500 bg-stone-50">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
@@ -467,14 +465,14 @@ export default function ProductsPage() {
             value={selectedCompanyValue}
             onValueChange={handleCompanySelect}
           >
-            <SelectTrigger>
+            <SelectTrigger className="border-stone-200 focus:ring-emerald-500 bg-stone-50">
               <SelectValue placeholder="Shop By Brand" />
             </SelectTrigger>
             <SelectContent>
               {companies.map((company) => (
                 <SelectItem key={company.id} value={company.id}>
                   <div className="flex items-center space-x-2">
-                    <Building2 className="h-4 w-4 text-green-600" />
+                    <Building2 className="h-4 w-4 text-emerald-600" />
                     <span>{company.name}</span>
                   </div>
                 </SelectItem>
@@ -485,7 +483,7 @@ export default function ProductsPage() {
             value={selectedSubcategory}
             onValueChange={handleSubcategoryChange}
           >
-            <SelectTrigger>
+            <SelectTrigger className="border-stone-200 focus:ring-emerald-500 bg-stone-50">
               <SelectValue placeholder="Filter by Subcategory" />
             </SelectTrigger>
             <SelectContent>
@@ -494,7 +492,7 @@ export default function ProductsPage() {
                 <SelectItem key={subcategory.id} value={subcategory.id}>
                   {subcategory.name}
                   {subcategory.category && (
-                    <span className="text-xs text-gray-500 ml-2">
+                    <span className="text-xs text-stone-500 ml-2">
                       ({subcategory.category.name})
                     </span>
                   )}
@@ -528,7 +526,7 @@ export default function ProductsPage() {
 
       {/* Pagination */}
       {filteredProducts.length > 0 && (
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-green-100 shadow-md">
+        <div className="bg-white rounded-xl p-4 border border-stone-200 shadow-sm mt-8">
           <AdminPagination
             currentPage={paginationData.page}
             totalPages={paginationData.totalPages}
@@ -548,13 +546,13 @@ export default function ProductsPage() {
         open={isCompanyDialogOpen}
         onOpenChange={handleCompanyDialogClose}
       >
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-stone-50">
           <DialogHeader>
             <div className="flex items-center space-x-3 mb-4">
-              <div className="p-3 bg-green-100 rounded-full">
-                <Building2 className="h-6 w-6 text-green-600" />
+              <div className="p-3 bg-emerald-100 rounded-full">
+                <Building2 className="h-6 w-6 text-emerald-600" />
               </div>
-              <DialogTitle className="text-2xl font-bold text-green-800">
+              <DialogTitle className="text-2xl font-serif font-bold text-stone-800">
                 {selectedCompany?.name}
               </DialogTitle>
             </div>
@@ -563,12 +561,12 @@ export default function ProductsPage() {
           {selectedCompany && (
             <div className="space-y-6">
               {/* Company Information */}
-              <div className="bg-green-50 rounded-lg p-6">
+              <div className="bg-white rounded-xl p-6 border border-stone-200 shadow-sm">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
-                      <Package className="h-4 w-4 text-green-600" />
-                      <span className="text-sm text-green-700">
+                      <Package className="h-4 w-4 text-emerald-600" />
+                      <span className="text-sm text-stone-700">
                         <strong>Total Products:</strong>{" "}
                         {selectedCompany.companyProducts.length} items
                       </span>
@@ -576,8 +574,8 @@ export default function ProductsPage() {
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
-                      <Building2 className="h-4 w-4 text-green-600" />
-                      <span className="text-sm text-green-700">
+                      <Building2 className="h-4 w-4 text-emerald-600" />
+                      <span className="text-sm text-stone-700">
                         <strong>Subcategories:</strong>{" "}
                         {
                           new Set(
@@ -595,7 +593,7 @@ export default function ProductsPage() {
 
               {/* Products by Category */}
               <div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                <h4 className="text-lg font-serif font-semibold text-stone-900 mb-4">
                   Products by Subcategory
                 </h4>
 
@@ -646,44 +644,44 @@ export default function ProductsPage() {
                         onOpenChange={() => toggleCategory(subCategory.id)}
                         className="w-full"
                       >
-                        <CollapsibleTrigger className="flex items-center justify-between w-full p-4 bg-white rounded-lg border border-green-200 hover:bg-green-50 transition-colors mb-2">
+                        <CollapsibleTrigger className="flex items-center justify-between w-full p-4 bg-white rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors mb-2">
                           <div className="flex items-center space-x-3">
-                            <div className="p-2 bg-green-100 rounded-full">
-                              <Package className="h-4 w-4 text-green-600" />
+                            <div className="p-2 bg-emerald-100 rounded-full">
+                              <Package className="h-4 w-4 text-emerald-600" />
                             </div>
                             <div className="text-left">
-                              <h5 className="font-semibold text-gray-900">
+                              <h5 className="font-semibold text-stone-900">
                                 {subCategoryName}
                               </h5>
-                              <p className="text-sm text-gray-600">
+                              <p className="text-sm text-stone-600">
                                 {products.length} products
                               </p>
                             </div>
                           </div>
                           {expandedCategories.has(subCategory.id) ? (
-                            <ChevronDown className="h-5 w-5 text-green-600" />
+                            <ChevronDown className="h-5 w-5 text-emerald-600" />
                           ) : (
-                            <ChevronRight className="h-5 w-5 text-green-600" />
+                            <ChevronRight className="h-5 w-5 text-emerald-600" />
                           )}
                         </CollapsibleTrigger>
 
                         <CollapsibleContent className="space-y-2">
-                          <div className="ml-4 p-4 bg-gray-50 rounded-lg border-l-4 border-green-300">
+                          <div className="ml-4 p-4 bg-stone-50 rounded-lg border-l-4 border-emerald-300">
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                               {products.map((product) => (
                                 <div
                                   key={product.id}
-                                  className="bg-white p-3 rounded-lg border border-gray-200 hover:border-green-300 transition-colors"
+                                  className="bg-white p-3 rounded-lg border border-stone-200 hover:border-emerald-300 transition-colors"
                                 >
                                   <div className="space-y-2">
                                     <div className="flex justify-between items-center">
-                                      <h6 className="font-medium text-gray-900 text-sm">
+                                      <h6 className="font-medium text-stone-900 text-sm">
                                         {product.name}
                                       </h6>
-                                      <span className="text-sm font-semibold text-green-600">
+                                      <span className="text-sm font-semibold text-emerald-600">
                                         Rs. {product.price}
                                       </span>
-                                      <span className="text-xs text-gray-600">
+                                      <span className="text-xs text-stone-500">
                                         Code: {product.code}
                                       </span>
                                     </div>
@@ -700,27 +698,27 @@ export default function ProductsPage() {
 
                 {/* Show message if no products */}
                 {selectedCompany.companyProducts.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
-                    <Package className="h-12 w-12 mx-auto mb-3 text-gray-400" />
+                  <div className="text-center py-8 text-stone-500">
+                    <Package className="h-12 w-12 mx-auto mb-3 text-stone-400" />
                     <p>No products available for this company.</p>
                   </div>
                 )}
               </div>
 
               {/* Company Stats */}
-              <div className="bg-gray-50 rounded-lg p-6">
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">
+              <div className="bg-white rounded-xl p-6 border border-stone-200 shadow-sm">
+                <h4 className="text-lg font-serif font-semibold text-stone-900 mb-4">
                   Company Statistics
                 </h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">
+                    <div className="text-2xl font-bold text-emerald-600">
                       {selectedCompany.companyProducts.length}
                     </div>
-                    <div className="text-sm text-gray-600">Total Products</div>
+                    <div className="text-sm text-stone-600">Total Products</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">
+                    <div className="text-2xl font-bold text-emerald-600">
                       {
                         new Set(
                           selectedCompany.companyProducts
@@ -729,20 +727,22 @@ export default function ProductsPage() {
                         ).size
                       }
                     </div>
-                    <div className="text-sm text-gray-600">Subcategories</div>
+                    <div className="text-sm text-stone-600">Subcategories</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">
+                    <div className="text-2xl font-bold text-emerald-600">
                       {
                         selectedCompany.companyProducts.filter(
                           (p) => parseFloat(p.price) > 0
                         ).length
                       }
                     </div>
-                    <div className="text-sm text-gray-600">Priced Products</div>
+                    <div className="text-sm text-stone-600">
+                      Priced Products
+                    </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">
+                    <div className="text-2xl font-bold text-emerald-600">
                       Rs.{" "}
                       {selectedCompany.companyProducts.length > 0
                         ? Math.round(
@@ -753,7 +753,7 @@ export default function ProductsPage() {
                           )
                         : 0}
                     </div>
-                    <div className="text-sm text-gray-600">Avg. Price</div>
+                    <div className="text-sm text-stone-600">Avg. Price</div>
                   </div>
                 </div>
               </div>

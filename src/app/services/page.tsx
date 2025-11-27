@@ -164,7 +164,7 @@ export default function ServicesPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-8 md:pt-40">
       {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
       <CarouselGrid heroSlidesArray={[heroSlides1, heroSlides2, heroSlides3]} />
       {/* Enhanced Header Section */}
@@ -185,19 +185,15 @@ export default function ServicesPage() {
       {/* Ayurvedic Services */}
       <section className="mb-16">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center mb-4">
-            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-12"></div>
-            <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
+          <div className="inline-flex items-center justify-center mb-4 bg-emerald-50 px-4 py-1 rounded-full border border-emerald-100">
+            <span className="text-sm font-medium text-emerald-700 tracking-wider uppercase">
               Healing Consultations
             </span>
-            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-12"></div>
           </div>
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-green-700 to-emerald-600 bg-clip-text text-transparent">
-              Ayurvedic Consultation Services
-            </span>
+          <h2 className="text-3xl lg:text-4xl font-serif font-bold mb-4 text-stone-800">
+            Ayurvedic Consultation Services
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-stone-600 max-w-2xl mx-auto leading-relaxed font-light text-lg">
             Personalized healthcare solutions based on ancient Ayurvedic
             principles, tailored to restore balance and promote natural healing.
           </p>
@@ -216,21 +212,17 @@ export default function ServicesPage() {
       </section>
 
       {/* Nakshatra Services */}
-      <section className="bg-gradient-to-br from-yellow-50 to-orange-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 rounded-3xl">
+      <section className="bg-stone-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 rounded-3xl border border-stone-100">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center mb-4">
-            <div className="h-px bg-gradient-to-r from-transparent via-yellow-500 to-transparent w-12"></div>
-            <span className="mx-4 text-sm font-medium text-yellow-600 tracking-wider uppercase">
+          <div className="inline-flex items-center justify-center mb-4 bg-amber-50 px-4 py-1 rounded-full border border-amber-100">
+            <span className="text-sm font-medium text-amber-700 tracking-wider uppercase">
               Spiritual Guidance
             </span>
-            <div className="h-px bg-gradient-to-r from-transparent via-yellow-500 to-transparent w-12"></div>
           </div>
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-yellow-700 via-orange-600 to-amber-600 bg-clip-text text-transparent">
-              Nakshatra & Astrological Services
-            </span>
+          <h2 className="text-3xl lg:text-4xl font-serif font-bold mb-4 text-stone-800">
+            Nakshatra & Astrological Services
           </h2>
-          <p className="text-gray-700 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-stone-600 max-w-2xl mx-auto leading-relaxed font-light text-lg">
             Traditional astrological guidance for life&apos;s important
             decisions and spiritual growth, rooted in ancient Vedic wisdom and
             cosmic understanding.
@@ -244,7 +236,7 @@ export default function ServicesPage() {
               service={service}
               showRating={true}
               rating={5}
-              className="bg-white/80 backdrop-blur-sm"
+              className="bg-white"
             />
           ))}
         </div>
@@ -255,28 +247,21 @@ export default function ServicesPage() {
         <div className="relative">
           {/* Background decoration */}
           <div className="absolute inset-0 -z-10">
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-32 bg-green-100 rounded-full opacity-20 blur-3xl"></div>
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-32 bg-emerald-100 rounded-full opacity-20 blur-3xl"></div>
           </div>
 
-          <div className="inline-flex items-center justify-center mb-6">
-            <div className="h-px bg-gradient-to-r from-transparent via-green-400 to-transparent w-16"></div>
-            <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
+          <div className="inline-flex items-center justify-center mb-6 bg-white px-4 py-1.5 rounded-full shadow-sm border border-stone-100">
+            <span className="text-sm font-medium text-emerald-700 tracking-wider uppercase">
               Begin Your Journey
             </span>
-            <div className="h-px bg-gradient-to-r from-transparent via-green-400 to-transparent w-16"></div>
           </div>
 
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-gray-900 to-green-800 bg-clip-text text-transparent">
-              Ready to Begin Your
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">
-              Healing Journey?
-            </span>
+          <h2 className="text-3xl lg:text-4xl font-serif font-bold mb-4 text-stone-800">
+            Ready to Begin Your{" "}
+            <span className="text-emerald-700 italic">Healing Journey?</span>
           </h2>
 
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-stone-600 mb-8 max-w-3xl mx-auto leading-relaxed font-light">
             Our experienced practitioners are here to guide you towards optimal
             health and spiritual well-being. Book your consultation today and
             take the first step towards natural healing.
@@ -285,7 +270,7 @@ export default function ServicesPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              className="bg-green-600 hover:bg-green-700 shadow-lg px-8 py-3"
+              className="bg-emerald-700 hover:bg-emerald-800 text-white shadow-lg px-8 py-6 text-lg font-serif"
               onClick={() =>
                 bookServiceViaWhatsApp(
                   "Ayurvedic Consultation",
@@ -299,7 +284,7 @@ export default function ServicesPage() {
             <Button
               size="lg"
               variant="outline"
-              className="border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-white bg-transparent shadow-lg px-8 py-3"
+              className="border-amber-600 text-amber-700 hover:bg-amber-50 bg-transparent shadow-sm px-8 py-6 text-lg font-serif"
               onClick={() =>
                 bookServiceViaWhatsApp(
                   "Nakshatra Reading",

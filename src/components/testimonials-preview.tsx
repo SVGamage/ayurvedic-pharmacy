@@ -1,5 +1,8 @@
 import { ReviewCard } from "@/components/review-card";
 import { Review } from "@/types/review";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const testimonials: Review[] = [
   {
@@ -42,18 +45,19 @@ const testimonials: Review[] = [
 
 export function TestimonialsPreview() {
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-          What Our Customers Say
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-stone-50/50">
+      <div className="text-center mb-16">
+        <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-800 mb-4">
+          What Our{" "}
+          <span className="text-emerald-700 italic">Customers Say</span>
         </h2>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+        <p className="text-lg text-stone-600 max-w-2xl mx-auto">
           Real stories from people who have experienced the healing power of
           Ayurveda and traditional wisdom.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
         {testimonials.map((review) => (
           <ReviewCard
             key={review.id}
@@ -61,16 +65,23 @@ export function TestimonialsPreview() {
             showVerified={true}
             showLocation={true}
             showHelpful={false}
-            className="h-full"
+            className="h-full bg-white shadow-sm hover:shadow-md border-stone-100"
           />
         ))}
       </div>
 
       {/* CTA to view more reviews */}
-      <div className="text-center mt-12">
-        <button className="inline-flex items-center px-6 py-3 border border-green-600 text-green-600 font-medium rounded-lg hover:bg-green-600 hover:text-white transition-colors duration-200">
-          View All Reviews
-        </button>
+      <div className="text-center">
+        <Button
+          variant="outline"
+          size="lg"
+          className="border-emerald-600 text-emerald-700 hover:bg-emerald-50"
+          asChild
+        >
+          <Link href="/reviews">
+            View All Reviews <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
+        </Button>
       </div>
     </section>
   );

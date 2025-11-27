@@ -48,6 +48,17 @@
   }
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .animate-pulse-slow {
   animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
@@ -60,7 +71,16 @@
   animation: glow 2s ease-in-out infinite;
 }
 
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
 /* Animation delay utilities */
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+
 .animation-delay-200 {
   animation-delay: 200ms;
 }
@@ -134,39 +154,57 @@
   background: linear-gradient(135deg, #22c55e, #16a34a);
 }
 
+/* Smooth Carousel Snap */
+.carousel-snap {
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+.carousel-item {
+  scroll-snap-align: start;
+}
+
+/* Hide scrollbar for carousel */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 :root {
-  --background: #f9f9fa;
-  --foreground: #333333;
+  --background: #fafaf9; /* Stone-50 */
+  --foreground: #1c1917; /* Stone-900 */
   --card: #ffffff;
-  --card-foreground: #333333;
+  --card-foreground: #1c1917;
   --popover: #ffffff;
-  --popover-foreground: #333333;
-  --primary: #34a85a;
+  --popover-foreground: #1c1917;
+  --primary: #059669; /* Emerald-600 */
   --primary-foreground: #ffffff;
-  --secondary: #6495ed;
-  --secondary-foreground: #ffffff;
-  --muted: #ddd9c4;
-  --muted-foreground: #6e6e6e;
-  --accent: #66d9ef;
-  --accent-foreground: #333333;
+  --secondary: #f5f5f4; /* Stone-100 */
+  --secondary-foreground: #1c1917;
+  --muted: #e7e5e4; /* Stone-200 */
+  --muted-foreground: #57534e; /* Stone-600 */
+  --accent: #fbbf24; /* Amber-400 */
+  --accent-foreground: #1c1917;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #d4d4d4;
-  --input: #d4d4d4;
-  --ring: #34a85a;
-  --chart-1: #34a85a;
-  --chart-2: #6495ed;
-  --chart-3: #66d9ef;
-  --chart-4: #4682b4;
-  --chart-5: #1a9641;
-  --sidebar: #f9f9fa;
-  --sidebar-foreground: #333333;
-  --sidebar-primary: #34a85a;
+  --border: #e7e5e4; /* Stone-200 */
+  --input: #e7e5e4;
+  --ring: #059669;
+  --chart-1: #059669;
+  --chart-2: #047857;
+  --chart-3: #10b981;
+  --chart-4: #34d399;
+  --chart-5: #6ee7b7;
+  --sidebar: #fafaf9;
+  --sidebar-foreground: #1c1917;
+  --sidebar-primary: #059669;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #66d9ef;
-  --sidebar-accent-foreground: #333333;
-  --sidebar-border: #d4d4d4;
-  --sidebar-ring: #34a85a;
+  --sidebar-accent: #f5f5f4;
+  --sidebar-accent-foreground: #1c1917;
+  --sidebar-border: #e7e5e4;
+  --sidebar-ring: #059669;
   --font-sans:
     var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, sans-serif;

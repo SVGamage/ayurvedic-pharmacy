@@ -15,25 +15,32 @@ import heroImage2 from "@/assets/hero-2.png";
 import heroImage3 from "@/assets/hero-3.jpg";
 import { useEffect, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
+import Link from "next/link";
 
-// Hero slides data - only background images and gradients change
+// Hero slides data with content
 const heroSlides = [
   {
     id: 1,
     image: heroImage1,
-    gradient: "from-black/80 via-black/60 to-transparent",
   },
   {
     id: 2,
-    image: heroImage2, // Using same image for now - replace with different hero images
-    gradient: "from-black/80 via-black/60 to-transparent",
+    image: heroImage2,
   },
   {
     id: 3,
-    image: heroImage3, // Using same image for now - replace with different hero images
-    gradient: "from-black/80 via-black/60 to-transparent",
+    image: heroImage3,
   },
 ];
+
+const staticContent = {
+  tag: "NATURAL PHARMACY",
+  title: "Ancient Wisdom,\nModern Healing.",
+  description:
+    "Experience the purest ayurvedic formulations derived from nature's finest herbs. Certified, authentic, and effective.",
+  primaryButton: { text: "Shop Remedies", href: "/products" },
+  secondaryButton: { text: "Learn More", href: "/about" },
+};
 
 export function HeroSection() {
   const [api, setApi] = useState<CarouselApi>();
@@ -52,88 +59,96 @@ export function HeroSection() {
   }, [api]);
 
   return (
-    <section className="relative min-h-[80vh] overflow-hidden">
-      {/* Background Carousel - Only images change */}
-      <Carousel
-        setApi={setApi}
-        className="w-full h-full absolute inset-0"
-        opts={{
-          loop: true,
-        }}
-        plugins={[
-          Autoplay({
-            delay: 5000,
-          }),
-        ]}
-      >
-        <CarouselContent className="-ml-0">
-          {heroSlides.map((slide) => (
-            <CarouselItem key={slide.id} className="pl-0">
-              <div className="relative min-h-[80vh]">
-                <div
-                  className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-700"
-                  style={{
-                    backgroundImage: `url(${slide.image.src || slide.image})`,
-                  }}
-                />
-                <div
-                  className={`absolute inset-0 bg-gradient-to-r ${slide.gradient}`}
-                />
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="left-4 bg-white/20 border-white/30 text-white hover:bg-white/30 z-20" />
-        <CarouselNext className="right-4 bg-white/20 border-white/30 text-white hover:bg-white/30 z-20" />
-      </Carousel>
+    <section className="relative pt-32 md:pt-40 px-6 max-w-7xl mx-auto">
+      <div className="relative w-full aspect-[4/5] md:aspect-[21/9] rounded-2xl overflow-hidden shadow-2xl shadow-stone-200 group">
+        <Carousel
+          setApi={setApi}
+          className="w-full h-full"
+          opts={{
+            loop: true,
+          }}
+          plugins={[
+            Autoplay({
+              delay: 6000,
+            }),
+          ]}
+        >
+          <CarouselContent className="h-full">
+            {heroSlides.map((slide) => (
+              <CarouselItem key={slide.id} className="pl-0 h-full min-w-full">
+                <div className="relative w-full h-full bg-stone-900">
+                  <div
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 transition-transform duration-[2000ms] ease-out scale-105"
+                    style={{
+                      backgroundImage: `url(${slide.image.src || slide.image})`,
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/90 via-stone-900/40 to-transparent" />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
 
-      {/* Static Content - Never changes or transitions */}
-      <div className="relative z-10 min-h-[80vh] flex items-center justify-center pointer-events-none">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6 leading-tight">
-              Natural Healing with
-              <span className="text-primary"> Ayurvedic </span>
-              Wisdom
-            </h1>
-            <p className="text-xl text-white/90 mb-8 leading-relaxed">
-              Discover the power of traditional Ayurvedic medicine with our
-              premium quality products and expert consultations for holistic
-              wellness.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pointer-events-auto">
-              <Button size="lg" className="group">
-                Shop Products
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="bg-white/10 text-white border-white/30 hover:bg-white/20"
-              >
-                Book Consultation
-              </Button>
+          {/* Static Content Overlay */}
+          <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-16 z-10 pointer-events-none">
+            <div className="animate-fade-in-up pointer-events-auto">
+              <span className="inline-block px-3 py-1 mb-4 text-xs font-medium tracking-wider text-emerald-300 border border-emerald-500/30 rounded-full w-max bg-emerald-900/20 backdrop-blur-sm">
+                {staticContent.tag}
+              </span>
+              <h1 className="text-3xl md:text-5xl font-medium text-white tracking-tight mb-4 whitespace-pre-line font-serif">
+                {staticContent.title}
+              </h1>
+              <p className="text-stone-300 max-w-lg text-sm md:text-base leading-relaxed mb-8">
+                {staticContent.description}
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Button
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-6 py-6 text-sm font-medium tracking-wide transition-all hover:scale-105"
+                  asChild
+                >
+                  <Link href={staticContent.primaryButton.href}>
+                    {staticContent.primaryButton.text}
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
+                </Button>
+                <Button
+                  variant="outline"
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white rounded-full px-6 py-6 text-sm font-medium tracking-wide backdrop-blur-sm transition-all hover:scale-105"
+                  asChild
+                >
+                  <Link href={staticContent.secondaryButton.href}>
+                    {staticContent.secondaryButton.text}
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Slide indicators */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30">
-        <div className="flex space-x-2">
-          {heroSlides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => api?.scrollTo(index)}
-              className={`w-3 h-3 rounded-full transition-all ${
-                index === currentSlide
-                  ? "bg-white"
-                  : "bg-white/50 hover:bg-white/75"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
+          {/* Custom Navigation Controls */}
+          <div className="absolute bottom-6 right-6 flex space-x-2 z-20">
+            <div className="flex space-x-2">
+              {heroSlides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => api?.scrollTo(index)}
+                  className={`h-1 rounded-full transition-all duration-300 ${
+                    index === currentSlide
+                      ? "bg-white w-8"
+                      : "bg-white/30 w-4 hover:bg-white/50"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="absolute inset-y-0 left-4 flex items-center z-20">
+            <CarouselPrevious className="relative left-0 translate-x-0 bg-white/10 backdrop-blur-md border-white/10 text-white/70 hover:bg-white/20 hover:text-white hidden md:flex h-10 w-10" />
+          </div>
+          <div className="absolute inset-y-0 right-4 flex items-center z-20">
+            <CarouselNext className="relative right-0 translate-x-0 bg-white/10 backdrop-blur-md border-white/10 text-white/70 hover:bg-white/20 hover:text-white hidden md:flex h-10 w-10" />
+          </div>
+        </Carousel>
       </div>
     </section>
   );

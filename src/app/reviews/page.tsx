@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, Quote, ThumbsUp, MessageCircle } from "lucide-react";
+import { ReusableHeroSection } from "@/components/reusable-hero-section";
 
 const reviews = [
   {
@@ -95,92 +96,44 @@ export default function ReviewsPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Enhanced Header Section */}
-      <div className="relative mb-16 text-center">
-        {/* Background decoration */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-48 h-48 bg-green-100 rounded-full opacity-30 blur-3xl"></div>
-          <div className="absolute top-8 left-1/4 w-20 h-20 bg-emerald-100 rounded-full opacity-20 blur-2xl"></div>
-          <div className="absolute top-16 right-1/3 w-16 h-16 bg-teal-100 rounded-full opacity-25 blur-2xl"></div>
+      <ReusableHeroSection
+        preTitle="Trusted by Thousands"
+        titleLine1="Customer Stories &"
+        titleLine2="Testimonials"
+        subtitle="Read authentic experiences from our wellness community"
+        description="Discover how our customers have found healing and wellness through our Ayurvedic treatments and services. Real stories, real transformations."
+        badges={["Verified Reviews", "Real Results", "Trusted Care"]}
+        theme="green"
+      />
+
+      {/* Rating highlights */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mb-8">
+        <div className="bg-white rounded-xl p-4 shadow-sm border border-stone-200">
+          <div className="flex items-center justify-center mb-2">
+            <Star className="h-6 w-6 text-emerald-500 fill-current" />
+          </div>
+          <div className="text-xl font-bold text-emerald-700 mb-1 text-center">
+            4.8
+          </div>
+          <p className="text-xs text-stone-600 text-center">Average Rating</p>
         </div>
-
-        {/* Main title with gradient */}
-        <div className="mb-6">
-          <div className="inline-flex items-center justify-center mb-4">
-            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
-            <span className="mx-4 text-sm font-medium text-green-600 tracking-wider uppercase">
-              Trusted by Thousands
-            </span>
-            <div className="h-px bg-gradient-to-r from-transparent via-green-500 to-transparent w-16"></div>
+        <div className="bg-white rounded-xl p-4 shadow-sm border border-stone-200">
+          <div className="text-xl font-bold text-emerald-700 mb-1 text-center">
+            1.2K+
           </div>
-
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-gray-900 via-green-800 to-gray-900 bg-clip-text text-transparent">
-              Customer Stories &
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-green-500 bg-clip-text text-transparent">
-              Testimonials
-            </span>
-          </h1>
+          <p className="text-xs text-stone-600 text-center">Happy Customers</p>
         </div>
-
-        {/* Enhanced subtitle */}
-        <div className="max-w-4xl mx-auto mb-8">
-          <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-6">
-            Read authentic experiences from our wellness community
-          </p>
-          <div className="bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50 rounded-2xl p-6 max-w-3xl mx-auto">
-            <p className="text-gray-700 leading-relaxed mb-4">
-              Discover how our customers have found healing and wellness through
-              our Ayurvedic treatments and services. Real stories, real
-              transformations.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="bg-white/80 px-3 py-1 rounded-full text-green-700 font-medium">
-                Verified Reviews
-              </span>
-              <span className="bg-white/80 px-3 py-1 rounded-full text-emerald-700 font-medium">
-                Real Results
-              </span>
-              <span className="bg-white/80 px-3 py-1 rounded-full text-teal-700 font-medium">
-                Trusted Care
-              </span>
-            </div>
+        <div className="bg-white rounded-xl p-4 shadow-sm border border-stone-200">
+          <div className="text-xl font-bold text-emerald-700 mb-1 text-center">
+            89%
           </div>
+          <p className="text-xs text-stone-600 text-center">5-Star Reviews</p>
         </div>
-
-        {/* Rating highlights */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mb-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-green-100">
-            <div className="flex items-center justify-center mb-2">
-              <Star className="h-6 w-6 text-green-500 fill-current" />
-            </div>
-            <div className="text-xl font-bold text-green-600 mb-1">4.8</div>
-            <p className="text-xs text-gray-600">Average Rating</p>
+        <div className="bg-white rounded-xl p-4 shadow-sm border border-stone-200">
+          <div className="text-xl font-bold text-emerald-700 mb-1 text-center">
+            94%
           </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-emerald-100">
-            <div className="text-xl font-bold text-emerald-600 mb-1">1.2K+</div>
-            <p className="text-xs text-gray-600">Happy Customers</p>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-teal-100">
-            <div className="text-xl font-bold text-teal-600 mb-1">89%</div>
-            <p className="text-xs text-gray-600">5-Star Reviews</p>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-green-100">
-            <div className="text-xl font-bold text-green-600 mb-1">94%</div>
-            <p className="text-xs text-gray-600">Verified</p>
-          </div>
-        </div>
-
-        {/* Decorative stars pattern */}
-        <div className="flex justify-center items-center space-x-3">
-          <div className="w-8 h-px bg-gradient-to-r from-transparent via-amber-300 to-orange-300"></div>
-          <Star className="h-4 w-4 text-amber-500 fill-current" />
-          <div className="w-6 h-px bg-orange-300"></div>
-          <Star className="h-5 w-5 text-orange-500 fill-current" />
-          <div className="w-6 h-px bg-yellow-300"></div>
-          <Star className="h-4 w-4 text-yellow-500 fill-current" />
-          <div className="w-8 h-px bg-gradient-to-l from-transparent via-yellow-300 to-orange-300"></div>
+          <p className="text-xs text-stone-600 text-center">Verified</p>
         </div>
       </div>
 
@@ -189,46 +142,48 @@ export default function ReviewsPage() {
         {stats.map((stat, index) => (
           <Card
             key={index}
-            className="text-center p-6 bg-gradient-to-br from-white to-amber-50 border-amber-100 shadow-sm hover:shadow-md transition-shadow"
+            className="text-center p-6 bg-stone-50 border-stone-200 shadow-sm hover:shadow-md transition-shadow"
           >
-            <div className="text-3xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent mb-2">
+            <div className="text-3xl font-serif font-bold text-emerald-700 mb-2">
               {stat.value}
             </div>
-            <div className="text-gray-600 font-medium">{stat.label}</div>
+            <div className="text-stone-600 font-medium">{stat.label}</div>
           </Card>
         ))}
       </div>
 
       {/* Overall Rating */}
-      <Card className="mb-8 p-6">
+      <Card className="mb-8 p-6 border-stone-200 shadow-sm">
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="text-center md:text-left mb-4 md:mb-0">
             <div className="flex items-center justify-center md:justify-start space-x-2 mb-2">
-              <span className="text-4xl font-bold text-gray-900">4.8</span>
+              <span className="text-4xl font-serif font-bold text-stone-900">
+                4.8
+              </span>
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className="h-6 w-6 fill-yellow-400 text-yellow-400"
+                    className="h-6 w-6 fill-amber-400 text-amber-400"
                   />
                 ))}
               </div>
             </div>
-            <p className="text-gray-600">Based on 1,247 verified reviews</p>
+            <p className="text-stone-600">Based on 1,247 verified reviews</p>
           </div>
           <div className="space-y-2">
             {[5, 4, 3, 2, 1].map((rating) => (
               <div key={rating} className="flex items-center space-x-2">
-                <span className="text-sm w-8">{rating}★</span>
-                <div className="w-32 bg-gray-200 rounded-full h-2">
+                <span className="text-sm w-8 text-stone-600">{rating}★</span>
+                <div className="w-32 bg-stone-200 rounded-full h-2">
                   <div
-                    className="bg-yellow-400 h-2 rounded-full"
+                    className="bg-amber-400 h-2 rounded-full"
                     style={{
                       width: rating === 5 ? "89%" : rating === 4 ? "8%" : "3%",
                     }}
                   ></div>
                 </div>
-                <span className="text-sm text-gray-600 w-8">
+                <span className="text-sm text-stone-600 w-8">
                   {rating === 5 ? "89%" : rating === 4 ? "8%" : "3%"}
                 </span>
               </div>
@@ -240,12 +195,15 @@ export default function ReviewsPage() {
       {/* Reviews Grid */}
       <div className="space-y-6">
         {reviews.map((review) => (
-          <Card key={review.id} className="p-6 flex flex-col">
+          <Card
+            key={review.id}
+            className="p-6 flex flex-col border-stone-200 shadow-sm"
+          >
             <CardContent className="p-0 flex flex-col h-full">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                    <span className="text-green-600 font-semibold">
+                  <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                    <span className="text-emerald-700 font-serif font-semibold">
                       {review.name
                         .split(" ")
                         .map((n) => n[0])
@@ -254,16 +212,19 @@ export default function ReviewsPage() {
                   </div>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <h3 className="font-semibold text-gray-900">
+                      <h3 className="font-serif font-semibold text-stone-900">
                         {review.name}
                       </h3>
                       {review.verified && (
-                        <Badge variant="secondary" className="text-xs">
+                        <Badge
+                          variant="secondary"
+                          className="text-xs bg-emerald-50 text-emerald-700 border-emerald-200"
+                        >
                           Verified
                         </Badge>
                       )}
                     </div>
-                    <p className="text-sm text-gray-600">{review.location}</p>
+                    <p className="text-sm text-stone-600">{review.location}</p>
                   </div>
                 </div>
                 <div className="text-right">
@@ -271,39 +232,41 @@ export default function ReviewsPage() {
                     {[...Array(review.rating)].map((_, i) => (
                       <Star
                         key={i}
-                        className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                        className="h-4 w-4 fill-amber-400 text-amber-400"
                       />
                     ))}
                   </div>
-                  <p className="text-sm text-gray-500">{review.date}</p>
+                  <p className="text-sm text-stone-500">{review.date}</p>
                 </div>
               </div>
 
               <div className="mb-4">
-                <div className="flex items-center space-x-4 text-sm text-gray-600 mb-2">
+                <div className="flex items-center space-x-4 text-sm text-stone-600 mb-2">
                   <span>
-                    <strong>Treatment:</strong> {review.treatment}
+                    <strong className="text-stone-800">Treatment:</strong>{" "}
+                    {review.treatment}
                   </span>
                   <span>
-                    <strong>Doctor:</strong> {review.doctor}
+                    <strong className="text-stone-800">Doctor:</strong>{" "}
+                    {review.doctor}
                   </span>
                 </div>
               </div>
 
               <div className="relative mb-4 flex-grow">
-                <Quote className="h-6 w-6 text-green-600 mb-2" />
-                <p className="text-gray-700 leading-relaxed pl-8">
+                <Quote className="h-6 w-6 text-emerald-200 mb-2 absolute -top-2 -left-2" />
+                <p className="text-stone-700 leading-relaxed pl-6 relative z-10">
                   {review.review}
                 </p>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+              <div className="flex items-center justify-between pt-4 border-t border-stone-100 mt-auto">
                 <div className="flex items-center space-x-4">
-                  <button className="flex items-center space-x-1 text-gray-500 hover:text-green-600">
+                  <button className="flex items-center space-x-1 text-stone-500 hover:text-emerald-700 transition-colors">
                     <ThumbsUp className="h-4 w-4" />
                     <span className="text-sm">Helpful ({review.helpful})</span>
                   </button>
-                  <button className="flex items-center space-x-1 text-gray-500 hover:text-green-600">
+                  <button className="flex items-center space-x-1 text-stone-500 hover:text-emerald-700 transition-colors">
                     <MessageCircle className="h-4 w-4" />
                     <span className="text-sm">Reply</span>
                   </button>
@@ -319,40 +282,34 @@ export default function ReviewsPage() {
         <Button
           variant="outline"
           size="lg"
-          className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white bg-transparent"
+          className="border-emerald-700 text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800 bg-transparent"
         >
           Load More Reviews
         </Button>
       </div>
 
       {/* Enhanced Write Review CTA */}
-      <Card className="mt-12 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 border-0 shadow-lg">
+      <Card className="mt-12 bg-stone-50 border border-stone-200 shadow-sm">
         <CardContent className="p-10 text-center">
-          <div className="inline-flex items-center justify-center mb-6">
-            <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-16"></div>
-            <span className="mx-4 text-sm font-medium text-amber-600 tracking-wider uppercase">
+          <div className="inline-flex items-center justify-center mb-6 bg-white px-3 py-1 rounded-full border border-stone-200">
+            <span className="text-sm font-medium text-stone-600 tracking-wider uppercase">
               Your Voice Matters
             </span>
-            <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-16"></div>
           </div>
 
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-gray-900 to-amber-800 bg-clip-text text-transparent">
-              Share Your
-            </span>
+          <h2 className="text-3xl lg:text-4xl font-serif font-bold mb-4 text-stone-800">
+            Share Your
             <br />
-            <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-              Healing Journey
-            </span>
+            <span className="text-emerald-700">Healing Journey</span>
           </h2>
 
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-stone-600 mb-8 max-w-2xl mx-auto leading-relaxed font-light">
             Help others discover the benefits of Ayurvedic healing by sharing
             your transformation story with our wellness community.
           </p>
 
           <Button
-            className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg px-8 py-3"
+            className="bg-emerald-700 hover:bg-emerald-800 text-white shadow-md px-8 py-3"
             size="lg"
           >
             Write a Review

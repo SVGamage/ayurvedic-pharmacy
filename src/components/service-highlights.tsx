@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Stethoscope, Video, Star, Calendar } from "lucide-react";
+import { Stethoscope, Video, Star, Calendar, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ServiceCard } from "@/components/service-card";
 import { Service } from "@/types/service";
@@ -65,16 +65,27 @@ const services: Service[] = [
 
 export function ServiceHighlights() {
   return (
-    <section className="bg-green-50 py-16">
+    <section className="bg-white py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-            Our Services
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Experience holistic healing through our comprehensive Ayurvedic and
-            traditional services designed for your wellness journey.
-          </p>
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+          <div className="max-w-2xl">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-800 mb-4">
+              Our <span className="text-emerald-700 italic">Services</span>
+            </h2>
+            <p className="text-lg text-stone-600">
+              Experience holistic healing through our comprehensive Ayurvedic
+              and traditional services designed for your wellness journey.
+            </p>
+          </div>
+          <Button
+            variant="outline"
+            className="hidden md:flex border-emerald-600 text-emerald-700 hover:bg-emerald-50"
+            asChild
+          >
+            <Link href="/services">
+              View All Services <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
@@ -89,17 +100,17 @@ export function ServiceHighlights() {
           ))}
         </div>
 
-        <div className="text-center">
-          <Link href="/services">
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white bg-transparent"
-            >
-              <Calendar className="h-4 w-4 mr-2" />
-              View All Services
-            </Button>
-          </Link>
+        <div className="text-center md:hidden">
+          <Button
+            variant="outline"
+            size="lg"
+            className="w-full border-emerald-600 text-emerald-700 hover:bg-emerald-50"
+            asChild
+          >
+            <Link href="/services">
+              View All Services <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

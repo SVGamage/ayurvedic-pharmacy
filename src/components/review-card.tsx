@@ -38,45 +38,6 @@ export function ReviewCard({
   const isCompact = variant === "compact";
   const isFeatured = variant === "featured";
 
-  const getThemeColors = () => {
-    switch (review.category) {
-      case "ayurvedic":
-        return {
-          bgColor: "bg-green-50",
-          borderColor: "border-green-200",
-          treatmentColor: "text-green-600",
-          quoteColor: "text-green-600",
-          accentColor: "bg-green-100",
-        };
-      case "nakshatra":
-        return {
-          bgColor: "bg-yellow-50",
-          borderColor: "border-yellow-200",
-          treatmentColor: "text-yellow-600",
-          quoteColor: "text-yellow-600",
-          accentColor: "bg-yellow-100",
-        };
-      case "product":
-        return {
-          bgColor: "bg-blue-50",
-          borderColor: "border-blue-200",
-          treatmentColor: "text-blue-600",
-          quoteColor: "text-blue-600",
-          accentColor: "bg-blue-100",
-        };
-      default:
-        return {
-          bgColor: "bg-gray-50",
-          borderColor: "border-gray-200",
-          treatmentColor: "text-gray-600",
-          quoteColor: "text-gray-600",
-          accentColor: "bg-gray-100",
-        };
-    }
-  };
-
-  const colors = getThemeColors();
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -98,18 +59,16 @@ export function ReviewCard({
     return (
       <Card
         className={cn(
-          "group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full flex flex-col",
-          colors.bgColor,
-          colors.borderColor,
+          "group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full flex flex-col bg-white border-stone-200",
           className
         )}
       >
         <CardContent className="p-4 flex flex-col h-full">
           <div className="flex items-start space-x-3 flex-grow">
             {showAvatar && (
-              <Avatar className="h-10 w-10 flex-shrink-0">
+              <Avatar className="h-10 w-10 flex-shrink-0 border border-stone-100">
                 <AvatarImage src={review.avatar} alt={review.name} />
-                <AvatarFallback className={colors.accentColor}>
+                <AvatarFallback className="bg-emerald-50 text-emerald-700">
                   {getInitials(review.name)}
                 </AvatarFallback>
               </Avatar>
@@ -122,29 +81,26 @@ export function ReviewCard({
                     className={cn(
                       "h-3 w-3",
                       i < review.rating
-                        ? "text-yellow-400 fill-current"
-                        : "text-gray-300"
+                        ? "text-amber-400 fill-current"
+                        : "text-stone-200"
                     )}
                   />
                 ))}
                 {showVerified && review.verified && (
-                  <CheckCircle className="h-3 w-3 text-green-500 ml-1" />
+                  <CheckCircle className="h-3 w-3 text-emerald-500 ml-1" />
                 )}
               </div>
-              <p className="text-sm text-gray-700 mb-2 line-clamp-2 flex-grow">
+              <p className="text-sm text-stone-600 mb-2 line-clamp-2 flex-grow">
                 {review.text}
               </p>
               <div className="flex items-center justify-between mt-auto">
-                <p className="text-xs font-medium text-gray-900">
+                <p className="text-xs font-medium text-stone-900">
                   {review.name}
                 </p>
                 {review.treatment && (
                   <Badge
-                    className={cn(
-                      "text-xs border-transparent",
-                      colors.accentColor,
-                      colors.treatmentColor
-                    )}
+                    variant="outline"
+                    className="text-[10px] border-stone-200 text-stone-500 font-normal"
                   >
                     {review.treatment}
                   </Badge>
@@ -160,15 +116,13 @@ export function ReviewCard({
   return (
     <Card
       className={cn(
-        "group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden h-full flex flex-col",
-        colors.bgColor,
-        colors.borderColor,
+        "group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden h-full flex flex-col bg-white border-stone-200",
         isFeatured && "lg:col-span-2 lg:row-span-2",
         className
       )}
     >
       {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-white/30 to-transparent opacity-50" />
+      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-emerald-50/50 to-transparent opacity-50" />
 
       <CardContent
         className={cn("p-6 flex flex-col h-full", isFeatured && "p-8")}
@@ -178,12 +132,12 @@ export function ReviewCard({
           {showAvatar && (
             <Avatar
               className={cn(
-                "flex-shrink-0",
+                "flex-shrink-0 border border-stone-100",
                 isFeatured ? "h-12 w-12" : "h-10 w-10"
               )}
             >
               <AvatarImage src={review.avatar} alt={review.name} />
-              <AvatarFallback className={colors.accentColor}>
+              <AvatarFallback className="bg-emerald-50 text-emerald-700 font-medium">
                 {getInitials(review.name)}
               </AvatarFallback>
             </Avatar>
@@ -193,23 +147,23 @@ export function ReviewCard({
               <div className="flex items-center space-x-2">
                 <h4
                   className={cn(
-                    "font-semibold text-gray-900",
-                    isFeatured && "text-lg"
+                    "font-serif font-semibold text-stone-900",
+                    isFeatured ? "text-lg" : "text-base"
                   )}
                 >
                   {review.name}
                 </h4>
                 {showVerified && review.verified && (
-                  <div className="flex items-center space-x-1">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    <span className="text-xs text-green-600 font-medium">
+                  <div className="flex items-center space-x-1 bg-emerald-50 px-2 py-0.5 rounded-full">
+                    <CheckCircle className="h-3 w-3 text-emerald-600" />
+                    <span className="text-[10px] text-emerald-700 font-medium uppercase tracking-wide">
                       Verified
                     </span>
                   </div>
                 )}
               </div>
               {showDate && review.date && (
-                <div className="flex items-center space-x-1 text-xs text-gray-500">
+                <div className="flex items-center space-x-1 text-xs text-stone-400">
                   <Calendar className="h-3 w-3" />
                   <span>{formatDate(review.date)}</span>
                 </div>
@@ -217,24 +171,23 @@ export function ReviewCard({
             </div>
 
             <div className="flex items-center space-x-2 mb-2">
-              <div className="flex items-center">
+              <div className="flex items-center gap-0.5">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
                     className={cn(
-                      isFeatured ? "h-5 w-5" : "h-4 w-4",
+                      isFeatured ? "h-4 w-4" : "h-3.5 w-3.5",
                       i < review.rating
-                        ? "text-yellow-400 fill-current"
-                        : "text-gray-300"
+                        ? "text-amber-400 fill-current"
+                        : "text-stone-200"
                     )}
                   />
                 ))}
               </div>
-              <span className="text-sm text-gray-600">({review.rating}.0)</span>
             </div>
 
             {showLocation && review.location && (
-              <div className="flex items-center space-x-1 text-sm text-gray-600">
+              <div className="flex items-center space-x-1 text-xs text-stone-500">
                 <MapPin className="h-3 w-3" />
                 <span>{review.location}</span>
               </div>
@@ -246,14 +199,13 @@ export function ReviewCard({
         <div className="relative mb-4 flex-grow">
           <Quote
             className={cn(
-              "absolute -top-2 -left-1 opacity-30",
-              colors.quoteColor,
+              "absolute -top-2 -left-1 opacity-10 text-emerald-800",
               isFeatured ? "h-8 w-8" : "h-6 w-6"
             )}
           />
           <blockquote
             className={cn(
-              "text-gray-700 italic leading-relaxed pl-6",
+              "text-stone-600 italic leading-relaxed pl-6 relative z-10",
               isFeatured && "text-lg leading-relaxed"
             )}
           >
@@ -262,14 +214,13 @@ export function ReviewCard({
         </div>
 
         {/* Footer with treatment and helpful votes - This will be pushed to bottom */}
-        <div className="flex items-center justify-between pt-4 border-t border-gray-200 mt-auto">
+        <div className="flex items-center justify-between pt-4 border-t border-stone-100 mt-auto">
           <div className="flex items-center space-x-2">
             {review.treatment && (
               <Badge
+                variant="secondary"
                 className={cn(
-                  "font-medium border-transparent",
-                  colors.accentColor,
-                  colors.treatmentColor,
+                  "font-normal bg-stone-100 text-stone-600 hover:bg-stone-200",
                   isFeatured && "px-3 py-1"
                 )}
               >
@@ -279,7 +230,7 @@ export function ReviewCard({
           </div>
 
           {showHelpful && review.helpful && review.helpful > 0 && (
-            <div className="flex items-center space-x-1 text-sm text-gray-600">
+            <div className="flex items-center space-x-1 text-xs text-stone-500">
               <ThumbsUp className="h-3 w-3" />
               <span>{review.helpful} helpful</span>
             </div>
