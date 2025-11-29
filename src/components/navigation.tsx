@@ -41,7 +41,7 @@ export function Navigation() {
         {/* Brand */}
         <div className="flex-shrink-0">
           <Link href="/" className="flex items-center gap-2 group">
-            <Brand isFooter={false} width={40} height={40} />
+            <Brand isFooter={false} width={128} height={128} />
           </Link>
         </div>
 
