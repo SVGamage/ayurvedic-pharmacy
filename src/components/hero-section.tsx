@@ -5,8 +5,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { ArrowRight } from "lucide-react";
@@ -66,6 +64,8 @@ export function HeroSection() {
           className="w-full h-full"
           opts={{
             loop: true,
+            align: "start",
+            containScroll: "trimSnaps",
           }}
           plugins={[
             Autoplay({
@@ -73,10 +73,10 @@ export function HeroSection() {
             }),
           ]}
         >
-          <CarouselContent className="h-full">
+          <CarouselContent className="h-full ml-0">
             {heroSlides.map((slide) => (
-              <CarouselItem key={slide.id} className="pl-0 h-full min-w-full">
-                <div className="relative w-full h-full bg-stone-900">
+              <CarouselItem key={slide.id} className="pl-0 h-full">
+                <div className="relative w-full h-full bg-stone-900 overflow-hidden">
                   <div
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 transition-transform duration-[2000ms] ease-out scale-105"
                     style={{
@@ -142,12 +142,12 @@ export function HeroSection() {
             </div>
           </div>
 
-          <div className="absolute inset-y-0 left-4 flex items-center z-20">
+          {/* <div className="absolute inset-y-0 left-4 flex items-center z-20">
             <CarouselPrevious className="relative left-0 translate-x-0 bg-white/10 backdrop-blur-md border-white/10 text-white/70 hover:bg-white/20 hover:text-white hidden md:flex h-10 w-10" />
           </div>
           <div className="absolute inset-y-0 right-4 flex items-center z-20">
             <CarouselNext className="relative right-0 translate-x-0 bg-white/10 backdrop-blur-md border-white/10 text-white/70 hover:bg-white/20 hover:text-white hidden md:flex h-10 w-10" />
-          </div>
+          </div> */}
         </Carousel>
       </div>
     </section>

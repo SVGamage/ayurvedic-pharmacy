@@ -157,13 +157,25 @@ const CarouselContent = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const { carouselRef, orientation } = useCarousel();
 
+  // Check if className contains margin override
+  const hasMarginOverride =
+    className?.includes("-ml-0") || className?.includes("ml-0");
+  const hasVerticalMarginOverride =
+    className?.includes("-mt-0") || className?.includes("mt-0");
+
   return (
     <div ref={carouselRef} className="overflow-hidden h-full">
       <div
         ref={ref}
         className={cn(
           "flex",
-          orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
+          orientation === "horizontal"
+            ? hasMarginOverride
+              ? ""
+              : "-ml-4"
+            : hasVerticalMarginOverride
+              ? "flex-col"
+              : "-mt-4 flex-col",
           className
         )}
         {...props}
@@ -203,6 +215,12 @@ const CarouselItem = React.forwardRef<HTMLDivElement, CarouselItemProps>(
   ) => {
     const { orientation } = useCarousel();
 
+    // Check if className contains padding override
+    const hasPaddingOverride =
+      className?.includes("pl-0") || className?.includes("-pl-0");
+    const hasVerticalPaddingOverride =
+      className?.includes("pt-0") || className?.includes("-pt-0");
+
     return (
       <div
         ref={ref}
@@ -210,8 +228,14 @@ const CarouselItem = React.forwardRef<HTMLDivElement, CarouselItemProps>(
         aria-roledescription="slide"
         className={cn(
           "min-w-0 shrink-0 grow-0 basis-full",
-          orientation === "horizontal" ? "pl-4" : "pt-4",
-          src ? "relative" : "", // Add relative positioning when image is provided
+          orientation === "horizontal"
+            ? hasPaddingOverride
+              ? ""
+              : "pl-4"
+            : hasVerticalPaddingOverride
+              ? ""
+              : "pt-4",
+          src ? "relative" : "",
           className
         )}
         {...props}
