@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Search, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Brand from "./brand";
@@ -41,7 +41,7 @@ export function Navigation() {
         {/* Brand */}
         <div className="flex-shrink-0">
           <Link href="/" className="flex items-center gap-2 group">
-            <Brand isFooter={false} width={40} height={40} />
+            <Brand isFooter={false} width={128} height={128} />
           </Link>
         </div>
 
@@ -52,7 +52,7 @@ export function Navigation() {
               key={link.name}
               href={link.href}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-emerald-700",
+                "text-md font-medium transition-colors hover:text-emerald-700",
                 pathname === link.href
                   ? "text-emerald-800 font-semibold"
                   : "text-stone-600"
@@ -65,9 +65,6 @@ export function Navigation() {
 
         {/* Actions */}
         <div className="flex items-center space-x-4">
-          <button className="p-2 hover:bg-stone-100 rounded-full transition-colors text-stone-600 hidden sm:block">
-            <Search className="w-5 h-5" />
-          </button>
           <Link href="/services">
             <Button className="hidden md:flex items-center space-x-2 bg-emerald-900 text-white px-6 py-2 rounded-full hover:bg-emerald-800 transition-all text-xs font-medium tracking-wide shadow-lg shadow-emerald-900/20">
               <span>Book Consult</span>
