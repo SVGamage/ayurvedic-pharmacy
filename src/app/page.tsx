@@ -4,7 +4,7 @@ import { ServiceHighlights } from "@/components/service-highlights";
 import { TestimonialsPreview } from "@/components/testimonials-preview";
 import WelcomeNote from "@/components/welcome-note";
 import EmbeddedMap from "@/components/embedded-map";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
