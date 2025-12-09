@@ -19,13 +19,18 @@ export function AdminCompanyCard({
   onDelete,
 }: AdminCompanyCardProps) {
   const totalProducts = company.companyProducts.length;
-  const averagePrice =
-    totalProducts > 0
-      ? company.companyProducts.reduce(
-          (sum, product) => sum + parseFloat(product.price || "0"),
-          0
-        ) / totalProducts
-      : 0;
+
+  // Calculate average price from all product variants
+  const totalPriceSum = company.companyProducts.reduce((sum, product) => {
+    const prices = product.prices || [];
+    const productAvgPrice =
+      prices.length > 0
+        ? prices.reduce((pSum, price) => pSum + price.price, 0) / prices.length
+        : 0;
+    return sum + productAvgPrice;
+  }, 0);
+
+  const averagePrice = totalProducts > 0 ? totalPriceSum / totalProducts : 0;
 
   return (
     <Card
@@ -107,8 +112,20 @@ export function AdminCompanyCard({
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center space-x-1 text-green-600">
-                    <span className="font-medium">Rs.{product.price}</span>
+                  <div className="flex items-center space-x-1 text-green-600 text-xs">
+                    {product.prices && product.prices.length > 0 ? (
+                      product.prices.length === 1 ? (
+                        <span className="font-medium">
+                          Rs.{product.prices[0].price.toFixed(0)}
+                        </span>
+                      ) : (
+                        <span className="font-medium">
+                          {product.prices.length} variants
+                        </span>
+                      )
+                    ) : (
+                      <span className="text-gray-400">No price</span>
+                    )}
                   </div>
                 </div>
               ))}

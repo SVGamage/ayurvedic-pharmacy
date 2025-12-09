@@ -48,6 +48,11 @@ interface ServiceData {
   updatedAt?: string;
 }
 
+interface PriceVariant {
+  variant: string;
+  price: number;
+}
+
 interface CompanyFormData {
   id?: string;
   name: string;
@@ -55,7 +60,7 @@ interface CompanyFormData {
     id?: string;
     name: string;
     code: string;
-    price: string;
+    prices: PriceVariant[];
     subCategoryId?: string;
   }>;
 }
@@ -334,7 +339,10 @@ export default function AdminPage() {
   const companyToFormData = (company: Company): CompanyFormData => ({
     id: company.id,
     name: company.name,
-    companyProducts: company.companyProducts,
+    companyProducts: company.companyProducts.map((product) => ({
+      ...product,
+      prices: product.prices || [],
+    })),
   });
 
   const handleCompanySubmit = async (data: CompanyFormData) => {

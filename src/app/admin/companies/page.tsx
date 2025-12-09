@@ -27,6 +27,11 @@ import { CompanyForm } from "@/components/admin/company-form";
 import { useToast } from "@/hooks/use-toast";
 import AdminHeader from "@/app/_components/admin-header";
 
+interface PriceVariant {
+  variant: string;
+  price: number;
+}
+
 interface CompanyFormData {
   id?: string;
   name: string;
@@ -34,8 +39,8 @@ interface CompanyFormData {
     id?: string;
     name: string;
     code: string;
-    price: string;
-    categoryId?: string;
+    prices: PriceVariant[];
+    subCategoryId?: string;
   }>;
 }
 
@@ -55,7 +60,10 @@ export default function AdminCompaniesPage() {
   const companyToFormData = (company: Company): CompanyFormData => ({
     id: company.id,
     name: company.name,
-    companyProducts: company.companyProducts,
+    companyProducts: company.companyProducts.map((product) => ({
+      ...product,
+      prices: product.prices || [],
+    })),
   });
 
   const fetchCompanies = useCallback(async () => {
@@ -64,7 +72,17 @@ export default function AdminCompaniesPage() {
       const response = await fetch("/api/admin/company");
       if (response.ok) {
         const data = await response.json();
-        setCompanies(data);
+        // Transform API response to match Company type
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const transformedData = data.map((company: any) => ({
+          ...company,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          companyProducts: company.companyProducts.map((product: any) => ({
+            ...product,
+            prices: product.companyProductPrices || [],
+          })),
+        }));
+        setCompanies(transformedData);
       } else {
         toast({
           title: "Error",

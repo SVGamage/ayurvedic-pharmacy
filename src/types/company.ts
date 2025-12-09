@@ -1,8 +1,13 @@
+export interface PriceVariant {
+  variant: string;
+  price: number;
+}
+
 export interface CompanyProduct {
   id?: string;
   name: string;
   code: string;
-  price: string;
+  prices?: PriceVariant[];
   subCategoryId?: string;
   companyId?: string;
   subCategory?: {

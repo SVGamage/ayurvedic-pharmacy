@@ -12,6 +12,7 @@ export async function GET(
       include: {
         companyProducts: {
           include: {
+            companyProductPrices: true,
             subCategory: {
               select: {
                 id: true,
@@ -51,11 +52,16 @@ export async function PUT(
       return NextResponse.json({ error: "Company not found" }, { status: 404 });
     }
 
+    interface PriceInput {
+      variant: string;
+      price: number;
+    }
+
     interface ProductInput {
       id?: string;
       name: string;
       code: string;
-      price: string;
+      prices: PriceInput[];
       subCategoryId?: string;
     }
 
@@ -73,14 +79,21 @@ export async function PUT(
             companyProducts?.map((product: ProductInput) => ({
               name: product.name,
               code: product.code,
-              price: product.price,
               subCategoryId: product.subCategoryId || null,
+              companyProductPrices: {
+                create:
+                  product.prices?.map((price: PriceInput) => ({
+                    variant: price.variant,
+                    price: price.price,
+                  })) || [],
+              },
             })) || [],
         },
       },
       include: {
         companyProducts: {
           include: {
+            companyProductPrices: true,
             subCategory: {
               select: {
                 id: true,
