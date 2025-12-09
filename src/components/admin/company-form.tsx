@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
+import { X, Pencil } from "lucide-react";
 
 interface CompanyProduct {
   id?: string;
@@ -66,6 +66,10 @@ export function CompanyForm({
     subCategoryId: "",
   });
 
+  const [editingProductIndex, setEditingProductIndex] = useState<number | null>(
+    null
+  );
+
   // Fetch categories
   useEffect(() => {
     const fetchSubCategories = async () => {
@@ -115,21 +119,61 @@ export function CompanyForm({
       const selectedSubCategory = categories.find(
         (cat) => cat.id === subCategoryId
       );
-      setFormData((prev) => ({
-        ...prev,
-        companyProducts: [
-          ...prev.companyProducts,
-          {
-            ...newProduct,
-            subCategoryId,
-            subCategory: selectedSubCategory
-              ? { id: selectedSubCategory.id, name: selectedSubCategory.name }
-              : undefined,
-          },
-        ],
-      }));
+
+      if (editingProductIndex !== null) {
+        // Update existing product
+        setFormData((prev) => ({
+          ...prev,
+          companyProducts: prev.companyProducts.map((product, i) =>
+            i === editingProductIndex
+              ? {
+                  ...newProduct,
+                  subCategoryId,
+                  subCategory: selectedSubCategory
+                    ? {
+                        id: selectedSubCategory.id,
+                        name: selectedSubCategory.name,
+                      }
+                    : undefined,
+                }
+              : product
+          ),
+        }));
+        setEditingProductIndex(null);
+      } else {
+        // Add new product
+        setFormData((prev) => ({
+          ...prev,
+          companyProducts: [
+            ...prev.companyProducts,
+            {
+              ...newProduct,
+              subCategoryId,
+              subCategory: selectedSubCategory
+                ? { id: selectedSubCategory.id, name: selectedSubCategory.name }
+                : undefined,
+            },
+          ],
+        }));
+      }
       setNewProduct({ name: "", code: "", price: "", subCategoryId: "" });
     }
+  };
+
+  const editProduct = (index: number) => {
+    const product = formData.companyProducts[index];
+    setNewProduct({
+      name: product.name,
+      code: product.code,
+      price: product.price,
+      subCategoryId: product.subCategoryId || "",
+    });
+    setEditingProductIndex(index);
+  };
+
+  const cancelEdit = () => {
+    setNewProduct({ name: "", code: "", price: "", subCategoryId: "" });
+    setEditingProductIndex(null);
   };
 
   const removeProduct = (index: number) => {
@@ -282,8 +326,20 @@ export function CompanyForm({
                     !newProduct.price.trim()
                   }
                 >
-                  Add Product
+                  {editingProductIndex !== null
+                    ? "Update Product"
+                    : "Add Product"}
                 </Button>
+                {editingProductIndex !== null && (
+                  <Button
+                    type="button"
+                    onClick={cancelEdit}
+                    variant="outline"
+                    className="w-full border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold"
+                  >
+                    Cancel Edit
+                  </Button>
+                )}
               </div>
 
               {formData.companyProducts.length > 0 && (
@@ -308,15 +364,28 @@ export function CompanyForm({
                             )}
                           </div>
                         </div>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="h-auto p-1 ml-2 hover:bg-red-100 flex-shrink-0"
-                          onClick={() => removeProduct(index)}
-                        >
-                          <X className="h-4 w-4 text-red-600" />
-                        </Button>
+                        <div className="flex gap-1 ml-2 flex-shrink-0">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-auto p-1 hover:bg-blue-100"
+                            onClick={() => editProduct(index)}
+                            disabled={editingProductIndex !== null}
+                          >
+                            <Pencil className="h-4 w-4 text-blue-600" />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-auto p-1 hover:bg-red-100"
+                            onClick={() => removeProduct(index)}
+                            disabled={editingProductIndex !== null}
+                          >
+                            <X className="h-4 w-4 text-red-600" />
+                          </Button>
+                        </div>
                       </Badge>
                     ))}
                   </div>
