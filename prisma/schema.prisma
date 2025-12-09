@@ -140,14 +140,25 @@ model CompanyProduct {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   name  String
   code  String
-  price String
 
-  subCategoryId String?      @db.ObjectId
-  subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: SetNull)
-  Company       Company?     @relation(fields: [companyId], references: [id])
-  companyId     String?      @db.ObjectId
+  subCategoryId        String?               @db.ObjectId
+  subCategory          SubCategory?          @relation(fields: [subCategoryId], references: [id], onDelete: SetNull)
+  Company              Company?              @relation(fields: [companyId], references: [id])
+  companyId            String?               @db.ObjectId
+  companyProductPrices CompanyProductPrice[]
 
   @@map("company_product")
+}
+
+model CompanyProductPrice {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  price   Float
+  variant String
+
+  companyProductId String         @db.ObjectId
+  companyProduct   CompanyProduct @relation(fields: [companyProductId], references: [id], onDelete: Cascade)
+
+  @@map("company_product_price")
 }
 
 model Company {
