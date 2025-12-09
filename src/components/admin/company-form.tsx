@@ -13,13 +13,18 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { X, Pencil, Copy } from "lucide-react";
+import { X, Pencil, Copy, Plus } from "lucide-react";
+
+interface PriceVariant {
+  variant: string;
+  price: number;
+}
 
 interface CompanyProduct {
   id?: string;
   name: string;
   code: string;
-  price: string;
+  prices: PriceVariant[];
   subCategoryId?: string;
   subCategory?: {
     id: string;
@@ -54,16 +59,28 @@ export function CompanyForm({
   const [categories, setCategories] = useState<Category[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
 
+  // Transform company data to ensure prices array exists
+  const transformedProducts =
+    company?.companyProducts.map((product) => ({
+      ...product,
+      prices: product.prices || [],
+    })) || [];
+
   const [formData, setFormData] = useState<CompanyFormData>({
     name: company?.name || "",
-    companyProducts: company?.companyProducts || [],
+    companyProducts: transformedProducts,
   });
 
   const [newProduct, setNewProduct] = useState<CompanyProduct>({
     name: "",
     code: "",
-    price: "",
+    prices: [],
     subCategoryId: "",
+  });
+
+  const [newPrice, setNewPrice] = useState<PriceVariant>({
+    variant: "",
+    price: 0,
   });
 
   const [editingProductIndex, setEditingProductIndex] = useState<number | null>(
@@ -108,11 +125,28 @@ export function CompanyForm({
     setNewProduct((prev) => ({ ...prev, [field]: value }));
   };
 
+  const addPriceToProduct = () => {
+    if (newPrice.variant.trim() && newPrice.price > 0) {
+      setNewProduct((prev) => ({
+        ...prev,
+        prices: [...prev.prices, { ...newPrice }],
+      }));
+      setNewPrice({ variant: "", price: 0 });
+    }
+  };
+
+  const removePriceFromProduct = (index: number) => {
+    setNewProduct((prev) => ({
+      ...prev,
+      prices: prev.prices.filter((_, i) => i !== index),
+    }));
+  };
+
   const addProduct = () => {
     if (
       newProduct.name.trim() &&
       newProduct.code.trim() &&
-      newProduct.price.trim()
+      newProduct.prices.length > 0
     ) {
       const subCategoryId =
         newProduct.subCategoryId === "none" ? "" : newProduct.subCategoryId;
@@ -156,7 +190,8 @@ export function CompanyForm({
           ],
         }));
       }
-      setNewProduct({ name: "", code: "", price: "", subCategoryId: "" });
+      setNewProduct({ name: "", code: "", prices: [], subCategoryId: "" });
+      setNewPrice({ variant: "", price: 0 });
     }
   };
 
@@ -165,14 +200,15 @@ export function CompanyForm({
     setNewProduct({
       name: product.name,
       code: product.code,
-      price: product.price,
+      prices: [...(product.prices || [])],
       subCategoryId: product.subCategoryId || "",
     });
     setEditingProductIndex(index);
   };
 
   const cancelEdit = () => {
-    setNewProduct({ name: "", code: "", price: "", subCategoryId: "" });
+    setNewProduct({ name: "", code: "", prices: [], subCategoryId: "" });
+    setNewPrice({ variant: "", price: 0 });
     setEditingProductIndex(null);
   };
 
@@ -195,9 +231,11 @@ export function CompanyForm({
   };
 
   const handleKeyPress = (e: React.KeyboardEvent, field: string) => {
-    if (e.key === "Enter" && field === "price") {
+    if (e.key === "Enter") {
       e.preventDefault();
-      addProduct();
+      if (field === "priceValue") {
+        addPriceToProduct();
+      }
     }
   };
 
@@ -273,25 +311,6 @@ export function CompanyForm({
 
                   <div className="space-y-2">
                     <Label
-                      htmlFor="productPrice"
-                      className="text-blue-700 text-sm font-medium"
-                    >
-                      Price
-                    </Label>
-                    <Input
-                      id="productPrice"
-                      value={newProduct.price}
-                      onChange={(e) =>
-                        handleProductInputChange("price", e.target.value)
-                      }
-                      onKeyPress={(e) => handleKeyPress(e, "price")}
-                      placeholder="Enter price"
-                      className="border-blue-200 focus:border-blue-400 focus:ring-blue-400"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label
                       htmlFor="category"
                       className="text-blue-700 text-sm font-medium"
                     >
@@ -326,6 +345,73 @@ export function CompanyForm({
                   </div>
                 </div>
 
+                {/* Price Variants Section */}
+                <div className="space-y-3 mt-4">
+                  <Label className="text-blue-700 text-sm font-medium">
+                    Product Prices *
+                  </Label>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                    <Input
+                      placeholder="Variant (e.g., 100ml)"
+                      value={newPrice.variant}
+                      onChange={(e) =>
+                        setNewPrice((prev) => ({
+                          ...prev,
+                          variant: e.target.value,
+                        }))
+                      }
+                      className="border-blue-200 focus:border-blue-400 focus:ring-blue-400"
+                    />
+                    <Input
+                      type="number"
+                      placeholder="Price"
+                      value={newPrice.price || ""}
+                      onChange={(e) =>
+                        setNewPrice((prev) => ({
+                          ...prev,
+                          price: parseFloat(e.target.value) || 0,
+                        }))
+                      }
+                      onKeyPress={(e) => handleKeyPress(e, "priceValue")}
+                      className="border-blue-200 focus:border-blue-400 focus:ring-blue-400"
+                    />
+                    <Button
+                      type="button"
+                      onClick={addPriceToProduct}
+                      variant="outline"
+                      className="border-blue-300 text-blue-700 hover:bg-blue-50"
+                      disabled={!newPrice.variant.trim() || newPrice.price <= 0}
+                    >
+                      <Plus className="h-4 w-4 mr-1" />
+                      Add Price
+                    </Button>
+                  </div>
+
+                  {newProduct.prices.length > 0 && (
+                    <div className="space-y-2">
+                      {newProduct.prices.map((price, index) => (
+                        <Badge
+                          key={index}
+                          className="bg-blue-50 text-blue-800 border border-blue-300 p-2 justify-between w-full"
+                        >
+                          <span>
+                            {price.variant}: Rs. {price.price.toFixed(2)}
+                          </span>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-auto p-1 hover:bg-red-100"
+                            onClick={() => removePriceFromProduct(index)}
+                          >
+                            <X className="h-4 w-4 text-red-600" />
+                          </Button>
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 <Button
                   type="button"
                   onClick={addProduct}
@@ -334,7 +420,7 @@ export function CompanyForm({
                   disabled={
                     !newProduct.name.trim() ||
                     !newProduct.code.trim() ||
-                    !newProduct.price.trim()
+                    newProduct.prices.length === 0
                   }
                 >
                   {editingProductIndex !== null
@@ -358,56 +444,94 @@ export function CompanyForm({
                   <Label className="text-blue-700 text-sm font-medium">
                     Added Products ({formData.companyProducts.length})
                   </Label>
-                  <div className="grid grid-cols-1 gap-2">
+                  <div className="max-h-[300px] overflow-y-auto space-y-2 pr-2">
                     {formData.companyProducts.map((product, index) => (
-                      <Badge
+                      <div
                         key={index}
-                        className="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 border border-blue-300 p-3 justify-between text-left h-auto"
+                        className="bg-white border border-blue-200 rounded-lg p-3 hover:border-blue-300 transition-colors group"
                       >
-                        <div className="flex-1">
-                          <div className="font-semibold">{product.name}</div>
-                          <div className="text-sm opacity-80">
-                            Code: {product.code} | Price: {product.price}
-                            {product.subCategory && (
-                              <span className="ml-2 text-xs bg-blue-200 px-2 py-1 rounded">
-                                {product.subCategory.name}
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex-1 min-w-0">
+                            {/* Product Header - Compact */}
+                            <div className="flex items-center gap-2 mb-1">
+                              <h4 className="font-semibold text-blue-900 text-sm truncate">
+                                {product.name}
+                              </h4>
+                              {product.subCategory && (
+                                <Badge
+                                  variant="secondary"
+                                  className="bg-purple-100 text-purple-700 border-purple-200 text-xs flex-shrink-0"
+                                >
+                                  {product.subCategory.name}
+                                </Badge>
+                              )}
+                            </div>
+
+                            {/* Product Code & Prices - Inline */}
+                            <div className="flex items-center gap-3 text-xs">
+                              <span className="text-gray-600 font-mono bg-gray-100 px-2 py-0.5 rounded">
+                                {product.code}
                               </span>
-                            )}
+                              {(product.prices || []).length > 0 && (
+                                <div className="flex flex-wrap gap-1.5">
+                                  {(product.prices || []).map(
+                                    (price, priceIndex) => (
+                                      <span
+                                        key={priceIndex}
+                                        className="inline-flex items-center gap-1 bg-green-50 border border-green-200 rounded px-2 py-0.5 text-green-700"
+                                      >
+                                        <span className="font-medium">
+                                          {price.variant}:
+                                        </span>
+                                        <span className="font-semibold">
+                                          Rs. {price.price.toFixed(2)}
+                                        </span>
+                                      </span>
+                                    )
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Action Buttons - Horizontal & Compact */}
+                          <div className="flex gap-1 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 w-7 p-0 hover:bg-blue-100 rounded"
+                              onClick={() => editProduct(index)}
+                              disabled={editingProductIndex !== null}
+                              title="Edit"
+                            >
+                              <Pencil className="h-3.5 w-3.5 text-blue-600" />
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 w-7 p-0 hover:bg-green-100 rounded"
+                              onClick={() => duplicateProduct(index)}
+                              disabled={editingProductIndex !== null}
+                              title="Duplicate"
+                            >
+                              <Copy className="h-3.5 w-3.5 text-green-600" />
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 w-7 p-0 hover:bg-red-100 rounded"
+                              onClick={() => removeProduct(index)}
+                              disabled={editingProductIndex !== null}
+                              title="Delete"
+                            >
+                              <X className="h-3.5 w-3.5 text-red-600" />
+                            </Button>
                           </div>
                         </div>
-                        <div className="flex gap-1 ml-2 flex-shrink-0">
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="h-auto p-1 hover:bg-blue-100"
-                            onClick={() => editProduct(index)}
-                            disabled={editingProductIndex !== null}
-                          >
-                            <Pencil className="h-4 w-4 text-blue-600" />
-                          </Button>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="h-auto p-1 hover:bg-green-100"
-                            onClick={() => duplicateProduct(index)}
-                            disabled={editingProductIndex !== null}
-                          >
-                            <Copy className="h-4 w-4 text-green-600" />
-                          </Button>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="h-auto p-1 hover:bg-red-100"
-                            onClick={() => removeProduct(index)}
-                            disabled={editingProductIndex !== null}
-                          >
-                            <X className="h-4 w-4 text-red-600" />
-                          </Button>
-                        </div>
-                      </Badge>
+                      </div>
                     ))}
                   </div>
                 </div>
