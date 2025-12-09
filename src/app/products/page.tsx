@@ -156,6 +156,51 @@ const productCategories = [
   "Traditional Products",
 ];
 
+// Component for product card with variant selector
+function CompanyProductCard({ product }: { product: CompanyProduct }) {
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const selectedPrice = (product.prices || [])[selectedVariantIndex];
+
+  return (
+    <div className="bg-white p-2.5 rounded-lg border border-stone-200 hover:border-emerald-300 transition-colors">
+      <div className="space-y-1.5">
+        <h6 className="font-medium text-stone-900 text-xs leading-tight">
+          {product.name}
+        </h6>
+        <span className="text-[10px] text-stone-500 block">{product.code}</span>
+        {(product.prices || []).length > 0 ? (
+          <div className="flex items-center gap-2">
+            <Select
+              value={selectedVariantIndex.toString()}
+              onValueChange={(value) =>
+                setSelectedVariantIndex(parseInt(value))
+              }
+            >
+              <SelectTrigger className="h-7 text-xs border-stone-200 focus:ring-emerald-500 bg-stone-50 flex-1">
+                <SelectValue placeholder="Variant" />
+              </SelectTrigger>
+              <SelectContent>
+                {(product.prices || []).map((price, idx) => (
+                  <SelectItem key={idx} value={idx.toString()}>
+                    {price.variant}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {selectedPrice && (
+              <span className="text-xs font-bold text-emerald-700 whitespace-nowrap">
+                Rs. {selectedPrice.price.toFixed(2)}
+              </span>
+            )}
+          </div>
+        ) : (
+          <div className="text-[10px] text-red-500">No prices</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // const ayurvedicSubcategories = [
 //   "Cosmetics",
 //   "Oils",
@@ -195,6 +240,7 @@ export default function ProductsPage() {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
     new Set()
   );
+  const [companyProductSearch, setCompanyProductSearch] = useState("");
 
   // Pagination states
   const [itemsPerPage, setItemsPerPage] = useState(12);
@@ -289,7 +335,16 @@ export default function ProductsPage() {
       const response = await fetch("/api/admin/company");
       if (response.ok) {
         const data = await response.json();
-        setCompanies(data);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const transformedData = data.map((company: any) => ({
+          ...company,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          companyProducts: company.companyProducts.map((product: any) => ({
+            ...product,
+            prices: product.companyProductPrices || [],
+          })),
+        }));
+        setCompanies(transformedData);
       }
     } catch (error) {
       console.error("Error fetching companies:", error);
@@ -362,6 +417,7 @@ export default function ProductsPage() {
       setSelectedCompany(null);
       setSelectedCompanyValue("");
       setExpandedCategories(new Set());
+      setCompanyProductSearch("");
     }
   };
 
@@ -593,13 +649,25 @@ export default function ProductsPage() {
 
               {/* Products by Category */}
               <div>
-                <h4 className="text-lg font-serif font-semibold text-stone-900 mb-4">
-                  Products by Subcategory
-                </h4>
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-lg font-serif font-semibold text-stone-900">
+                    Products by Subcategory
+                  </h4>
+                  <div className="relative w-64">
+                    <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 text-stone-400" />
+                    <Input
+                      placeholder="Search products..."
+                      value={companyProductSearch}
+                      onChange={(e) => setCompanyProductSearch(e.target.value)}
+                      className="pl-8 h-8 text-xs border-stone-200 focus:border-emerald-500 focus:ring-emerald-500 bg-white"
+                    />
+                  </div>
+                </div>
 
                 {/* Group products by subcategory */}
                 {(() => {
-                  const productsBySubCategory =
+                  // Create map of all subcategories with all products
+                  const allProductsBySubCategory =
                     selectedCompany.companyProducts.reduce(
                       (acc, product) => {
                         if (product.subCategory) {
@@ -636,63 +704,73 @@ export default function ProductsPage() {
                       >
                     );
 
-                  return Object.entries(productsBySubCategory).map(
-                    ([subCategoryName, { subCategory, products }]) => (
-                      <Collapsible
-                        key={subCategory.id}
-                        open={expandedCategories.has(subCategory.id)}
-                        onOpenChange={() => toggleCategory(subCategory.id)}
-                        className="w-full"
-                      >
-                        <CollapsibleTrigger className="flex items-center justify-between w-full p-4 bg-white rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors mb-2">
-                          <div className="flex items-center space-x-3">
-                            <div className="p-2 bg-emerald-100 rounded-full">
-                              <Package className="h-4 w-4 text-emerald-600" />
-                            </div>
-                            <div className="text-left">
-                              <h5 className="font-semibold text-stone-900">
-                                {subCategoryName}
-                              </h5>
-                              <p className="text-sm text-stone-600">
-                                {products.length} products
-                              </p>
-                            </div>
-                          </div>
-                          {expandedCategories.has(subCategory.id) ? (
-                            <ChevronDown className="h-5 w-5 text-emerald-600" />
-                          ) : (
-                            <ChevronRight className="h-5 w-5 text-emerald-600" />
-                          )}
-                        </CollapsibleTrigger>
+                  return Object.entries(allProductsBySubCategory).map(
+                    ([subCategoryName, { subCategory, products }]) => {
+                      // Filter products for this subcategory based on search
+                      const filteredProducts = products.filter(
+                        (product) =>
+                          product.name
+                            .toLowerCase()
+                            .includes(companyProductSearch.toLowerCase()) ||
+                          product.code
+                            .toLowerCase()
+                            .includes(companyProductSearch.toLowerCase())
+                      );
 
-                        <CollapsibleContent className="space-y-2">
-                          <div className="ml-4 p-4 bg-stone-50 rounded-lg border-l-4 border-emerald-300">
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                              {products.map((product) => (
-                                <div
-                                  key={product.id}
-                                  className="bg-white p-3 rounded-lg border border-stone-200 hover:border-emerald-300 transition-colors"
-                                >
-                                  <div className="space-y-2">
-                                    <div className="flex justify-between items-center">
-                                      <h6 className="font-medium text-stone-900 text-sm">
-                                        {product.name}
-                                      </h6>
-                                      <span className="text-sm font-semibold text-emerald-600">
-                                        Rs. {product.price}
-                                      </span>
-                                      <span className="text-xs text-stone-500">
-                                        Code: {product.code}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              ))}
+                      return (
+                        <Collapsible
+                          key={subCategory.id}
+                          open={expandedCategories.has(subCategory.id)}
+                          onOpenChange={() => toggleCategory(subCategory.id)}
+                          className="w-full"
+                        >
+                          <CollapsibleTrigger className="flex items-center justify-between w-full p-4 bg-white rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors mb-2">
+                            <div className="flex items-center space-x-3">
+                              <div className="p-2 bg-emerald-100 rounded-full">
+                                <Package className="h-4 w-4 text-emerald-600" />
+                              </div>
+                              <div className="text-left">
+                                <h5 className="font-semibold text-stone-900">
+                                  {subCategoryName}
+                                </h5>
+                                <p className="text-sm text-stone-600">
+                                  {filteredProducts.length} of {products.length}{" "}
+                                  products
+                                  {companyProductSearch && " found"}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                        </CollapsibleContent>
-                      </Collapsible>
-                    )
+                            {expandedCategories.has(subCategory.id) ? (
+                              <ChevronDown className="h-5 w-5 text-emerald-600" />
+                            ) : (
+                              <ChevronRight className="h-5 w-5 text-emerald-600" />
+                            )}
+                          </CollapsibleTrigger>
+
+                          <CollapsibleContent className="space-y-2">
+                            {filteredProducts.length > 0 ? (
+                              <div className="ml-4 p-4 bg-stone-50 rounded-lg border-l-4 border-emerald-300 max-h-[400px] overflow-y-auto">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                  {filteredProducts.map((product) => (
+                                    <CompanyProductCard
+                                      key={product.id}
+                                      product={product}
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="ml-4 p-4 bg-stone-50 rounded-lg border-l-4 border-stone-300">
+                                <p className="text-sm text-stone-500 text-center">
+                                  No products found matching &quot;
+                                  {companyProductSearch}&quot;
+                                </p>
+                              </div>
+                            )}
+                          </CollapsibleContent>
+                        </Collapsible>
+                      );
+                    }
                   );
                 })()}
 
@@ -733,7 +811,7 @@ export default function ProductsPage() {
                     <div className="text-2xl font-bold text-emerald-600">
                       {
                         selectedCompany.companyProducts.filter(
-                          (p) => parseFloat(p.price) > 0
+                          (p) => (p.prices || []).length > 0
                         ).length
                       }
                     </div>
@@ -745,12 +823,27 @@ export default function ProductsPage() {
                     <div className="text-2xl font-bold text-emerald-600">
                       Rs.{" "}
                       {selectedCompany.companyProducts.length > 0
-                        ? Math.round(
-                            selectedCompany.companyProducts.reduce(
-                              (sum, p) => sum + parseFloat(p.price),
-                              0
-                            ) / selectedCompany.companyProducts.length
-                          )
+                        ? (() => {
+                            const totalPriceSum =
+                              selectedCompany.companyProducts.reduce(
+                                (sum, p) => {
+                                  const prices = p.prices || [];
+                                  const avgPrice =
+                                    prices.length > 0
+                                      ? prices.reduce(
+                                          (pSum, price) => pSum + price.price,
+                                          0
+                                        ) / prices.length
+                                      : 0;
+                                  return sum + avgPrice;
+                                },
+                                0
+                              );
+                            return Math.round(
+                              totalPriceSum /
+                                selectedCompany.companyProducts.length
+                            );
+                          })()
                         : 0}
                     </div>
                     <div className="text-sm text-stone-600">Avg. Price</div>
