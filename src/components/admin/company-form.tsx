@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { X, Pencil } from "lucide-react";
+import { X, Pencil, Copy } from "lucide-react";
 
 interface CompanyProduct {
   id?: string;
@@ -174,6 +174,17 @@ export function CompanyForm({
   const cancelEdit = () => {
     setNewProduct({ name: "", code: "", price: "", subCategoryId: "" });
     setEditingProductIndex(null);
+  };
+
+  const duplicateProduct = (index: number) => {
+    const product = formData.companyProducts[index];
+    const duplicatedProduct = {
+      ...product,
+    };
+    setFormData((prev) => ({
+      ...prev,
+      companyProducts: [...prev.companyProducts, duplicatedProduct],
+    }));
   };
 
   const removeProduct = (index: number) => {
@@ -374,6 +385,16 @@ export function CompanyForm({
                             disabled={editingProductIndex !== null}
                           >
                             <Pencil className="h-4 w-4 text-blue-600" />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-auto p-1 hover:bg-green-100"
+                            onClick={() => duplicateProduct(index)}
+                            disabled={editingProductIndex !== null}
+                          >
+                            <Copy className="h-4 w-4 text-green-600" />
                           </Button>
                           <Button
                             type="button"
