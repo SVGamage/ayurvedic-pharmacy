@@ -8,18 +8,18 @@ const prisma = new PrismaClient();
 // ============================================
 const CONFIG = {
   // Path to CSV file
-  csvFilePath: "./scripts/hp_products_normalized.csv",
+  csvFilePath: process.env.CSV_FILE_PATH, // Change this to your CSV file path
 
   // Company ID to associate products with (REQUIRED)
   // Set to null to create a new company, or provide existing company ObjectId
-  companyId: "68ec04ad9208284f2670e02c",
+  companyId: process.env.COMPANY_ID,
 
   // If companyId is null, create a company with this name
-  companyName: "Link Natural ( ලින්ක් නැචුරල්)", // Change this to your company name
+  companyName: process.env.COMPANY_NAME, // Change this to your company name
 
   // Category ID for subcategories that don't exist
   // You MUST provide this - get it from your database
-  defaultCategoryId: "68e9804c8ad7a855e30aa473", // e.g., "6578a1b2c3d4e5f6a7b8c9d0"
+  defaultCategoryId: process.env.DEFAULT_CATEGORY_ID, // e.g., "6578a1b2c3d4e5f6a7b8c9d0"
 };
 
 // ============================================
@@ -104,12 +104,28 @@ async function importProducts(): Promise<void> {
   console.log("🚀 Starting import process...\n");
 
   // Validate configuration
+  if (!CONFIG.csvFilePath) {
+    console.error("❌ ERROR: csvFilePath is required!");
+    process.exit(1);
+  }
   if (!CONFIG.defaultCategoryId) {
     console.error("❌ ERROR: defaultCategoryId is required!");
     console.log("\nTo find your category IDs, run this query in MongoDB:");
     console.log("   db.category.find({}, { _id: 1, name: 1 })");
     console.log("\nOr use Prisma:");
     console.log("   const categories = await prisma.category.findMany();");
+    process.exit(1);
+  }
+  if (!CONFIG.companyName) {
+    console.error(
+      "❌ ERROR: companyName is required when companyId is not provided!"
+    );
+    process.exit(1);
+  }
+  if (!CONFIG.companyId && !CONFIG.companyName) {
+    console.error(
+      "❌ ERROR: Either companyId or companyName must be provided!"
+    );
     process.exit(1);
   }
 
