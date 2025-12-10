@@ -788,7 +788,7 @@ export default function ProductsPage() {
                 <h4 className="text-lg font-serif font-semibold text-stone-900 mb-4">
                   Company Statistics
                 </h4>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-emerald-600">
                       {selectedCompany.companyProducts.length}
@@ -818,35 +818,6 @@ export default function ProductsPage() {
                     <div className="text-sm text-stone-600">
                       Priced Products
                     </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-emerald-600">
-                      Rs.{" "}
-                      {selectedCompany.companyProducts.length > 0
-                        ? (() => {
-                            const totalPriceSum =
-                              selectedCompany.companyProducts.reduce(
-                                (sum, p) => {
-                                  const prices = p.prices || [];
-                                  const avgPrice =
-                                    prices.length > 0
-                                      ? prices.reduce(
-                                          (pSum, price) => pSum + price.price,
-                                          0
-                                        ) / prices.length
-                                      : 0;
-                                  return sum + avgPrice;
-                                },
-                                0
-                              );
-                            return Math.round(
-                              totalPriceSum /
-                                selectedCompany.companyProducts.length
-                            );
-                          })()
-                        : 0}
-                    </div>
-                    <div className="text-sm text-stone-600">Avg. Price</div>
                   </div>
                 </div>
               </div>
