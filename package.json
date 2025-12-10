@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "import:products": "tsx scripts/data_insert.ts",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
