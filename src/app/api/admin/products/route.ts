@@ -39,6 +39,7 @@ export async function GET(request: NextRequest) {
               category: true,
             },
           },
+          productPrices: true,
         },
         orderBy: { createdAt: "desc" },
         skip,
@@ -64,7 +65,7 @@ export async function GET(request: NextRequest) {
     console.error("Error fetching products:", error);
     return NextResponse.json(
       { error: "Failed to fetch products" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -76,15 +77,21 @@ export async function POST(request: NextRequest) {
     const product = await prisma.product.create({
       data: {
         name: body.name,
-        categoryId: body.categoryId,
-        subcategoryId: body.subcategoryId,
-        price: body.price,
-        originalPrice: body.originalPrice,
+        categoryId: body.categoryId || null,
+        subcategoryId: body.subcategoryId || null,
         rating: body.rating || 0,
         reviews: body.reviews || 0,
         image: body.image,
-        badge: body.badge,
-        description: body.description,
+        badge: body.badge || null,
+        description: body.description || null,
+        productPrices: {
+          create: (body.productPrices || []).map(
+            (price: { variant: string; price: number }) => ({
+              variant: price.variant,
+              price: price.price,
+            }),
+          ),
+        },
       },
       include: {
         category: true,
@@ -93,6 +100,7 @@ export async function POST(request: NextRequest) {
             category: true,
           },
         },
+        productPrices: true,
       },
     });
 
@@ -101,7 +109,7 @@ export async function POST(request: NextRequest) {
     console.error("Error creating product:", error);
     return NextResponse.json(
       { error: "Failed to create product" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

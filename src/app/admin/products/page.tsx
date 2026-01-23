@@ -101,7 +101,7 @@ export default function AdminProductsPage() {
         setIsLoading(false);
       }
     },
-    [itemsPerPage, searchQuery, toast]
+    [itemsPerPage, searchQuery, toast],
   );
 
   useEffect(() => {
@@ -199,7 +199,7 @@ export default function AdminProductsPage() {
         `/api/admin/products/${deletingProduct.id}`,
         {
           method: "DELETE",
-        }
+        },
       );
 
       if (response.ok) {
@@ -306,8 +306,15 @@ export default function AdminProductsPage() {
                     Rs.{" "}
                     {products.length > 0
                       ? Math.round(
-                          products.reduce((sum, p) => sum + p.price, 0) /
-                            products.length
+                          products.reduce((sum, p) => {
+                            const prices = p.productPrices || [];
+                            const avgPrice =
+                              prices.length > 0
+                                ? prices.reduce((s, pp) => s + pp.price, 0) /
+                                  prices.length
+                                : 0;
+                            return sum + avgPrice;
+                          }, 0) / products.length,
                         )
                       : 0}
                   </div>

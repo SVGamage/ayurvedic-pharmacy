@@ -20,6 +20,13 @@ export interface SubCategory {
   updatedAt: string;
 }
 
+export interface ProductPrice {
+  id?: string;
+  variant: string;
+  price: number;
+  productId?: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -27,8 +34,7 @@ export interface Product {
   subcategoryId?: string;
   category?: Category;
   subcategory?: SubCategory;
-  price: number;
-  originalPrice?: number;
+  productPrices: ProductPrice[];
   rating: number;
   reviews: number;
   image: string;
@@ -40,6 +46,7 @@ export interface Product {
 
 export interface CartItem extends Product {
   quantity: number;
+  selectedVariant?: ProductPrice;
 }
 
 export interface FilterOptions {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import {
   Card,
@@ -10,8 +11,8 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, Edit, Trash2 } from "lucide-react";
-import { Product } from "@/types/product";
+import { Edit, Trash2, Star } from "lucide-react";
+import { Product, ProductPrice } from "@/types/product";
 import { formatCurrency } from "@/config/currency";
 
 interface AdminProductCardProps {
@@ -27,6 +28,11 @@ export function AdminProductCard({
 }: AdminProductCardProps) {
   const displayCategory =
     product.subcategory?.name || product.category?.name || "Uncategorized";
+
+  const prices = product.productPrices || [];
+  const [selectedVariant, setSelectedVariant] = useState<ProductPrice | null>(
+    prices[0] || null,
+  );
 
   return (
     <Card className="group border-2 border-emerald-200 shadow-lg hover:shadow-2xl hover:border-emerald-300 transition-all duration-300 bg-gradient-to-br from-white to-emerald-50 rounded-xl overflow-hidden flex flex-col h-full transform hover:-translate-y-2">
@@ -54,13 +60,20 @@ export function AdminProductCard({
           <span className="text-emerald-700 font-bold uppercase tracking-wider text-xs bg-emerald-100 px-3 py-1 rounded-full border border-emerald-200">
             {displayCategory}
           </span>
-          <div className="flex items-center space-x-1 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-200">
-            <Star className="h-3 w-3 fill-yellow-500 text-yellow-500" />
-            <span className="text-xs font-bold text-yellow-700">
-              {product.rating}
-            </span>
-            <span className="text-xs text-yellow-600">({product.reviews})</span>
-          </div>
+          {/* Rating */}
+          {product.rating > 0 && (
+            <div className="flex items-center gap-1">
+              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+              <span className="text-xs font-medium text-stone-600">
+                {product.rating.toFixed(1)}
+              </span>
+              {product.reviews > 0 && (
+                <span className="text-xs text-stone-400">
+                  ({product.reviews})
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
         <CardTitle className="font-bold text-emerald-800 leading-tight text-base group-hover:text-emerald-900 transition-colors">
@@ -69,7 +82,7 @@ export function AdminProductCard({
 
         {product.description && (
           <p
-            className="text-sm text-emerald-600 leading-relaxed overflow-hidden flex-grow"
+            className="text-sm text-emerald-600 leading-relaxed overflow-hidden"
             style={{
               display: "-webkit-box",
               WebkitLineClamp: 2,
@@ -82,17 +95,36 @@ export function AdminProductCard({
           </p>
         )}
 
-        <div className="flex items-center justify-between pt-2 mt-auto">
-          <div className="flex items-baseline space-x-2">
-            <span className="font-bold text-emerald-700 text-xl">
-              {formatCurrency(product.price)}
-            </span>
-            {product.originalPrice && (
-              <span className="text-sm text-gray-500 line-through">
-                {formatCurrency(product.originalPrice)}
-              </span>
-            )}
-          </div>
+        <div className="pt-2 mt-auto">
+          {prices.length > 0 ? (
+            <div className="space-y-2">
+              {/* Variant Buttons */}
+              <div className="flex flex-wrap gap-1">
+                {prices.map((priceVariant, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => setSelectedVariant(priceVariant)}
+                    className={`px-2 py-0.5 text-[10px] font-medium rounded border transition-all ${
+                      selectedVariant?.variant === priceVariant.variant
+                        ? "bg-emerald-600 text-white border-emerald-600"
+                        : "bg-white text-stone-600 border-stone-200 hover:border-emerald-400"
+                    }`}
+                  >
+                    {priceVariant.variant}
+                  </button>
+                ))}
+              </div>
+              {/* Price */}
+              <div className="font-bold text-emerald-700 text-base">
+                {formatCurrency(
+                  selectedVariant?.price || prices[0]?.price || 0,
+                )}
+              </div>
+            </div>
+          ) : (
+            <span className="text-sm text-gray-500">No prices set</span>
+          )}
         </div>
       </CardContent>
 
