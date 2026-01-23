@@ -78,8 +78,11 @@ interface ApiProduct {
       updatedAt: string;
     };
   };
-  price: string | number;
-  originalPrice?: string | number;
+  productPrices?: Array<{
+    id?: string;
+    variant: string;
+    price: number;
+  }>;
   rating?: number;
   reviews?: number;
   image?: string;
@@ -238,7 +241,7 @@ export default function ProductsPage() {
   const [isCompanyDialogOpen, setIsCompanyDialogOpen] = useState(false);
   const [selectedCompanyValue, setSelectedCompanyValue] = useState("");
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
   const [companyProductSearch, setCompanyProductSearch] = useState("");
 
@@ -258,7 +261,7 @@ export default function ProductsPage() {
       page = 1,
       limit = itemsPerPage,
       search = searchTerm,
-      category = selectedCategory
+      category = selectedCategory,
     ) => {
       try {
         setIsLoading(true);
@@ -284,20 +287,8 @@ export default function ProductsPage() {
           subcategoryId: product.subcategory?.id,
           category: product.category,
           subcategory: product.subcategory,
-          price:
-            typeof product.price === "string"
-              ? parseFloat(product.price.replace(/[^\d.-]/g, ""))
-              : typeof product.price === "number"
-                ? product.price
-                : 0,
-          originalPrice: product.originalPrice
-            ? typeof product.originalPrice === "string"
-              ? parseFloat(product.originalPrice.replace(/[^\d.-]/g, ""))
-              : typeof product.originalPrice === "number"
-                ? product.originalPrice
-                : undefined
-            : undefined,
-          rating: product.rating || 4.5,
+          productPrices: product.productPrices || [],
+          rating: product.rating || 0,
           reviews: product.reviews || 0,
           image: product.image || "/placeholder.svg?height=300&width=300",
           badge: product.badge,
@@ -307,7 +298,7 @@ export default function ProductsPage() {
         // Apply category filtering if not "All Products"
         if (category !== "All Products") {
           productsData = productsData.filter(
-            (product: Product) => product.category?.name === category
+            (product: Product) => product.category?.name === category,
           );
         }
 
@@ -326,7 +317,7 @@ export default function ProductsPage() {
         setIsLoading(false);
       }
     },
-    [itemsPerPage, searchTerm, selectedCategory]
+    [itemsPerPage, searchTerm, selectedCategory],
   );
 
   const fetchCompanies = useCallback(async () => {
@@ -492,7 +483,7 @@ export default function ProductsPage() {
 
       <div
         className={cn(
-          "bg-white p-6 rounded-xl mb-10 border border-stone-200 shadow-sm"
+          "bg-white p-6 rounded-xl mb-10 border border-stone-200 shadow-sm",
         )}
       >
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -637,7 +628,7 @@ export default function ProductsPage() {
                           new Set(
                             selectedCompany.companyProducts
                               .filter((p) => p.subCategory)
-                              .map((p) => p.subCategory!.name)
+                              .map((p) => p.subCategory!.name),
                           ).size
                         }{" "}
                         subcategories
@@ -701,7 +692,7 @@ export default function ProductsPage() {
                           subCategory: { id: string; name: string };
                           products: CompanyProduct[];
                         }
-                      >
+                      >,
                     );
 
                   return Object.entries(allProductsBySubCategory).map(
@@ -714,7 +705,7 @@ export default function ProductsPage() {
                             .includes(companyProductSearch.toLowerCase()) ||
                           product.code
                             .toLowerCase()
-                            .includes(companyProductSearch.toLowerCase())
+                            .includes(companyProductSearch.toLowerCase()),
                       );
 
                       return (
@@ -770,7 +761,7 @@ export default function ProductsPage() {
                           </CollapsibleContent>
                         </Collapsible>
                       );
-                    }
+                    },
                   );
                 })()}
 
@@ -801,7 +792,7 @@ export default function ProductsPage() {
                         new Set(
                           selectedCompany.companyProducts
                             .filter((p) => p.subCategory)
-                            .map((p) => p.subCategory!.name)
+                            .map((p) => p.subCategory!.name),
                         ).size
                       }
                     </div>
@@ -811,7 +802,7 @@ export default function ProductsPage() {
                     <div className="text-2xl font-bold text-emerald-600">
                       {
                         selectedCompany.companyProducts.filter(
-                          (p) => (p.prices || []).length > 0
+                          (p) => (p.prices || []).length > 0,
                         ).length
                       }
                     </div>

@@ -99,21 +99,20 @@ model SubCategory {
 }
 
 model Product {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
   name          String
-  categoryId    String?      @db.ObjectId
-  subcategoryId String?      @db.ObjectId
-  category      Category?    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  subcategory   SubCategory? @relation(fields: [subcategoryId], references: [id], onDelete: SetNull)
-  price         Float
-  originalPrice Float?
-  rating        Float        @default(0)
-  reviews       Int          @default(0)
+  categoryId    String?        @db.ObjectId
+  subcategoryId String?        @db.ObjectId
+  category      Category?      @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  subcategory   SubCategory?   @relation(fields: [subcategoryId], references: [id], onDelete: SetNull)
+  productPrices ProductPrice[]
+  rating        Float          @default(0)
+  reviews       Int            @default(0)
   image         String
   badge         String?
   description   String?
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
   @@map("product")
 }
@@ -137,9 +136,9 @@ model Service {
 }
 
 model CompanyProduct {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  name  String
-  code  String
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  code String
 
   subCategoryId        String?               @db.ObjectId
   subCategory          SubCategory?          @relation(fields: [subCategoryId], references: [id], onDelete: SetNull)
@@ -159,6 +158,17 @@ model CompanyProductPrice {
   companyProduct   CompanyProduct @relation(fields: [companyProductId], references: [id], onDelete: Cascade)
 
   @@map("company_product_price")
+}
+
+model ProductPrice {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  price   Float
+  variant String
+
+  productId String  @db.ObjectId
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_price")
 }
 
 model Company {

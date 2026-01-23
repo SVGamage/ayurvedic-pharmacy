@@ -2,26 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Star, MessageCircle, Heart, Share2, Info } from "lucide-react";
-import { Product } from "@/types/product";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { MessageCircle, Share2, Star } from "lucide-react";
+import { Product, ProductPrice } from "@/types/product";
 import { orderProductViaWhatsApp } from "@/lib/whatsapp";
-import { formatCurrency, formatSavings } from "@/config/currency";
-import { cn } from "@/lib/utils";
+import { formatCurrency } from "@/config/currency";
 
 interface ProductCardProps {
   product: Product;
@@ -37,12 +23,23 @@ export function ProductCard({
   showDescription = true,
 }: ProductCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedVariant, setSelectedVariant] = useState<ProductPrice | null>(
+    product.productPrices?.[0] || null,
+  );
   const isCompact = variant === "featured";
   const displayCategory =
     product.subcategory?.name || product.category?.name || "General";
 
+  const prices = product.productPrices || [];
+  const lowestPrice =
+    prices.length > 0 ? Math.min(...prices.map((p) => p.price)) : 0;
+  const highestPrice =
+    prices.length > 0 ? Math.max(...prices.map((p) => p.price)) : 0;
+
   const handleAddToCart = () => {
-    orderProductViaWhatsApp(product.name, product.price, product.id);
+    const priceToUse = selectedVariant?.price || lowestPrice;
+    const variantInfo = selectedVariant ? ` (${selectedVariant.variant})` : "";
+    orderProductViaWhatsApp(product.name + variantInfo, priceToUse, product.id);
   };
 
   const handleCardClick = () => {
@@ -71,41 +68,68 @@ export function ProductCard({
           )}
         </div>
 
-        {/* Category & Rating */}
-        <div className="flex justify-between items-center mb-3">
-          <span className="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+        {/* Category */}
+        <div className="mb-2 flex items-center justify-between">
+          <span className="bg-emerald-50 text-emerald-600 px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider">
             {displayCategory}
           </span>
-          <div className="flex items-center space-x-1.5 bg-stone-50 px-2 py-1 rounded-lg">
-            <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-            <span className="text-sm font-semibold text-stone-700">
-              {product.rating}
-            </span>
-            <span className="text-sm text-stone-400">({product.reviews})</span>
-          </div>
+          {/* Rating */}
+          {product.rating > 0 && (
+            <div className="flex items-center gap-1">
+              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+              <span className="text-xs font-medium text-stone-600">
+                {product.rating.toFixed(1)}
+              </span>
+              {product.reviews > 0 && (
+                <span className="text-xs text-stone-400">
+                  ({product.reviews})
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Title */}
-        <h4 className="text-lg font-semibold text-stone-900 tracking-tight mb-4 line-clamp-1 group-hover:text-emerald-700 transition-colors">
+        <h4 className="text-base font-semibold text-stone-900 tracking-tight mb-3 line-clamp-1 group-hover:text-emerald-700 transition-colors">
           {product.name}
         </h4>
 
-        {/* Price */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-baseline space-x-2">
-            <span className="text-xl font-semibold text-emerald-600 tracking-tight">
-              {formatCurrency(product.price)}
-            </span>
-            {product.originalPrice && (
-              <span className="text-sm text-stone-400 line-through decoration-stone-300">
-                {formatCurrency(product.originalPrice)}
-              </span>
-            )}
-          </div>
-          {product.originalPrice && (
-            <span className="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] uppercase font-semibold tracking-wide">
-              Save {formatSavings(product.originalPrice, product.price)}
-            </span>
+        {/* Variant Buttons & Price */}
+        <div className="mb-4">
+          {prices.length > 0 ? (
+            <div className="space-y-2">
+              {/* Variant Buttons */}
+              <div
+                className="flex flex-wrap gap-1.5"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {prices.map((priceVariant, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedVariant(priceVariant);
+                    }}
+                    className={`px-2.5 py-1 text-xs font-medium rounded-md border transition-all ${
+                      selectedVariant?.variant === priceVariant.variant
+                        ? "bg-emerald-600 text-white border-emerald-600"
+                        : "bg-white text-stone-600 border-stone-200 hover:border-emerald-400 hover:text-emerald-600"
+                    }`}
+                  >
+                    {priceVariant.variant}
+                  </button>
+                ))}
+              </div>
+              {/* Price Display */}
+              <div className="text-lg font-bold text-emerald-600">
+                {formatCurrency(
+                  selectedVariant?.price || prices[0]?.price || 0,
+                )}
+              </div>
+            </div>
+          ) : (
+            <span className="text-sm text-stone-400">Price not set</span>
           )}
         </div>
 
@@ -143,26 +167,66 @@ export function ProductCard({
                   <span className="text-emerald-600 font-semibold text-xs uppercase tracking-wider">
                     {displayCategory}
                   </span>
-                  <div className="flex items-center space-x-1">
-                    <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                    <span className="text-sm font-medium text-stone-700">
-                      {product.rating}
-                    </span>
-                  </div>
                 </div>
                 <DialogTitle className="text-2xl font-bold text-stone-900 mb-2">
                   {product.name}
                 </DialogTitle>
-                <div className="flex items-baseline space-x-3">
-                  <span className="text-2xl font-bold text-emerald-600">
-                    {formatCurrency(product.price)}
-                  </span>
-                  {product.originalPrice && (
-                    <span className="text-sm text-stone-400 line-through">
-                      {formatCurrency(product.originalPrice)}
+
+                {/* Rating */}
+                {product.rating > 0 && (
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="flex items-center gap-0.5">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={`w-4 h-4 ${
+                            star <= Math.round(product.rating)
+                              ? "fill-amber-400 text-amber-400"
+                              : "text-stone-300"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-sm font-medium text-stone-600">
+                      {product.rating.toFixed(1)}
                     </span>
-                  )}
-                </div>
+                    {product.reviews > 0 && (
+                      <span className="text-sm text-stone-400">
+                        ({product.reviews} reviews)
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                {/* Variant Selector */}
+                {prices.length > 0 && (
+                  <div className="space-y-3">
+                    <label className="text-sm font-medium text-stone-700">
+                      Select Size/Variant:
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {prices.map((priceVariant, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => setSelectedVariant(priceVariant)}
+                          className={`px-3 py-1.5 text-sm font-medium rounded-lg border-2 transition-all ${
+                            selectedVariant?.variant === priceVariant.variant
+                              ? "bg-emerald-600 text-white border-emerald-600"
+                              : "bg-white text-stone-700 border-stone-200 hover:border-emerald-400 hover:text-emerald-600"
+                          }`}
+                        >
+                          {priceVariant.variant}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="text-2xl font-bold text-emerald-600">
+                      {formatCurrency(
+                        selectedVariant?.price || prices[0]?.price || 0,
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {product.description && (

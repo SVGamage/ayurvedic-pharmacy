@@ -14,7 +14,9 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ImageUpload } from "@/components/ui/image-upload";
-import { Product, Category, SubCategory } from "@/types/product";
+import { Badge } from "@/components/ui/badge";
+import { X, Plus } from "lucide-react";
+import { Product, Category, SubCategory, ProductPrice } from "@/types/product";
 
 interface ProductFormProps {
   product?: Product;
@@ -40,13 +42,17 @@ export function ProductForm({
     name: product?.name || "",
     categoryId: product?.categoryId || "",
     subcategoryId: product?.subcategoryId || "",
-    price: product?.price || 0,
-    originalPrice: product?.originalPrice || undefined,
+    productPrices: product?.productPrices || [],
     rating: product?.rating || 0,
     reviews: product?.reviews || 0,
     image: product?.image || "",
     badge: product?.badge || "",
     description: product?.description || "",
+  });
+
+  const [newPrice, setNewPrice] = useState<{ variant: string; price: number }>({
+    variant: "",
+    price: 0,
   });
 
   // Fetch categories and subcategories
@@ -80,7 +86,7 @@ export function ProductForm({
       setLoadingSubcategories(true);
       try {
         const response = await fetch(
-          `/api/admin/subcategories?categoryId=${formData.categoryId}`
+          `/api/admin/subcategories?categoryId=${formData.categoryId}`,
         );
 
         if (response.ok) {
@@ -105,7 +111,7 @@ export function ProductForm({
         setLoadingSubcategories(true);
         try {
           const response = await fetch(
-            `/api/admin/subcategories?categoryId=${product.categoryId}`
+            `/api/admin/subcategories?categoryId=${product.categoryId}`,
           );
 
           if (response.ok) {
@@ -130,7 +136,7 @@ export function ProductForm({
 
   const handleInputChange = (
     field: keyof Product,
-    value: string | number | undefined
+    value: string | number | undefined | ProductPrice[],
   ) => {
     setFormData((prev) => {
       const newData = { ...prev, [field]: value };
@@ -142,6 +148,33 @@ export function ProductForm({
 
       return newData;
     });
+  };
+
+  const addPriceVariant = () => {
+    if (newPrice.variant.trim() && newPrice.price > 0) {
+      setFormData((prev) => ({
+        ...prev,
+        productPrices: [
+          ...(prev.productPrices || []),
+          { variant: newPrice.variant, price: newPrice.price },
+        ],
+      }));
+      setNewPrice({ variant: "", price: 0 });
+    }
+  };
+
+  const removePriceVariant = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      productPrices: (prev.productPrices || []).filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addPriceVariant();
+    }
   };
 
   return (
@@ -268,50 +301,6 @@ export function ProductForm({
                 </div>
 
                 <div className="space-y-3">
-                  <Label htmlFor="price" className="text-emerald-800 font-bold">
-                    Price (Rs.) *
-                  </Label>
-                  <Input
-                    id="price"
-                    type="number"
-                    step="0.01"
-                    value={formData.price}
-                    onChange={(e) =>
-                      handleInputChange(
-                        "price",
-                        parseFloat(e.target.value) || 0
-                      )
-                    }
-                    placeholder="0.00"
-                    required
-                    className="border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400"
-                  />
-                </div>
-
-                <div className="space-y-3">
-                  <Label
-                    htmlFor="originalPrice"
-                    className="text-emerald-800 font-bold"
-                  >
-                    Original Price (Rs.)
-                  </Label>
-                  <Input
-                    id="originalPrice"
-                    type="number"
-                    step="0.01"
-                    value={formData.originalPrice || ""}
-                    onChange={(e) =>
-                      handleInputChange(
-                        "originalPrice",
-                        parseFloat(e.target.value) || undefined
-                      )
-                    }
-                    placeholder="0.00"
-                    className="border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400"
-                  />
-                </div>
-
-                <div className="space-y-3">
                   <Label
                     htmlFor="rating"
                     className="text-emerald-800 font-bold"
@@ -328,7 +317,7 @@ export function ProductForm({
                     onChange={(e) =>
                       handleInputChange(
                         "rating",
-                        parseFloat(e.target.value) || 0
+                        parseFloat(e.target.value) || 0,
                       )
                     }
                     placeholder="4.5"
@@ -351,13 +340,125 @@ export function ProductForm({
                     onChange={(e) =>
                       handleInputChange(
                         "reviews",
-                        parseInt(e.target.value) || 0
+                        parseInt(e.target.value) || 0,
                       )
                     }
                     placeholder="0"
                     className="border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400"
                   />
                 </div>
+              </div>
+
+              {/* Price Variants Section */}
+              <div className="space-y-4 p-4 bg-emerald-50/50 rounded-xl border border-emerald-200">
+                <Label className="text-emerald-800 font-bold">
+                  Product Prices (Variants) *
+                </Label>
+                <p className="text-sm text-emerald-600">
+                  Add different size/variant options with their prices (e.g.,
+                  50ml - Rs.500, 100ml - Rs.900)
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="variant"
+                      className="text-emerald-700 text-sm font-medium"
+                    >
+                      Variant (e.g., 50ml, 100ml)
+                    </Label>
+                    <Input
+                      id="variant"
+                      placeholder="Enter variant"
+                      value={newPrice.variant}
+                      onChange={(e) =>
+                        setNewPrice((prev) => ({
+                          ...prev,
+                          variant: e.target.value,
+                        }))
+                      }
+                      className="border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="variantPrice"
+                      className="text-emerald-700 text-sm font-medium"
+                    >
+                      Price (Rs.)
+                    </Label>
+                    <Input
+                      id="variantPrice"
+                      type="number"
+                      step="0.01"
+                      placeholder="Enter price"
+                      value={newPrice.price || ""}
+                      onChange={(e) =>
+                        setNewPrice((prev) => ({
+                          ...prev,
+                          price: parseFloat(e.target.value) || 0,
+                        }))
+                      }
+                      onKeyPress={handleKeyPress}
+                      className="border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-emerald-700 text-sm font-medium invisible">
+                      Action
+                    </Label>
+                    <Button
+                      type="button"
+                      onClick={addPriceVariant}
+                      variant="outline"
+                      className="w-full border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+                      disabled={!newPrice.variant.trim() || newPrice.price <= 0}
+                    >
+                      <Plus className="h-4 w-4 mr-1" />
+                      Add Variant
+                    </Button>
+                  </div>
+                </div>
+
+                {(formData.productPrices || []).length > 0 && (
+                  <div className="space-y-2 mt-4">
+                    <Label className="text-emerald-700 text-sm font-medium">
+                      Added Variants ({formData.productPrices?.length})
+                    </Label>
+                    <div className="flex flex-wrap gap-2">
+                      {(formData.productPrices || []).map(
+                        (priceVariant, index) => (
+                          <Badge
+                            key={index}
+                            className="bg-emerald-100 text-emerald-800 border border-emerald-300 px-3 py-2 text-sm flex items-center gap-2"
+                          >
+                            <span className="font-medium">
+                              {priceVariant.variant}:
+                            </span>
+                            <span className="font-bold">
+                              Rs. {priceVariant.price.toFixed(2)}
+                            </span>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-auto p-1 hover:bg-red-100 ml-1"
+                              onClick={() => removePriceVariant(index)}
+                            >
+                              <X className="h-4 w-4 text-red-600" />
+                            </Button>
+                          </Badge>
+                        ),
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {(formData.productPrices || []).length === 0 && (
+                  <p className="text-sm text-amber-600 mt-2">
+                    Please add at least one price variant
+                  </p>
+                )}
               </div>
 
               <div className="space-y-3">
@@ -397,7 +498,9 @@ export function ProductForm({
               <div className="flex gap-3 pt-6 border-t border-emerald-200">
                 <Button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={
+                    isLoading || (formData.productPrices || []).length === 0
+                  }
                   className="flex-1 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold py-3 shadow-lg transform hover:scale-105 transition-all duration-200"
                 >
                   {isLoading

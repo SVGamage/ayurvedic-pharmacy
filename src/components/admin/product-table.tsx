@@ -22,7 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Edit, Trash2, Star } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { Product } from "@/types/product";
 import { formatCurrency } from "@/config/currency";
 import Image from "next/image";
@@ -59,9 +59,7 @@ export function ProductTable({
             <TableHead className="w-20">Image</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Category</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Rating</TableHead>
-            <TableHead>Reviews</TableHead>
+            <TableHead>Price Variants</TableHead>
             <TableHead>Badge</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
@@ -70,7 +68,7 @@ export function ProductTable({
           {products.length === 0 ? (
             <TableRow>
               <TableCell
-                colSpan={8}
+                colSpan={6}
                 className="text-center py-8 text-muted-foreground"
               >
                 No products found. Create your first product to get started.
@@ -104,23 +102,32 @@ export function ProductTable({
                 </TableCell>
                 <TableCell>
                   <div className="space-y-1">
-                    <div className="font-medium">
-                      {formatCurrency(product.price)}
-                    </div>
-                    {product.originalPrice && (
-                      <div className="text-xs text-muted-foreground line-through">
-                        {formatCurrency(product.originalPrice)}
+                    {(product.productPrices || []).length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {product.productPrices
+                          .slice(0, 2)
+                          .map((priceVariant, idx) => (
+                            <span
+                              key={idx}
+                              className="inline-flex items-center gap-1 bg-green-50 border border-green-200 rounded px-1.5 py-0.5 text-xs text-green-700"
+                            >
+                              {priceVariant.variant}:{" "}
+                              {formatCurrency(priceVariant.price)}
+                            </span>
+                          ))}
+                        {product.productPrices.length > 2 && (
+                          <span className="text-xs text-muted-foreground">
+                            +{product.productPrices.length - 2} more
+                          </span>
+                        )}
                       </div>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">
+                        No prices
+                      </span>
                     )}
                   </div>
                 </TableCell>
-                <TableCell>
-                  <div className="flex items-center space-x-1">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span>{product.rating}</span>
-                  </div>
-                </TableCell>
-                <TableCell>{product.reviews}</TableCell>
                 <TableCell>
                   {product.badge && (
                     <Badge variant="secondary">{product.badge}</Badge>
