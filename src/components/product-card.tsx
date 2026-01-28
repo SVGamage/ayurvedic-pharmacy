@@ -228,10 +228,10 @@ export function ProductCard({
 
       {/* Product Details Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-white to-stone-50 border-0 p-0 gap-0 rounded-3xl overflow-hidden shadow-2xl">
-          <div className="grid md:grid-cols-2">
+        <DialogContent className="w-[95vw] max-w-3xl max-h-[90vh] sm:max-h-[90vh] overflow-hidden bg-gradient-to-br from-white to-stone-50 border-0 p-0 gap-0 rounded-2xl sm:rounded-3xl shadow-2xl">
+          <div className="flex flex-col md:grid md:grid-cols-2 max-h-[90vh] sm:max-h-[90vh] overflow-y-auto md:overflow-hidden">
             {/* Product Image Section */}
-            <div className="relative h-72 md:h-full min-h-[400px] bg-gradient-to-br from-stone-100 to-stone-50">
+            <div className="relative h-48 sm:h-64 md:h-full md:min-h-[450px] bg-gradient-to-br from-stone-100 to-stone-50 flex-shrink-0">
               <Image
                 src={product.image || "/placeholder.svg"}
                 alt={product.name}
@@ -244,9 +244,9 @@ export function ProductCard({
 
               {/* Badge on Dialog Image */}
               {product.badge && (
-                <div className="absolute top-6 left-6">
-                  <div className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg shadow-emerald-500/30">
-                    <Sparkles className="w-4 h-4" />
+                <div className="absolute top-3 left-3 sm:top-6 sm:left-6">
+                  <div className="flex items-center gap-1 sm:gap-1.5 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-lg shadow-emerald-500/30">
+                    <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
                     {product.badge}
                   </div>
                 </div>
@@ -254,30 +254,30 @@ export function ProductCard({
             </div>
 
             {/* Product Details Section */}
-            <div className="p-8 md:p-10 flex flex-col">
+            <div className="p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col md:overflow-y-auto md:max-h-[90vh]">
               {/* Category */}
-              <div className="flex items-center gap-2 mb-4">
-                <div className="flex items-center gap-1.5 text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full">
-                  <Leaf className="w-3.5 h-3.5" />
-                  <span className="text-xs font-semibold uppercase tracking-wider">
+              <div className="flex items-center gap-2 mb-2 sm:mb-4">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-emerald-600 bg-emerald-50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full">
+                  <Leaf className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                  <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
                     {displayCategory}
                   </span>
                 </div>
               </div>
 
               {/* Title */}
-              <DialogTitle className="text-2xl md:text-3xl font-bold text-stone-800 mb-4 leading-tight tracking-tight">
+              <DialogTitle className="text-lg sm:text-2xl md:text-3xl font-bold text-stone-800 mb-2 sm:mb-4 leading-tight tracking-tight">
                 {product.name}
               </DialogTitle>
 
               {/* Rating */}
               {product.rating > 0 && (
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="flex items-center gap-1">
+                <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-6">
+                  <div className="flex items-center gap-0.5 sm:gap-1">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <Star
                         key={star}
-                        className={`w-5 h-5 ${
+                        className={`w-3.5 h-3.5 sm:w-5 sm:h-5 ${
                           star <= Math.round(product.rating)
                             ? "fill-amber-400 text-amber-400"
                             : "text-stone-200"
@@ -285,11 +285,11 @@ export function ProductCard({
                       />
                     ))}
                   </div>
-                  <span className="text-base font-semibold text-stone-700">
+                  <span className="text-sm sm:text-base font-semibold text-stone-700">
                     {product.rating.toFixed(1)}
                   </span>
                   {product.reviews > 0 && (
-                    <span className="text-sm text-stone-400">
+                    <span className="text-xs sm:text-sm text-stone-400">
                       ({product.reviews} reviews)
                     </span>
                   )}
@@ -298,24 +298,24 @@ export function ProductCard({
 
               {/* Description */}
               {product.description && (
-                <p className="text-stone-600 text-base leading-relaxed mb-6 flex-grow">
+                <p className="text-stone-600 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
                   {product.description}
                 </p>
               )}
 
               {/* Variant Selector */}
               {prices.length > 0 && (
-                <div className="space-y-4 mb-6">
-                  <label className="text-sm font-semibold text-stone-700 uppercase tracking-wider">
+                <div className="space-y-2 sm:space-y-4 mb-4 sm:mb-6">
+                  <label className="text-xs sm:text-sm font-semibold text-stone-700 uppercase tracking-wider">
                     Select Size
                   </label>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {prices.map((priceVariant, index) => (
                       <button
                         key={index}
                         type="button"
                         onClick={() => setSelectedVariant(priceVariant)}
-                        className={`px-4 py-2.5 text-sm font-medium rounded-xl border-2 transition-all duration-300 ${
+                        className={`px-3 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl border-2 transition-all duration-300 ${
                           selectedVariant?.variant === priceVariant.variant
                             ? "bg-emerald-600 text-white border-emerald-600 shadow-lg shadow-emerald-500/25"
                             : "bg-white text-stone-700 border-stone-200 hover:border-emerald-400 hover:text-emerald-600 hover:bg-emerald-50"
@@ -327,8 +327,8 @@ export function ProductCard({
                   </div>
 
                   {/* Price Display */}
-                  <div className="flex items-baseline gap-2 pt-2">
-                    <span className="text-3xl font-bold text-emerald-600 tracking-tight">
+                  <div className="flex items-baseline gap-2 pt-1 sm:pt-2">
+                    <span className="text-2xl sm:text-3xl font-bold text-emerald-600 tracking-tight">
                       {formatCurrency(
                         selectedVariant?.price || prices[0]?.price || 0,
                       )}
@@ -338,28 +338,28 @@ export function ProductCard({
               )}
 
               {/* Action Buttons */}
-              <div className="space-y-3 mt-auto pt-4 border-t border-stone-100">
+              <div className="space-y-2 sm:space-y-3 mt-auto pt-3 sm:pt-4 border-t border-stone-100">
                 <Button
                   variant="outline"
-                  className="w-full border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 rounded-2xl py-6 font-semibold transition-all duration-300"
+                  className="w-full border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 rounded-xl sm:rounded-2xl h-11 sm:h-14 font-semibold transition-all duration-300 text-sm sm:text-base"
                   onClick={handleAddToCart}
                 >
-                  <ShoppingCart className="h-5 w-5 mr-2.5" />
+                  <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                   Add to Cart
                 </Button>
 
                 <Button
-                  className="w-full relative overflow-hidden bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white font-semibold py-7 rounded-2xl shadow-xl shadow-emerald-500/20 transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-500/30 group"
+                  className="w-full relative overflow-hidden bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white font-semibold h-12 sm:h-16 rounded-xl sm:rounded-2xl shadow-xl shadow-emerald-500/20 transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-500/30 group text-sm sm:text-base"
                   onClick={handleOrderViaWhatsApp}
                 >
-                  <MessageCircle className="h-5 w-5 mr-2.5 transition-transform group-hover:scale-110" />
+                  <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 mr-2 transition-transform group-hover:scale-110" />
                   Order via WhatsApp
                   <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                 </Button>
 
                 <Button
                   variant="outline"
-                  className="w-full border-2 border-stone-200 text-stone-600 hover:bg-stone-50 hover:text-emerald-700 hover:border-emerald-200 rounded-2xl py-6 font-semibold transition-all duration-300"
+                  className="w-full border-2 border-stone-200 text-stone-600 hover:bg-stone-50 hover:text-emerald-700 hover:border-emerald-200 rounded-xl sm:rounded-2xl h-11 sm:h-14 font-semibold transition-all duration-300 text-sm sm:text-base"
                   onClick={() => {
                     if (navigator.share) {
                       navigator.share({
@@ -372,7 +372,7 @@ export function ProductCard({
                     }
                   }}
                 >
-                  <Share2 className="h-4 w-4 mr-2" />
+                  <Share2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-2" />
                   Share Product
                 </Button>
               </div>
