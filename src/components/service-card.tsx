@@ -239,12 +239,12 @@ export function ServiceCard({
       {/* Service Details Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="w-[95vw] max-w-3xl max-h-[90vh] bg-gradient-to-br from-white to-stone-50 border-0 p-0 gap-0 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden">
-          <div className="flex flex-col md:grid md:grid-cols-2 max-h-[90vh] overflow-y-auto md:overflow-hidden">
+          <div className="flex flex-col md:grid md:grid-cols-2 max-h-[90vh] overflow-y-auto md:overflow-hidden scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {/* Left Column: Visual & Key Info */}
             <div className="relative bg-gradient-to-br from-stone-100 to-stone-50 flex flex-col border-b md:border-b-0 md:border-r border-stone-200 overflow-hidden">
               {/* Image or Icon Section */}
               {service.image ? (
-                <div className="relative h-40 sm:h-52 md:h-64 flex-shrink-0">
+                <div className="relative h-44 min-h-[176px] sm:h-52 sm:min-h-[208px] md:h-64 flex-shrink-0">
                   <Image
                     src={service.image}
                     alt={service.title}

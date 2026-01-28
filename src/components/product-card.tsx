@@ -4,7 +4,14 @@ import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { MessageCircle, Share2, Star, Leaf, Sparkles, ShoppingCart } from "lucide-react";
+import {
+  MessageCircle,
+  Share2,
+  Star,
+  Leaf,
+  Sparkles,
+  ShoppingCart,
+} from "lucide-react";
 import { Product, ProductPrice } from "@/types/product";
 import { orderProductViaWhatsApp } from "@/lib/whatsapp";
 import { formatCurrency } from "@/config/currency";
@@ -118,7 +125,9 @@ export function ProductCard({
                 <div className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10">
                   <div className="flex items-center gap-1 sm:gap-1.5 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-semibold tracking-wide shadow-lg shadow-emerald-500/25">
                     <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 flex-shrink-0" />
-                    <span className="truncate max-w-[80px] sm:max-w-none">{product.badge}</span>
+                    <span className="truncate max-w-[80px] sm:max-w-none">
+                      {product.badge}
+                    </span>
                   </div>
                 </div>
               )}
@@ -161,7 +170,10 @@ export function ProductCard({
 
             {/* Variant Selection */}
             {prices.length > 1 && (
-              <div className="mb-3 sm:mb-4" onClick={(e) => e.stopPropagation()}>
+              <div
+                className="mb-3 sm:mb-4"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {prices.map((priceVariant, index) => (
                     <button
@@ -229,9 +241,9 @@ export function ProductCard({
       {/* Product Details Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="w-[95vw] max-w-3xl max-h-[90vh] sm:max-h-[90vh] overflow-hidden bg-gradient-to-br from-white to-stone-50 border-0 p-0 gap-0 rounded-2xl sm:rounded-3xl shadow-2xl">
-          <div className="flex flex-col md:grid md:grid-cols-2 max-h-[90vh] sm:max-h-[90vh] overflow-y-auto md:overflow-hidden">
+          <div className="flex flex-col md:grid md:grid-cols-2 max-h-[90vh] sm:max-h-[90vh] overflow-y-auto md:overflow-hidden scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {/* Product Image Section */}
-            <div className="relative h-48 sm:h-64 md:h-full md:min-h-[450px] bg-gradient-to-br from-stone-100 to-stone-50 flex-shrink-0">
+            <div className="relative h-44 min-h-[176px] sm:h-64 sm:min-h-[256px] md:h-full md:min-h-[450px] bg-gradient-to-br from-stone-100 to-stone-50 flex-shrink-0">
               <Image
                 src={product.image || "/placeholder.svg"}
                 alt={product.name}
