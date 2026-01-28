@@ -44,9 +44,17 @@ export interface Product {
   updatedAt?: string;
 }
 
-export interface CartItem extends Product {
+export interface CartItem {
+  id: string;
+  name: string;
+  image: string;
+  selectedVariant: {
+    variant: string;
+    price: number;
+  };
   quantity: number;
-  selectedVariant?: ProductPrice;
+  addedAt: number;
+  category?: string;
 }
 
 export interface FilterOptions {

@@ -4,10 +4,12 @@ import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { MessageCircle, Share2, Star, Leaf, Sparkles } from "lucide-react";
+import { MessageCircle, Share2, Star, Leaf, Sparkles, ShoppingCart } from "lucide-react";
 import { Product, ProductPrice } from "@/types/product";
 import { orderProductViaWhatsApp } from "@/lib/whatsapp";
 import { formatCurrency } from "@/config/currency";
+import { useCart } from "@/contexts/cart-context";
+import { toast } from "sonner";
 
 interface ProductCardProps {
   product: Product;
@@ -27,6 +29,7 @@ export function ProductCard({
     product.productPrices?.[0] || null,
   );
   const [isHovered, setIsHovered] = useState(false);
+  const { addItem } = useCart();
   const displayCategory =
     product.subcategory?.name || product.category?.name || "General";
 
@@ -34,10 +37,30 @@ export function ProductCard({
   const lowestPrice =
     prices.length > 0 ? Math.min(...prices.map((p) => p.price)) : 0;
 
-  const handleAddToCart = () => {
+  const handleOrderViaWhatsApp = () => {
     const priceToUse = selectedVariant?.price || lowestPrice;
     const variantInfo = selectedVariant ? ` (${selectedVariant.variant})` : "";
     orderProductViaWhatsApp(product.name + variantInfo, priceToUse, product.id);
+  };
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const variant = selectedVariant || prices[0];
+    if (!variant) {
+      toast.error("No variant available");
+      return;
+    }
+    addItem({
+      id: product.id,
+      name: product.name,
+      image: product.image,
+      selectedVariant: {
+        variant: variant.variant,
+        price: variant.price,
+      },
+      category: displayCategory,
+    });
+    toast.success(`${product.name} added to cart`);
   };
 
   const handleCardClick = () => {
@@ -178,18 +201,27 @@ export function ProductCard({
               </div>
             )}
 
-            {/* CTA Button */}
-            <button
-              className="w-full relative overflow-hidden flex items-center justify-center gap-2.5 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white py-3.5 rounded-2xl text-sm font-semibold transition-all duration-300 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 hover:shadow-xl group/btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleAddToCart();
-              }}
-            >
-              <MessageCircle className="w-4 h-4 transition-transform duration-300 group-hover/btn:scale-110" />
-              <span>Order via WhatsApp</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700" />
-            </button>
+            {/* CTA Buttons */}
+            <div className="space-y-2">
+              <button
+                className="w-full flex items-center justify-center gap-2.5 border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 py-3 rounded-2xl text-sm font-semibold transition-all duration-300"
+                onClick={handleAddToCart}
+              >
+                <ShoppingCart className="w-4 h-4" />
+                <span>Add to Cart</span>
+              </button>
+              <button
+                className="w-full relative overflow-hidden flex items-center justify-center gap-2.5 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white py-3.5 rounded-2xl text-sm font-semibold transition-all duration-300 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 hover:shadow-xl group/btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOrderViaWhatsApp();
+                }}
+              >
+                <MessageCircle className="w-4 h-4 transition-transform duration-300 group-hover/btn:scale-110" />
+                <span>Order via WhatsApp</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -308,8 +340,17 @@ export function ProductCard({
               {/* Action Buttons */}
               <div className="space-y-3 mt-auto pt-4 border-t border-stone-100">
                 <Button
-                  className="w-full relative overflow-hidden bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white font-semibold py-7 rounded-2xl shadow-xl shadow-emerald-500/20 transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-500/30 group"
+                  variant="outline"
+                  className="w-full border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 rounded-2xl py-6 font-semibold transition-all duration-300"
                   onClick={handleAddToCart}
+                >
+                  <ShoppingCart className="h-5 w-5 mr-2.5" />
+                  Add to Cart
+                </Button>
+
+                <Button
+                  className="w-full relative overflow-hidden bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white font-semibold py-7 rounded-2xl shadow-xl shadow-emerald-500/20 transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-500/30 group"
+                  onClick={handleOrderViaWhatsApp}
                 >
                   <MessageCircle className="h-5 w-5 mr-2.5 transition-transform group-hover:scale-110" />
                   Order via WhatsApp
