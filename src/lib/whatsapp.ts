@@ -1,6 +1,7 @@
 // WhatsApp utility functions
 import { WHATSAPP_CONFIG } from "@/config/whatsapp";
 import { formatCurrencyForWhatsApp } from "@/config/currency";
+import type { CartItem } from "@/types/product";
 
 export interface WhatsAppConfig {
   phoneNumber: string; // WhatsApp number without + sign
@@ -146,4 +147,39 @@ export const updateWhatsAppNumber = (newNumber: string): WhatsAppConfig => {
 // Get current WhatsApp configuration
 export const getWhatsAppConfig = (): WhatsAppConfig => {
   return { ...LOCAL_WHATSAPP_CONFIG };
+};
+
+// Order cart items via WhatsApp
+export const orderCartViaWhatsApp = (items: CartItem[]) => {
+  const itemsList = items
+    .map(
+      (item, i) =>
+        `${i + 1}. ${item.name} (${item.selectedVariant.variant}) x${item.quantity} - ${formatCurrencyForWhatsApp(item.selectedVariant.price * item.quantity)}`
+    )
+    .join("\n");
+
+  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+  const total = items.reduce(
+    (sum, item) => sum + item.selectedVariant.price * item.quantity,
+    0
+  );
+
+  const message = `Hello! I would like to order:
+
+🛒 *ORDER DETAILS*
+${itemsList}
+
+───────────────────
+📦 Total Items: ${totalQuantity}
+💰 Total: ${formatCurrencyForWhatsApp(total)}
+───────────────────
+
+Please confirm availability and delivery details.
+
+Thank you!`;
+
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
+
+  window.open(whatsappUrl, "_blank");
 };

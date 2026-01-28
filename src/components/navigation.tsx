@@ -7,6 +7,7 @@ import { Menu, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Brand from "./brand";
+import { CartIcon, CartSheet } from "./cart";
 
 const navigation = [
   { name: "Products", href: "/products" },
@@ -64,7 +65,8 @@ export function Navigation() {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 md:space-x-4">
+          <CartIcon />
           <Link href="/services">
             <Button className="hidden md:flex items-center space-x-2 bg-emerald-900 text-white px-6 py-2 rounded-full hover:bg-emerald-800 transition-all text-xs font-medium tracking-wide shadow-lg shadow-emerald-900/20">
               <span>Book Consult</span>
@@ -82,6 +84,7 @@ export function Navigation() {
             )}
           </button>
         </div>
+        <CartSheet />
       </nav>
 
       {/* Mobile Menu */}
