@@ -461,7 +461,7 @@ export default function ProductsPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-8 md:pt-40">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-8 md:pt-40 overflow-x-hidden">
       {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
       <CarouselGrid heroSlidesArray={[heroSlides1, heroSlides2, heroSlides3]} />
       {/* Enhanced Header Section */}
@@ -483,10 +483,10 @@ export default function ProductsPage() {
 
       <div
         className={cn(
-          "bg-white p-6 rounded-xl mb-10 border border-stone-200 shadow-sm",
+          "bg-white p-4 sm:p-6 rounded-xl mb-6 sm:mb-10 border border-stone-200 shadow-sm overflow-hidden",
         )}
       >
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-stone-400" />
             <Input
@@ -551,7 +551,7 @@ export default function ProductsPage() {
       </div>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {filteredProducts.map((product) => (
           <ProductCard
             key={product.id}
