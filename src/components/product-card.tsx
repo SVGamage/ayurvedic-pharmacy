@@ -240,10 +240,10 @@ export function ProductCard({
 
       {/* Product Details Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="w-[95vw] max-w-3xl max-h-[90vh] sm:max-h-[90vh] overflow-hidden bg-gradient-to-br from-white to-stone-50 border-0 p-0 gap-0 rounded-2xl sm:rounded-3xl shadow-2xl">
-          <div className="flex flex-col md:grid md:grid-cols-2 max-h-[90vh] sm:max-h-[90vh] overflow-y-auto md:overflow-hidden scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            {/* Product Image Section */}
-            <div className="relative h-44 min-h-[176px] sm:h-64 sm:min-h-[256px] md:h-full md:min-h-[450px] bg-gradient-to-br from-stone-100 to-stone-50 flex-shrink-0">
+        <DialogContent className="w-[95vw] max-w-3xl h-[85dvh] sm:h-auto sm:max-h-[85vh] bg-gradient-to-br from-white to-stone-50 border-0 p-0 gap-0 rounded-2xl sm:rounded-3xl shadow-2xl">
+          <div className="flex flex-col md:grid md:grid-cols-2 h-full md:h-auto md:max-h-[85vh] overflow-hidden">
+            {/* Product Image Section - Fixed height, never shrinks */}
+            <div className="relative h-[160px] sm:h-[200px] md:h-auto md:min-h-[400px] bg-gradient-to-br from-stone-100 to-stone-50 flex-shrink-0">
               <Image
                 src={product.image || "/placeholder.svg"}
                 alt={product.name}
@@ -265,8 +265,8 @@ export function ProductCard({
               )}
             </div>
 
-            {/* Product Details Section */}
-            <div className="p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col md:overflow-y-auto md:max-h-[90vh]">
+            {/* Product Details Section - Scrollable */}
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col md:max-h-[85vh] scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {/* Category */}
               <div className="flex items-center gap-2 mb-2 sm:mb-4">
                 <div className="flex items-center gap-1 sm:gap-1.5 text-emerald-600 bg-emerald-50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full">

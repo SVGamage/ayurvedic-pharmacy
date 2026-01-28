@@ -238,13 +238,13 @@ export function ServiceCard({
 
       {/* Service Details Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="w-[95vw] max-w-3xl max-h-[90vh] bg-gradient-to-br from-white to-stone-50 border-0 p-0 gap-0 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden">
-          <div className="flex flex-col md:grid md:grid-cols-2 max-h-[90vh] overflow-y-auto md:overflow-hidden scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <DialogContent className="w-[95vw] max-w-3xl h-[85dvh] sm:h-auto sm:max-h-[85vh] bg-gradient-to-br from-white to-stone-50 border-0 p-0 gap-0 rounded-2xl sm:rounded-3xl shadow-2xl">
+          <div className="flex flex-col md:grid md:grid-cols-2 h-full md:h-auto md:max-h-[85vh] overflow-hidden">
             {/* Left Column: Visual & Key Info */}
-            <div className="relative bg-gradient-to-br from-stone-100 to-stone-50 flex flex-col border-b md:border-b-0 md:border-r border-stone-200 overflow-hidden">
-              {/* Image or Icon Section */}
+            <div className="relative bg-gradient-to-br from-stone-100 to-stone-50 flex flex-col border-b md:border-b-0 md:border-r border-stone-200 flex-shrink-0">
+              {/* Image or Icon Section - Fixed height */}
               {service.image ? (
-                <div className="relative h-44 min-h-[176px] sm:h-52 sm:min-h-[208px] md:h-64 flex-shrink-0">
+                <div className="relative h-[160px] sm:h-[200px] md:h-64 flex-shrink-0">
                   <Image
                     src={service.image}
                     alt={service.title}
@@ -286,17 +286,17 @@ export function ServiceCard({
                   </div>
                 </div>
               ) : (
-                <div className="relative flex-shrink-0">
+                <div className="relative h-[160px] sm:h-[200px] md:h-64 flex-shrink-0 overflow-hidden">
                   {/* Decorative Background Elements */}
                   <div className="absolute inset-0 overflow-hidden">
                     <div className="absolute top-1/3 left-1/4 w-32 sm:w-48 h-32 sm:h-48 bg-emerald-200/30 rounded-full blur-3xl" />
                     <div className="absolute bottom-1/4 right-1/3 w-24 sm:w-32 h-24 sm:h-32 bg-amber-200/20 rounded-full blur-2xl" />
                   </div>
 
-                  <div className="relative z-10 p-4 sm:p-6 md:p-8">
+                  <div className="relative z-10 p-3 sm:p-4 md:p-6 h-full flex flex-col justify-center">
                     {/* Badges */}
-                    <div className="flex items-center gap-1.5 sm:gap-2 mb-4 sm:mb-6 flex-wrap">
-                      <div className="flex items-center gap-1 sm:gap-1.5 text-emerald-600 bg-emerald-50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full">
+                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap absolute top-3 left-3 sm:top-4 sm:left-4">
+                      <div className="flex items-center gap-1 sm:gap-1.5 text-emerald-600 bg-emerald-50/90 backdrop-blur-sm px-2 py-1 sm:px-3 sm:py-1.5 rounded-full">
                         <Leaf className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                         <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
                           {categoryLabel}
@@ -305,7 +305,7 @@ export function ServiceCard({
                       {service.popular && (
                         <Badge
                           variant="outline"
-                          className="border-amber-200 text-amber-700 bg-amber-50 text-[10px] sm:text-xs"
+                          className="border-amber-200 text-amber-700 bg-amber-50/90 backdrop-blur-sm text-[10px] sm:text-xs"
                         >
                           <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-0.5 sm:mr-1" />
                           Popular
@@ -314,13 +314,13 @@ export function ServiceCard({
                     </div>
 
                     {/* Icon Display */}
-                    <div className="flex items-center justify-center py-4 sm:py-6">
+                    <div className="flex items-center justify-center">
                       <div className="relative">
                         <div className="absolute inset-0 bg-emerald-400/20 blur-3xl rounded-full scale-150" />
                         {IconComponent && (
-                          <div className="relative bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-xl shadow-emerald-500/10 border border-white/80">
+                          <div className="relative bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl shadow-xl shadow-emerald-500/10 border border-white/80">
                             <IconComponent
-                              className="h-10 w-10 sm:h-16 sm:w-16 text-emerald-600"
+                              className="h-8 w-8 sm:h-12 sm:w-12 text-emerald-600"
                               strokeWidth={1}
                             />
                           </div>
@@ -329,7 +329,7 @@ export function ServiceCard({
                     </div>
 
                     {/* Price info - mobile only when no image */}
-                    <div className="flex items-center justify-between bg-white/80 backdrop-blur-sm rounded-xl px-3 py-2 sm:hidden">
+                    <div className="flex items-center justify-between bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 sm:hidden absolute bottom-3 left-3 right-3">
                       <div className="flex items-center gap-1.5">
                         <Clock className="h-3.5 w-3.5 text-stone-500" />
                         <span className="text-xs font-medium text-stone-700">
@@ -377,8 +377,8 @@ export function ServiceCard({
               </div>
             </div>
 
-            {/* Right Column: Details */}
-            <div className="p-4 sm:p-6 md:p-8 flex flex-col bg-white md:overflow-y-auto md:max-h-[90vh]">
+            {/* Right Column: Details - Scrollable */}
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-6 md:p-8 flex flex-col bg-white md:max-h-[85vh] scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <DialogHeader className="mb-3 sm:mb-4 text-left">
                 <DialogTitle className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-stone-800 mb-2 sm:mb-3 leading-tight tracking-tight">
                   {service.title}
