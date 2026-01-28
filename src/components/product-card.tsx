@@ -70,13 +70,13 @@ export function ProductCard({
   return (
     <>
       <div
-        className="group relative cursor-pointer"
+        className="group relative cursor-pointer overflow-hidden"
         onClick={handleCardClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Card Container with Layered Shadow Effect */}
-        <div className="relative bg-gradient-to-b from-white to-stone-50/80 rounded-3xl overflow-hidden transition-all duration-500 ease-out hover:-translate-y-2 border border-stone-200/60 hover:border-emerald-200 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_-12px_rgba(16,185,129,0.15),0_8px_20px_-8px_rgba(0,0,0,0.08)]">
+        <div className="relative bg-gradient-to-b from-white to-stone-50/80 rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-500 ease-out hover:-translate-y-2 border border-stone-200/60 hover:border-emerald-200 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_-12px_rgba(16,185,129,0.15),0_8px_20px_-8px_rgba(0,0,0,0.08)]">
           {/* Decorative Corner Accent */}
           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-emerald-50/80 to-transparent pointer-events-none" />
 
@@ -96,14 +96,14 @@ export function ProductCard({
 
               {/* Floating Price Badge - Top Right */}
               {prices.length > 0 && (
-                <div className="absolute top-4 right-4 z-10">
+                <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10">
                   <div className="relative">
-                    <div className="absolute inset-0 bg-white/90 backdrop-blur-md rounded-2xl" />
-                    <div className="relative px-4 py-2 flex flex-col items-end">
-                      <span className="text-[10px] font-medium text-stone-400 uppercase tracking-wider">
+                    <div className="absolute inset-0 bg-white/90 backdrop-blur-md rounded-xl sm:rounded-2xl" />
+                    <div className="relative px-2.5 py-1.5 sm:px-4 sm:py-2 flex flex-col items-end">
+                      <span className="text-[8px] sm:text-[10px] font-medium text-stone-400 uppercase tracking-wider">
                         From
                       </span>
-                      <span className="text-lg font-bold text-emerald-600 tracking-tight">
+                      <span className="text-sm sm:text-lg font-bold text-emerald-600 tracking-tight">
                         {formatCurrency(
                           selectedVariant?.price || prices[0]?.price || 0,
                         )}
@@ -115,24 +115,24 @@ export function ProductCard({
 
               {/* Badge - Top Left */}
               {product.badge && (
-                <div className="absolute top-4 left-4 z-10">
-                  <div className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide shadow-lg shadow-emerald-500/25">
-                    <Sparkles className="w-3 h-3" />
-                    {product.badge}
+                <div className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10">
+                  <div className="flex items-center gap-1 sm:gap-1.5 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-semibold tracking-wide shadow-lg shadow-emerald-500/25">
+                    <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 flex-shrink-0" />
+                    <span className="truncate max-w-[80px] sm:max-w-none">{product.badge}</span>
                   </div>
                 </div>
               )}
 
               {/* Rating Badge - Bottom Left (on image) */}
               {product.rating > 0 && (
-                <div className="absolute bottom-4 left-4 z-10">
-                  <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg">
-                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                    <span className="text-sm font-semibold text-stone-700">
+                <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 z-10">
+                  <div className="flex items-center gap-1 sm:gap-1.5 bg-white/95 backdrop-blur-md px-2 py-1 sm:px-3 sm:py-1.5 rounded-full shadow-lg">
+                    <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400 text-amber-400 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm font-semibold text-stone-700">
                       {product.rating.toFixed(1)}
                     </span>
                     {product.reviews > 0 && (
-                      <span className="text-xs text-stone-400 font-medium">
+                      <span className="text-[10px] sm:text-xs text-stone-400 font-medium">
                         ({product.reviews})
                       </span>
                     )}
@@ -143,26 +143,26 @@ export function ProductCard({
           </div>
 
           {/* Content Section */}
-          <div className="relative p-5 pt-4">
+          <div className="relative p-3 sm:p-5 pt-3 sm:pt-4 overflow-hidden">
             {/* Category Tag */}
-            <div className="flex items-center gap-2 mb-3">
-              <div className="flex items-center gap-1.5 text-emerald-600">
-                <Leaf className="w-3 h-3" />
-                <span className="text-[11px] font-semibold uppercase tracking-wider">
+            <div className="flex items-center gap-2 mb-2 sm:mb-3">
+              <div className="flex items-center gap-1 sm:gap-1.5 text-emerald-600 min-w-0">
+                <Leaf className="w-2.5 h-2.5 sm:w-3 sm:h-3 flex-shrink-0" />
+                <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider truncate">
                   {displayCategory}
                 </span>
               </div>
             </div>
 
             {/* Product Name */}
-            <h4 className="text-lg font-semibold text-stone-800 tracking-tight mb-4 line-clamp-2 leading-snug group-hover:text-emerald-700 transition-colors duration-300">
+            <h4 className="text-sm sm:text-lg font-semibold text-stone-800 tracking-tight mb-3 sm:mb-4 line-clamp-2 leading-snug group-hover:text-emerald-700 transition-colors duration-300">
               {product.name}
             </h4>
 
             {/* Variant Selection */}
             {prices.length > 1 && (
-              <div className="mb-4" onClick={(e) => e.stopPropagation()}>
-                <div className="flex flex-wrap gap-2">
+              <div className="mb-3 sm:mb-4" onClick={(e) => e.stopPropagation()}>
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {prices.map((priceVariant, index) => (
                     <button
                       key={index}
@@ -171,7 +171,7 @@ export function ProductCard({
                         e.stopPropagation();
                         setSelectedVariant(priceVariant);
                       }}
-                      className={`relative px-3 py-1.5 text-xs font-medium rounded-xl transition-all duration-300 ${
+                      className={`relative px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-xs font-medium rounded-lg sm:rounded-xl transition-all duration-300 ${
                         selectedVariant?.variant === priceVariant.variant
                           ? "bg-emerald-600 text-white shadow-md shadow-emerald-500/25"
                           : "bg-stone-100 text-stone-600 hover:bg-emerald-50 hover:text-emerald-600"
@@ -186,16 +186,16 @@ export function ProductCard({
 
             {/* Single variant price display */}
             {prices.length === 1 && (
-              <div className="mb-4">
-                <span className="inline-block px-3 py-1.5 text-xs font-medium rounded-xl bg-stone-100 text-stone-600">
+              <div className="mb-3 sm:mb-4">
+                <span className="inline-block px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-xs font-medium rounded-lg sm:rounded-xl bg-stone-100 text-stone-600">
                   {prices[0].variant}
                 </span>
               </div>
             )}
 
             {prices.length === 0 && (
-              <div className="mb-4">
-                <span className="text-sm text-stone-400 italic">
+              <div className="mb-3 sm:mb-4">
+                <span className="text-xs sm:text-sm text-stone-400 italic">
                   Price on request
                 </span>
               </div>
@@ -204,21 +204,21 @@ export function ProductCard({
             {/* CTA Buttons */}
             <div className="space-y-2">
               <button
-                className="w-full flex items-center justify-center gap-2.5 border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 py-3 rounded-2xl text-sm font-semibold transition-all duration-300"
+                className="w-full flex items-center justify-center gap-1.5 sm:gap-2.5 border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-300"
                 onClick={handleAddToCart}
               >
-                <ShoppingCart className="w-4 h-4" />
-                <span>Add to Cart</span>
+                <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                <span className="truncate">Add to Cart</span>
               </button>
               <button
-                className="w-full relative overflow-hidden flex items-center justify-center gap-2.5 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white py-3.5 rounded-2xl text-sm font-semibold transition-all duration-300 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 hover:shadow-xl group/btn"
+                className="w-full relative overflow-hidden flex items-center justify-center gap-1.5 sm:gap-2.5 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white py-3 sm:py-3.5 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-300 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 hover:shadow-xl group/btn"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleOrderViaWhatsApp();
                 }}
               >
-                <MessageCircle className="w-4 h-4 transition-transform duration-300 group-hover/btn:scale-110" />
-                <span>Order via WhatsApp</span>
+                <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 transition-transform duration-300 group-hover/btn:scale-110" />
+                <span className="truncate">Order via WhatsApp</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700" />
               </button>
             </div>

@@ -6,7 +6,7 @@ export default function CarouselGrid({
   heroSlidesArray: HeroSlide[][];
 }) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12 overflow-hidden">
       <div className="w-full">
         <CustomCarousel heroSlides={heroSlidesArray[0]} />
       </div>
