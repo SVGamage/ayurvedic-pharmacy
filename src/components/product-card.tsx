@@ -310,7 +310,7 @@ export function ProductCard({
 
               {/* Description */}
               {product.description && (
-                <p className="text-stone-600 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
+                <p className="text-stone-600 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
                   {product.description}
                 </p>
               )}
