@@ -11,6 +11,7 @@ import { CartIcon, CartSheet } from "./cart";
 
 const navigation = [
   { name: "Products", href: "/products" },
+  { name: "Companies", href: "/companies" },
   { name: "Services", href: "/services" },
   { name: "Location", href: "/location" },
   { name: "Contact", href: "/contact" },

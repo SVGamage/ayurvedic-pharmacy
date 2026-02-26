@@ -77,7 +77,7 @@ export function ProductCard({
   return (
     <>
       <div
-        className="group relative cursor-pointer overflow-hidden"
+        className="group relative cursor-pointer"
         onClick={handleCardClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}

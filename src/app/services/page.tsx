@@ -15,7 +15,7 @@ import p15 from "@/assets/services/15.webp";
 import p16 from "@/assets/services/16.webp";
 import CarouselGrid from "@/components/carousel-grid";
 import * as Icons from "lucide-react";
-import ServiceLoading from "@/components/service-loading";
+import ServiceLoading, { ServiceGridSkeleton } from "@/components/service-loading";
 import { HeroSlide } from "@/components/custom-carousel";
 
 interface ApiService {
@@ -136,10 +136,6 @@ export default function ServicesPage() {
     (service) => service.category === "nakshatra"
   );
 
-  if (isLoading) {
-    return <ServiceLoading />;
-  }
-
   if (error) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -199,16 +195,20 @@ export default function ServicesPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {ayurvedicServices.map((service) => (
-            <ServiceCard
-              key={service.id}
-              service={service}
-              showRating={true}
-              rating={5}
-            />
-          ))}
-        </div>
+        {isLoading ? (
+          <ServiceGridSkeleton count={4} columns={2} />
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {ayurvedicServices.map((service) => (
+              <ServiceCard
+                key={service.id}
+                service={service}
+                showRating={true}
+                rating={5}
+              />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Nakshatra Services */}
@@ -229,17 +229,21 @@ export default function ServicesPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {nakshatraServices.map((service) => (
-            <ServiceCard
-              key={service.id}
-              service={service}
-              showRating={true}
-              rating={5}
-              className="bg-white"
-            />
-          ))}
-        </div>
+        {isLoading ? (
+          <ServiceGridSkeleton count={4} columns={2} />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {nakshatraServices.map((service) => (
+              <ServiceCard
+                key={service.id}
+                service={service}
+                showRating={true}
+                rating={5}
+                className="bg-white"
+              />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Enhanced CTA Section */}

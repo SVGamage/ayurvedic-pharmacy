@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,24 +10,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  Search,
-  Building2,
-  Package,
-  ChevronDown,
-  ChevronRight,
-} from "lucide-react";
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogHeader,
+//   DialogTitle,
+// } from "@/components/ui/dialog";
+// import {
+//   Collapsible,
+//   CollapsibleContent,
+//   CollapsibleTrigger,
+// } from "@/components/ui/collapsible";
+// import {
+//   Search,
+//   Building2,
+//   Package,
+//   ChevronDown,
+//   ChevronRight,
+// } from "lucide-react";
 import { ProductCard } from "@/components/product-card";
 import { Product, SubCategory } from "@/types/product";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
@@ -43,9 +43,12 @@ import p7 from "@/assets/products/7.webp";
 import p8 from "@/assets/products/8.webp";
 import p9 from "@/assets/products/9.webp";
 import { HeroSlide } from "@/components/custom-carousel";
-import ProductLoading from "@/components/product-loading";
+import ProductLoading, {
+  ProductGridSkeleton,
+} from "@/components/product-loading";
 import { cn } from "@/lib/utils";
-import { Company, CompanyProduct } from "@/types/company";
+import { Package, Search } from "lucide-react";
+// import { Company, CompanyProduct } from "@/types/company";
 
 interface ApiProduct {
   id: string;
@@ -160,49 +163,49 @@ const productCategories = [
 ];
 
 // Component for product card with variant selector
-function CompanyProductCard({ product }: { product: CompanyProduct }) {
-  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
-  const selectedPrice = (product.prices || [])[selectedVariantIndex];
+// function CompanyProductCard({ product }: { product: CompanyProduct }) {
+//   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+//   const selectedPrice = (product.prices || [])[selectedVariantIndex];
 
-  return (
-    <div className="bg-white p-2.5 rounded-lg border border-stone-200 hover:border-emerald-300 transition-colors">
-      <div className="space-y-1.5">
-        <h6 className="font-medium text-stone-900 text-xs leading-tight">
-          {product.name}
-        </h6>
-        <span className="text-[10px] text-stone-500 block">{product.code}</span>
-        {(product.prices || []).length > 0 ? (
-          <div className="flex items-center gap-2">
-            <Select
-              value={selectedVariantIndex.toString()}
-              onValueChange={(value) =>
-                setSelectedVariantIndex(parseInt(value))
-              }
-            >
-              <SelectTrigger className="h-7 text-xs border-stone-200 focus:ring-emerald-500 bg-stone-50 flex-1">
-                <SelectValue placeholder="Variant" />
-              </SelectTrigger>
-              <SelectContent>
-                {(product.prices || []).map((price, idx) => (
-                  <SelectItem key={idx} value={idx.toString()}>
-                    {price.variant}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {selectedPrice && (
-              <span className="text-xs font-bold text-emerald-700 whitespace-nowrap">
-                Rs. {selectedPrice.price.toFixed(2)}
-              </span>
-            )}
-          </div>
-        ) : (
-          <div className="text-[10px] text-red-500">No prices</div>
-        )}
-      </div>
-    </div>
-  );
-}
+//   return (
+//     <div className="bg-white p-2.5 rounded-lg border border-stone-200 hover:border-emerald-300 transition-colors">
+//       <div className="space-y-1.5">
+//         <h6 className="font-medium text-stone-900 text-xs leading-tight">
+//           {product.name}
+//         </h6>
+//         <span className="text-[10px] text-stone-500 block">{product.code}</span>
+//         {(product.prices || []).length > 0 ? (
+//           <div className="flex items-center gap-2">
+//             <Select
+//               value={selectedVariantIndex.toString()}
+//               onValueChange={(value) =>
+//                 setSelectedVariantIndex(parseInt(value))
+//               }
+//             >
+//               <SelectTrigger className="h-7 text-xs border-stone-200 focus:ring-emerald-500 bg-stone-50 flex-1">
+//                 <SelectValue placeholder="Variant" />
+//               </SelectTrigger>
+//               <SelectContent>
+//                 {(product.prices || []).map((price, idx) => (
+//                   <SelectItem key={idx} value={idx.toString()}>
+//                     {price.variant}
+//                   </SelectItem>
+//                 ))}
+//               </SelectContent>
+//             </Select>
+//             {selectedPrice && (
+//               <span className="text-xs font-bold text-emerald-700 whitespace-nowrap">
+//                 Rs. {selectedPrice.price.toFixed(2)}
+//               </span>
+//             )}
+//           </div>
+//         ) : (
+//           <div className="text-[10px] text-red-500">No prices</div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
 
 // const ayurvedicSubcategories = [
 //   "Cosmetics",
@@ -230,20 +233,23 @@ function CompanyProductCard({ product }: { product: CompanyProduct }) {
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
   const [selectedSubcategory, setSelectedSubcategory] = useState("all");
-  const [companies, setCompanies] = useState<Company[]>([]);
-  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
-  const [isCompanyDialogOpen, setIsCompanyDialogOpen] = useState(false);
-  const [selectedCompanyValue, setSelectedCompanyValue] = useState("");
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
-    new Set(),
-  );
-  const [companyProductSearch, setCompanyProductSearch] = useState("");
+  // const [companies, setCompanies] = useState<Company[]>([]);
+  // const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
+  // const [isCompanyDialogOpen, setIsCompanyDialogOpen] = useState(false);
+  // const [selectedCompanyValue, setSelectedCompanyValue] = useState("");
+  // const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
+  //   new Set(),
+  // );
+  // const [companyProductSearch, setCompanyProductSearch] = useState("");
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   // Pagination states
   const [itemsPerPage, setItemsPerPage] = useState(12);
@@ -255,16 +261,36 @@ export default function ProductsPage() {
     total: 0,
   });
 
+  // Debounce search input
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+    debounceTimer.current = setTimeout(() => {
+      setDebouncedSearch(value);
+    }, 400);
+  };
+
+  // Cleanup debounce timer
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+      }
+    };
+  }, []);
+
   // Fetch products from API with pagination and filtering
   const fetchProducts = useCallback(
     async (
       page = 1,
       limit = itemsPerPage,
-      search = searchTerm,
+      search = debouncedSearch,
       category = selectedCategory,
     ) => {
       try {
-        setIsLoading(true);
+        setIsSearching(true);
         const params = new URLSearchParams({
           page: page.toString(),
           limit: limit.toString(),
@@ -314,35 +340,33 @@ export default function ProductsPage() {
         console.error("Error fetching products:", err);
         setError("Failed to load products");
       } finally {
-        setIsLoading(false);
+        setIsSearching(false);
+        setIsInitialLoading(false);
       }
     },
-    [itemsPerPage, searchTerm, selectedCategory],
+    [itemsPerPage, debouncedSearch, selectedCategory],
   );
 
-  const fetchCompanies = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch("/api/admin/company");
-      if (response.ok) {
-        const data = await response.json();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const transformedData = data.map((company: any) => ({
-          ...company,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          companyProducts: company.companyProducts.map((product: any) => ({
-            ...product,
-            prices: product.companyProductPrices || [],
-          })),
-        }));
-        setCompanies(transformedData);
-      }
-    } catch (error) {
-      console.error("Error fetching companies:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  // const fetchCompanies = useCallback(async () => {
+  //   try {
+  //     const response = await fetch("/api/admin/company");
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //       const transformedData = data.map((company: any) => ({
+  //         ...company,
+  //         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //         companyProducts: company.companyProducts.map((product: any) => ({
+  //           ...product,
+  //           prices: product.companyProductPrices || [],
+  //         })),
+  //       }));
+  //       setCompanies(transformedData);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching companies:", error);
+  //   }
+  // }, []);
 
   const fetchSubcategories = useCallback(async () => {
     try {
@@ -357,29 +381,24 @@ export default function ProductsPage() {
   }, []);
 
   useEffect(() => {
-    fetchCompanies();
+    // fetchCompanies();
     fetchSubcategories();
-  }, [fetchCompanies, fetchSubcategories]);
+  }, [fetchSubcategories]);
 
   // Fetch products from API
   useEffect(() => {
-    fetchProducts(1, itemsPerPage, searchTerm, selectedCategory);
-  }, [fetchProducts, itemsPerPage, searchTerm, selectedCategory]);
+    fetchProducts(1, itemsPerPage, debouncedSearch, selectedCategory);
+  }, [fetchProducts, itemsPerPage, debouncedSearch, selectedCategory]);
 
   // Handle page change
   const handlePageChange = (page: number) => {
-    fetchProducts(page, itemsPerPage, searchTerm, selectedCategory);
+    fetchProducts(page, itemsPerPage, debouncedSearch, selectedCategory);
   };
 
   // Handle items per page change
   const handleItemsPerPageChange = (newItemsPerPage: number) => {
     setItemsPerPage(newItemsPerPage);
-    fetchProducts(1, newItemsPerPage, searchTerm, selectedCategory);
-  };
-
-  // Handle search change
-  const handleSearchChange = (value: string) => {
-    setSearchTerm(value);
+    fetchProducts(1, newItemsPerPage, debouncedSearch, selectedCategory);
   };
 
   // Handle category change
@@ -393,39 +412,39 @@ export default function ProductsPage() {
     setSelectedSubcategory(subcategoryId);
   };
 
-  const handleCompanySelect = (companyId: string) => {
-    const company = companies.find((s) => s.id === companyId);
-    if (company) {
-      setSelectedCompany(company);
-      setSelectedCompanyValue(companyId);
-      setIsCompanyDialogOpen(true);
-    }
-  };
+  // const handleCompanySelect = (companyId: string) => {
+  //   const company = companies.find((s) => s.id === companyId);
+  //   if (company) {
+  //     setSelectedCompany(company);
+  //     setSelectedCompanyValue(companyId);
+  //     setIsCompanyDialogOpen(true);
+  //   }
+  // };
 
-  const handleCompanyDialogClose = (open: boolean) => {
-    setIsCompanyDialogOpen(open);
-    if (!open) {
-      setSelectedCompany(null);
-      setSelectedCompanyValue("");
-      setExpandedCategories(new Set());
-      setCompanyProductSearch("");
-    }
-  };
+  // const handleCompanyDialogClose = (open: boolean) => {
+  //   setIsCompanyDialogOpen(open);
+  //   if (!open) {
+  //     setSelectedCompany(null);
+  //     setSelectedCompanyValue("");
+  //     setExpandedCategories(new Set());
+  //     setCompanyProductSearch("");
+  //   }
+  // };
 
-  const toggleCategory = (categoryId: string) => {
-    setExpandedCategories((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(categoryId)) {
-        newSet.delete(categoryId);
-      } else {
-        newSet.add(categoryId);
-      }
-      return newSet;
-    });
-  };
+  // const toggleCategory = (categoryId: string) => {
+  //   setExpandedCategories((prev) => {
+  //     const newSet = new Set(prev);
+  //     if (newSet.has(categoryId)) {
+  //       newSet.delete(categoryId);
+  //     } else {
+  //       newSet.add(categoryId);
+  //     }
+  //     return newSet;
+  //   });
+  // };
 
-  // Add loading and error states
-  if (isLoading) {
+  // Full-page loading only on initial load
+  if (isInitialLoading) {
     return <ProductLoading />;
   }
 
@@ -461,7 +480,7 @@ export default function ProductsPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-8 md:pt-40 overflow-x-hidden">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-8 md:pt-40 overflow-x-clip">
       {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
       <CarouselGrid heroSlidesArray={[heroSlides1, heroSlides2, heroSlides3]} />
       {/* Enhanced Header Section */}
@@ -486,7 +505,7 @@ export default function ProductsPage() {
           "bg-white p-4 sm:p-6 rounded-xl mb-6 sm:mb-10 border border-stone-200 shadow-sm overflow-hidden",
         )}
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-stone-400" />
             <Input
@@ -508,7 +527,7 @@ export default function ProductsPage() {
               ))}
             </SelectContent>
           </Select>
-          <Select
+          {/* <Select
             value={selectedCompanyValue}
             onValueChange={handleCompanySelect}
           >
@@ -525,7 +544,7 @@ export default function ProductsPage() {
                 </SelectItem>
               ))}
             </SelectContent>
-          </Select>
+          </Select> */}
           <Select
             value={selectedSubcategory}
             onValueChange={handleSubcategoryChange}
@@ -551,20 +570,23 @@ export default function ProductsPage() {
       </div>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        {filteredProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            variant="default"
-            showQuickAdd={true}
-            showDescription={true}
-          />
-        ))}
-      </div>
-
-      {filteredProducts.length === 0 && (
+      {isSearching ? (
+        <ProductGridSkeleton count={itemsPerPage > 6 ? 6 : itemsPerPage} />
+      ) : filteredProducts.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {filteredProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              variant="default"
+              showQuickAdd={true}
+              showDescription={true}
+            />
+          ))}
+        </div>
+      ) : (
         <div className="text-center py-12">
+          <Package className="h-16 w-16 mx-auto mb-4 text-stone-300" />
           <p className="text-gray-500 text-lg">
             No products found matching your criteria.
           </p>
@@ -589,7 +611,7 @@ export default function ProductsPage() {
       )}
 
       {/* Company Dialog */}
-      <Dialog
+      {/* <Dialog
         open={isCompanyDialogOpen}
         onOpenChange={handleCompanyDialogClose}
       >
@@ -607,7 +629,6 @@ export default function ProductsPage() {
 
           {selectedCompany && (
             <div className="space-y-6">
-              {/* Company Information */}
               <div className="bg-white rounded-xl p-6 border border-stone-200 shadow-sm">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
@@ -638,7 +659,6 @@ export default function ProductsPage() {
                 </div>
               </div>
 
-              {/* Products by Category */}
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="text-lg font-serif font-semibold text-stone-900">
@@ -655,7 +675,6 @@ export default function ProductsPage() {
                   </div>
                 </div>
 
-                {/* Group products by subcategory */}
                 {(() => {
                   // Create map of all subcategories with all products
                   const allProductsBySubCategory =
@@ -765,7 +784,6 @@ export default function ProductsPage() {
                   );
                 })()}
 
-                {/* Show message if no products */}
                 {selectedCompany.companyProducts.length === 0 && (
                   <div className="text-center py-8 text-stone-500">
                     <Package className="h-12 w-12 mx-auto mb-3 text-stone-400" />
@@ -774,7 +792,6 @@ export default function ProductsPage() {
                 )}
               </div>
 
-              {/* Company Stats */}
               <div className="bg-white rounded-xl p-6 border border-stone-200 shadow-sm">
                 <h4 className="text-lg font-serif font-semibold text-stone-900 mb-4">
                   Company Statistics
@@ -815,7 +832,7 @@ export default function ProductsPage() {
             </div>
           )}
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 }
