@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Building2, Package, Edit, Trash2, Tag } from "lucide-react";
 import { Company } from "@/types/company";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface AdminCompanyCardProps {
   company: Company;
@@ -24,7 +25,7 @@ export function AdminCompanyCard({
     <Card
       className={cn(
         "group border-2 hover:shadow-2xl transition-all duration-300 relative overflow-hidden transform hover:-translate-y-2 rounded-xl",
-        "border-blue-200 hover:border-blue-300 bg-gradient-to-br from-white to-blue-50"
+        "border-blue-200 hover:border-blue-300 bg-gradient-to-br from-white to-blue-50",
       )}
     >
       {/* Decorative background pattern */}
@@ -37,11 +38,21 @@ export function AdminCompanyCard({
       <CardHeader className="text-center pb-3 relative">
         <div
           className={cn(
-            "mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg",
-            "bg-blue-100"
+            "mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg overflow-hidden",
+            company.image ? "" : "bg-blue-100",
           )}
         >
-          <Building2 className="h-8 w-8 text-blue-600" />
+          {company.image ? (
+            <Image
+              src={company.image}
+              alt={company.name}
+              width={64}
+              height={64}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <Building2 className="h-8 w-8 text-blue-600" />
+          )}
         </div>
         <CardTitle className="text-xl mb-2 font-bold text-blue-800">
           {company.name}

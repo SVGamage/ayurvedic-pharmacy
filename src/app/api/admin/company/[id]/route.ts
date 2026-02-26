@@ -45,7 +45,7 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json();
-    const { name, companyProducts } = body;
+    const { name, image, description, phone, address, email, companyProducts } = body;
 
     const comp = await prisma.company.findUnique({ where: { id } });
     if (!comp) {
@@ -74,6 +74,11 @@ export async function PUT(
       where: { id },
       data: {
         name,
+        image: image || null,
+        description: description || null,
+        phone: phone || null,
+        address: address || null,
+        email: email || null,
         companyProducts: {
           create:
             companyProducts?.map((product: ProductInput) => ({

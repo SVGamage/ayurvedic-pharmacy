@@ -35,6 +35,11 @@ interface PriceVariant {
 interface CompanyFormData {
   id?: string;
   name: string;
+  image?: string;
+  description?: string;
+  phone?: string;
+  address?: string;
+  email?: string;
   companyProducts: Array<{
     id?: string;
     name: string;
@@ -60,6 +65,11 @@ export default function AdminCompaniesPage() {
   const companyToFormData = (company: Company): CompanyFormData => ({
     id: company.id,
     name: company.name,
+    image: company.image,
+    description: company.description,
+    phone: company.phone,
+    address: company.address,
+    email: company.email,
     companyProducts: company.companyProducts.map((product) => ({
       ...product,
       prices: product.prices || [],

@@ -33,7 +33,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, companyProducts } = body;
+    const { name, image, description, phone, address, email, companyProducts } = body;
 
     interface PriceInput {
       variant: string;
@@ -50,6 +50,11 @@ export async function POST(request: NextRequest) {
     const company = await prisma.company.create({
       data: {
         name,
+        image: image || null,
+        description: description || null,
+        phone: phone || null,
+        address: address || null,
+        email: email || null,
         companyProducts: {
           create:
             companyProducts?.map((product: ProductInput) => ({

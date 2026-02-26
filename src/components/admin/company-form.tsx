@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { X, Pencil, Copy, Plus } from "lucide-react";
 
 interface PriceVariant {
@@ -35,6 +36,11 @@ interface CompanyProduct {
 interface CompanyFormData {
   id?: string;
   name: string;
+  image?: string;
+  description?: string;
+  phone?: string;
+  address?: string;
+  email?: string;
   companyProducts: CompanyProduct[];
 }
 
@@ -68,6 +74,11 @@ export function CompanyForm({
 
   const [formData, setFormData] = useState<CompanyFormData>({
     name: company?.name || "",
+    image: company?.image || "",
+    description: company?.description || "",
+    phone: company?.phone || "",
+    address: company?.address || "",
+    email: company?.email || "",
     companyProducts: transformedProducts,
   });
 
@@ -84,7 +95,7 @@ export function CompanyForm({
   });
 
   const [editingProductIndex, setEditingProductIndex] = useState<number | null>(
-    null
+    null,
   );
 
   // Fetch categories
@@ -113,14 +124,14 @@ export function CompanyForm({
 
   const handleInputChange = (
     field: keyof CompanyFormData,
-    value: string | CompanyProduct[]
+    value: string | CompanyProduct[],
   ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleProductInputChange = (
     field: keyof CompanyProduct,
-    value: string
+    value: string,
   ) => {
     setNewProduct((prev) => ({ ...prev, [field]: value }));
   };
@@ -151,7 +162,7 @@ export function CompanyForm({
       const subCategoryId =
         newProduct.subCategoryId === "none" ? "" : newProduct.subCategoryId;
       const selectedSubCategory = categories.find(
-        (cat) => cat.id === subCategoryId
+        (cat) => cat.id === subCategoryId,
       );
 
       if (editingProductIndex !== null) {
@@ -170,7 +181,7 @@ export function CompanyForm({
                       }
                     : undefined,
                 }
-              : product
+              : product,
           ),
         }));
         setEditingProductIndex(null);
@@ -266,6 +277,76 @@ export function CompanyForm({
               />
             </div>
 
+            <div className="space-y-3">
+              <Label htmlFor="image" className="text-blue-800 font-bold">
+                Company Image
+              </Label>
+              <div className="border-2 border-dashed border-blue-200 rounded-xl p-4 bg-blue-50/50">
+                <ImageUpload
+                  value={formData.image}
+                  onChange={(url) => handleInputChange("image", url)}
+                  onRemove={() => handleInputChange("image", "")}
+                  folder="companies"
+                  placeholder="Upload company logo or image"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <Label htmlFor="description" className="text-blue-800 font-bold">
+                Description
+              </Label>
+              <Input
+                id="description"
+                value={formData.description || ""}
+                onChange={(e) =>
+                  handleInputChange("description", e.target.value)
+                }
+                placeholder="Enter company description"
+                className="border-blue-200 focus:border-blue-400 focus:ring-blue-400"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="space-y-3">
+                <Label htmlFor="phone" className="text-blue-800 font-bold">
+                  Phone (WhatsApp)
+                </Label>
+                <Input
+                  id="phone"
+                  value={formData.phone || ""}
+                  onChange={(e) => handleInputChange("phone", e.target.value)}
+                  placeholder="e.g. 94701234567"
+                  className="border-blue-200 focus:border-blue-400 focus:ring-blue-400"
+                />
+              </div>
+              <div className="space-y-3">
+                <Label htmlFor="email" className="text-blue-800 font-bold">
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={formData.email || ""}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
+                  placeholder="company@example.com"
+                  className="border-blue-200 focus:border-blue-400 focus:ring-blue-400"
+                />
+              </div>
+              <div className="space-y-3">
+                <Label htmlFor="address" className="text-blue-800 font-bold">
+                  Address
+                </Label>
+                <Input
+                  id="address"
+                  value={formData.address || ""}
+                  onChange={(e) => handleInputChange("address", e.target.value)}
+                  placeholder="Company address"
+                  className="border-blue-200 focus:border-blue-400 focus:ring-blue-400"
+                />
+              </div>
+            </div>
+
             <div className="space-y-4">
               <Label className="text-blue-800 font-bold">
                 Company Products
@@ -321,7 +402,7 @@ export function CompanyForm({
                       onValueChange={(value) =>
                         handleProductInputChange(
                           "subCategoryId",
-                          value === "none" ? "" : value
+                          value === "none" ? "" : value,
                         )
                       }
                       disabled={loadingCategories}
@@ -487,7 +568,7 @@ export function CompanyForm({
                                           Rs. {price.price.toFixed(2)}
                                         </span>
                                       </span>
-                                    )
+                                    ),
                                   )}
                                 </div>
                               )}
