@@ -138,6 +138,27 @@ Thank you!`;
   window.open(whatsappUrl, "_blank");
 };
 
+// Contact company via WhatsApp
+export const contactCompanyViaWhatsApp = (
+  companyName: string,
+  phone?: string,
+) => {
+  const targetPhone = phone
+    ? phone.replace(/\+/g, "")
+    : LOCAL_WHATSAPP_CONFIG.phoneNumber;
+
+  const message = `Hello! I'm interested in products from ${companyName}.
+
+Could you please provide more information about available products and pricing?
+
+Thank you!`;
+
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${targetPhone}&text=${encodedMessage}`;
+
+  window.open(whatsappUrl, "_blank");
+};
+
 // Update WhatsApp number (for admin use)
 export const updateWhatsAppNumber = (newNumber: string): WhatsAppConfig => {
   LOCAL_WHATSAPP_CONFIG.phoneNumber = newNumber.replace(/\+/g, "");

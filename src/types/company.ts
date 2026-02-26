@@ -19,5 +19,10 @@ export interface CompanyProduct {
 export interface Company {
   id: string;
   name: string;
+  image?: string;
+  description?: string;
+  phone?: string;
+  address?: string;
+  email?: string;
   companyProducts: CompanyProduct[];
 }
