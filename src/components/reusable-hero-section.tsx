@@ -36,7 +36,7 @@ export const themeColors = {
   green: {
     preTitle: "text-emerald-600",
     titleColor1: "text-stone-800",
-    titleColor2: "text-emerald-700",
+    titleColor2: "text-emerald-800",
     decorationBg: "bg-emerald-100",
     decorationBg2: "bg-emerald-50",
     decorationBg3: "bg-stone-100",
@@ -112,19 +112,19 @@ const DefaultBackgroundDecorations = ({
       <div
         className={cn(
           "absolute top-0 left-1/2 transform -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-20 blur-3xl",
-          colors.decorationBg
+          colors.decorationBg,
         )}
       ></div>
       <div
         className={cn(
           "absolute top-20 left-10 w-32 h-32 rounded-full opacity-30 blur-2xl",
-          colors.decorationBg2
+          colors.decorationBg2,
         )}
       ></div>
       <div
         className={cn(
           "absolute bottom-10 right-10 w-40 h-40 rounded-full opacity-30 blur-2xl",
-          colors.decorationBg3
+          colors.decorationBg3,
         )}
       ></div>
     </div>
@@ -162,7 +162,7 @@ export function ReusableHeroSection({
           <span
             className={cn(
               "text-sm font-medium tracking-wider uppercase",
-              textColors.preTitle
+              textColors.preTitle,
             )}
           >
             {preTitle}
