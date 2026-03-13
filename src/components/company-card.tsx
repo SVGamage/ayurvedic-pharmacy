@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { MessageCircle, Building2, MapPin, Mail, Phone } from "lucide-react";
+import { MessageCircle, Building2 } from "lucide-react";
 import { Company } from "@/types/company";
 import { contactCompanyViaWhatsApp } from "@/lib/whatsapp";
 
@@ -83,7 +83,7 @@ export function CompanyCard({ company }: CompanyCardProps) {
               onClick={handleWhatsApp}
             >
               <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 transition-transform duration-300 group-hover/btn:scale-110" />
-              <span className="truncate">Contact via WhatsApp</span>
+              <span className="truncate">Buy Company Products</span>
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700" />
             </button>
           </div>
@@ -140,7 +140,7 @@ export function CompanyCard({ company }: CompanyCardProps) {
               )}
 
               {/* Company Contact Details */}
-              <div className="bg-white rounded-xl p-5 border border-stone-200 shadow-sm">
+              {/* <div className="bg-white rounded-xl p-5 border border-stone-200 shadow-sm">
                 <h4 className="text-sm font-semibold text-stone-500 uppercase tracking-wider mb-4">
                   Contact Information
                 </h4>
@@ -191,7 +191,7 @@ export function CompanyCard({ company }: CompanyCardProps) {
                     </div>
                   )}
                 </div>
-              </div>
+              </div> */}
 
               {/* WhatsApp CTA */}
               <Button
@@ -201,7 +201,7 @@ export function CompanyCard({ company }: CompanyCardProps) {
                 }
               >
                 <MessageCircle className="h-5 w-5 mr-2 transition-transform group-hover:scale-110" />
-                Contact via WhatsApp
+                Buy this Company&apos;s Products
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               </Button>
             </div>
