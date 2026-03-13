@@ -11,8 +11,8 @@ import { CartIcon, CartSheet } from "./cart";
 
 const navigation = [
   { name: "Products", href: "/products" },
-  { name: "Companies", href: "/companies" },
   { name: "Services", href: "/services" },
+  { name: "Companies", href: "/companies" },
   { name: "Location", href: "/location" },
   { name: "Contact", href: "/contact" },
 ];
@@ -36,7 +36,7 @@ export function Navigation() {
         "fixed top-0 w-full z-50 transition-all duration-300 border-b",
         scrolled
           ? "bg-stone-50/80 backdrop-blur-md border-stone-200/60 shadow-sm"
-          : "bg-transparent border-transparent shadow-none"
+          : "bg-transparent border-transparent shadow-none",
       )}
     >
       <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -57,7 +57,7 @@ export function Navigation() {
                 "text-md font-medium transition-colors hover:text-emerald-700",
                 pathname === link.href
                   ? "text-emerald-800 font-semibold"
-                  : "text-stone-600"
+                  : "text-stone-600",
               )}
             >
               {link.name}
@@ -100,7 +100,7 @@ export function Navigation() {
                   "block rounded-lg px-4 py-3 text-base font-medium transition-colors",
                   pathname === link.href
                     ? "bg-emerald-50 text-emerald-800"
-                    : "text-stone-600 hover:bg-stone-100 hover:text-emerald-700"
+                    : "text-stone-600 hover:bg-stone-100 hover:text-emerald-700",
                 )}
                 onClick={() => setMobileMenuOpen(false)}
               >
