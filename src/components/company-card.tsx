@@ -37,7 +37,7 @@ export function CompanyCard({ company }: CompanyCardProps) {
 
           {/* Image Section */}
           <div className="relative">
-            <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-stone-100 to-stone-50">
+            <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-stone-100 to-stone-50">
               {company.image ? (
                 <Image
                   src={company.image}
@@ -96,7 +96,7 @@ export function CompanyCard({ company }: CompanyCardProps) {
           {/* Scrollable Content Container */}
           <div className="overflow-y-auto flex-1">
             {/* Large Company Image */}
-            <div className="relative w-full aspect-[16/9] overflow-hidden flex-shrink-0">
+            <div className="relative w-full aspect-square overflow-hidden flex-shrink-0">
               {company.image ? (
                 <Image
                   src={company.image}
