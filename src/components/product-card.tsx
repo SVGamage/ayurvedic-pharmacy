@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -16,6 +16,11 @@ import { Product, ProductPrice } from "@/types/product";
 import { orderProductViaWhatsApp } from "@/lib/whatsapp";
 import { formatCurrency } from "@/config/currency";
 import { useCart } from "@/contexts/cart-context";
+import {
+  getRichTextPreview,
+  hasVisibleRichTextContent,
+  sanitizeRichText,
+} from "@/lib/rich-text";
 import { toast } from "sonner";
 
 interface ProductCardProps {
@@ -39,6 +44,15 @@ export function ProductCard({
   const { addItem } = useCart();
   const displayCategory =
     product.subcategory?.name || product.category?.name || "General";
+  const safeDescriptionHtml = useMemo(
+    () => sanitizeRichText(product.description),
+    [product.description],
+  );
+  const hasDescription = hasVisibleRichTextContent(safeDescriptionHtml);
+  const previewDescription = useMemo(
+    () => getRichTextPreview(product.description, 120, "...."),
+    [product.description],
+  );
 
   const prices = product.productPrices || [];
   const lowestPrice =
@@ -213,6 +227,12 @@ export function ProductCard({
               </div>
             )}
 
+            {showDescription && hasDescription && (
+              <p className="mb-3 sm:mb-4 text-xs sm:text-sm text-stone-600 leading-relaxed">
+                {previewDescription}
+              </p>
+            )}
+
             {/* CTA Buttons */}
             <div className="space-y-2">
               <button
@@ -309,10 +329,11 @@ export function ProductCard({
               )}
 
               {/* Description */}
-              {product.description && (
-                <p className="text-stone-600 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
-                  {product.description}
-                </p>
+              {hasDescription && (
+                <div
+                  className="text-stone-600 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6 [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-stone-800 [&_h2]:mb-2 [&_p]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-2 [&_li]:mb-1 [&_blockquote]:border-l-4 [&_blockquote]:border-emerald-300 [&_blockquote]:pl-3 [&_blockquote]:italic"
+                  dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }}
+                />
               )}
 
               {/* Variant Selector */}

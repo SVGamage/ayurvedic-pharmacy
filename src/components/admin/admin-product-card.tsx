@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import {
   Card,
@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Edit, Trash2, Star } from "lucide-react";
 import { Product, ProductPrice } from "@/types/product";
 import { formatCurrency } from "@/config/currency";
+import { hasVisibleRichTextContent, sanitizeRichText } from "@/lib/rich-text";
 
 interface AdminProductCardProps {
   product: Product;
@@ -33,6 +34,11 @@ export function AdminProductCard({
   const [selectedVariant, setSelectedVariant] = useState<ProductPrice | null>(
     prices[0] || null,
   );
+  const safeDescriptionHtml = useMemo(
+    () => sanitizeRichText(product.description),
+    [product.description],
+  );
+  const hasDescription = hasVisibleRichTextContent(safeDescriptionHtml);
 
   return (
     <Card className="group border-2 border-emerald-200 shadow-lg hover:shadow-2xl hover:border-emerald-300 transition-all duration-300 bg-gradient-to-br from-white to-emerald-50 rounded-xl overflow-hidden flex flex-col h-full transform hover:-translate-y-2">
@@ -80,19 +86,11 @@ export function AdminProductCard({
           {product.name}
         </CardTitle>
 
-        {product.description && (
-          <p
-            className="text-sm text-emerald-600 leading-relaxed overflow-hidden"
-            style={{
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-              lineHeight: "1.4em",
-              maxHeight: "2.8em",
-            }}
-          >
-            {product.description}
-          </p>
+        {hasDescription && (
+          <div
+            className="text-sm text-emerald-600 leading-relaxed max-h-16 overflow-hidden [&_h2]:text-sm [&_h2]:font-semibold [&_h2]:text-emerald-700 [&_h2]:mb-1 [&_p]:mb-1 [&_ul]:list-disc [&_ul]:pl-4 [&_ul]:mb-1 [&_ol]:list-decimal [&_ol]:pl-4 [&_ol]:mb-1 [&_li]:mb-0.5 [&_blockquote]:border-l-2 [&_blockquote]:border-emerald-300 [&_blockquote]:pl-2 [&_blockquote]:italic"
+            dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }}
+          />
         )}
 
         <div className="pt-2 mt-auto">

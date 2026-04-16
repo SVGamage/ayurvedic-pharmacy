@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -15,7 +14,21 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ImageUpload } from "@/components/ui/image-upload";
 import { Badge } from "@/components/ui/badge";
-import { X, Plus } from "lucide-react";
+import {
+  Bold,
+  Heading2,
+  Italic,
+  List,
+  ListOrdered,
+  Plus,
+  Quote,
+  Redo2,
+  Undo2,
+  X,
+} from "lucide-react";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Placeholder from "@tiptap/extension-placeholder";
 import { Product, Category, SubCategory, ProductPrice } from "@/types/product";
 
 interface ProductFormProps {
@@ -23,6 +36,156 @@ interface ProductFormProps {
   onSubmit: (data: Partial<Product>) => Promise<void>;
   onCancel: () => void;
   isLoading?: boolean;
+}
+
+interface RichTextEditorProps {
+  value?: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}
+
+function RichTextEditor({ value, onChange, placeholder }: RichTextEditorProps) {
+  const editor = useEditor({
+    extensions: [
+      StarterKit.configure({
+        heading: {
+          levels: [2, 3],
+        },
+      }),
+      Placeholder.configure({
+        placeholder:
+          placeholder || "Describe the Ayurvedic benefits and properties...",
+      }),
+    ],
+    content: value || "",
+    editorProps: {
+      attributes: {
+        class:
+          "min-h-[180px] px-3 py-2 text-sm rounded-b-md border border-t-0 border-emerald-200 focus:outline-none [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-emerald-900 [&_h2]:mb-2 [&_p]:my-2 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-2 [&_blockquote]:border-l-4 [&_blockquote]:border-emerald-300 [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:text-emerald-800",
+      },
+    },
+    immediatelyRender: false,
+    onUpdate: ({ editor }) => {
+      onChange(editor.getHTML());
+    },
+  });
+
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+
+    const nextContent = value || "";
+    if (editor.getHTML() !== nextContent) {
+      editor.commands.setContent(nextContent, { emitUpdate: false });
+    }
+  }, [editor, value]);
+
+  const toolbarButtonClass =
+    "h-8 w-8 p-0 border-emerald-200 text-emerald-700 hover:bg-emerald-50";
+  const activeToolbarButtonClass = "bg-emerald-100 text-emerald-900";
+
+  return (
+    <div className="rounded-md overflow-hidden">
+      <div className="flex flex-wrap gap-2 p-2 border border-emerald-200 bg-emerald-50/60 rounded-t-md">
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          className={`${toolbarButtonClass} ${editor?.isActive("bold") ? activeToolbarButtonClass : ""}`}
+          onClick={() => editor?.chain().focus().toggleBold().run()}
+          disabled={!editor?.can().chain().focus().toggleBold().run()}
+          aria-label="Toggle bold"
+        >
+          <Bold className="h-4 w-4" />
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          className={`${toolbarButtonClass} ${editor?.isActive("italic") ? activeToolbarButtonClass : ""}`}
+          onClick={() => editor?.chain().focus().toggleItalic().run()}
+          disabled={!editor?.can().chain().focus().toggleItalic().run()}
+          aria-label="Toggle italic"
+        >
+          <Italic className="h-4 w-4" />
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          className={`${toolbarButtonClass} ${editor?.isActive("heading", { level: 2 }) ? activeToolbarButtonClass : ""}`}
+          onClick={() =>
+            editor?.chain().focus().toggleHeading({ level: 2 }).run()
+          }
+          disabled={
+            !editor?.can().chain().focus().toggleHeading({ level: 2 }).run()
+          }
+          aria-label="Toggle heading"
+        >
+          <Heading2 className="h-4 w-4" />
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          className={`${toolbarButtonClass} ${editor?.isActive("bulletList") ? activeToolbarButtonClass : ""}`}
+          onClick={() => editor?.chain().focus().toggleBulletList().run()}
+          disabled={!editor?.can().chain().focus().toggleBulletList().run()}
+          aria-label="Toggle bullet list"
+        >
+          <List className="h-4 w-4" />
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          className={`${toolbarButtonClass} ${editor?.isActive("orderedList") ? activeToolbarButtonClass : ""}`}
+          onClick={() => editor?.chain().focus().toggleOrderedList().run()}
+          disabled={!editor?.can().chain().focus().toggleOrderedList().run()}
+          aria-label="Toggle ordered list"
+        >
+          <ListOrdered className="h-4 w-4" />
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          className={`${toolbarButtonClass} ${editor?.isActive("blockquote") ? activeToolbarButtonClass : ""}`}
+          onClick={() => editor?.chain().focus().toggleBlockquote().run()}
+          disabled={!editor?.can().chain().focus().toggleBlockquote().run()}
+          aria-label="Toggle quote"
+        >
+          <Quote className="h-4 w-4" />
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          className={toolbarButtonClass}
+          onClick={() => editor?.chain().focus().undo().run()}
+          disabled={!editor?.can().chain().focus().undo().run()}
+          aria-label="Undo"
+        >
+          <Undo2 className="h-4 w-4" />
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          className={toolbarButtonClass}
+          onClick={() => editor?.chain().focus().redo().run()}
+          disabled={!editor?.can().chain().focus().redo().run()}
+          aria-label="Redo"
+        >
+          <Redo2 className="h-4 w-4" />
+        </Button>
+      </div>
+      <div className="bg-white border-emerald-200 [&_.ProseMirror:focus]:outline-none">
+        <EditorContent editor={editor} />
+      </div>
+    </div>
+  );
 }
 
 export function ProductForm({
@@ -483,15 +646,10 @@ export function ProductForm({
                 >
                   Description
                 </Label>
-                <Textarea
-                  id="description"
-                  value={formData.description}
-                  onChange={(e) =>
-                    handleInputChange("description", e.target.value)
-                  }
+                <RichTextEditor
+                  value={formData.description || ""}
+                  onChange={(value) => handleInputChange("description", value)}
                   placeholder="Describe the Ayurvedic benefits and properties of this product..."
-                  rows={4}
-                  className="border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400"
                 />
               </div>
 
