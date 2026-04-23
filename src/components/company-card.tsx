@@ -1,12 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { MessageCircle, Building2 } from "lucide-react";
 import { Company } from "@/types/company";
 import { contactCompanyViaWhatsApp } from "@/lib/whatsapp";
+import {
+  getRichTextPreview,
+  hasVisibleRichTextContent,
+  sanitizeRichText,
+} from "@/lib/rich-text";
 
 interface CompanyCardProps {
   company: Company;
@@ -14,6 +19,15 @@ interface CompanyCardProps {
 
 export function CompanyCard({ company }: CompanyCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const safeDescriptionHtml = useMemo(
+    () => sanitizeRichText(company.description),
+    [company.description],
+  );
+  const hasDescription = hasVisibleRichTextContent(safeDescriptionHtml);
+  const previewDescription = useMemo(
+    () => getRichTextPreview(company.description, 120, "...."),
+    [company.description],
+  );
 
   const handleCardClick = () => {
     setIsDialogOpen(true);
@@ -65,13 +79,13 @@ export function CompanyCard({ company }: CompanyCardProps) {
             </h4>
 
             {/* Description */}
-            {company.description && (
+            {hasDescription && (
               <p className="text-xs sm:text-sm text-stone-500 mb-3 sm:mb-4 line-clamp-2 leading-relaxed">
-                {company.description}
+                {previewDescription}
               </p>
             )}
 
-            {!company.description && (
+            {!hasDescription && (
               <p className="text-xs sm:text-sm text-stone-400 italic mb-3 sm:mb-4">
                 Ayurvedic products supplier
               </p>
@@ -122,14 +136,15 @@ export function CompanyCard({ company }: CompanyCardProps) {
 
             <div className="p-6 space-y-6">
               {/* Description */}
-              {company.description ? (
+              {hasDescription ? (
                 <div className="bg-white rounded-xl p-5 border border-stone-200 shadow-sm">
                   <h4 className="text-sm font-semibold text-stone-500 uppercase tracking-wider mb-2">
                     About
                   </h4>
-                  <p className="text-stone-700 leading-relaxed">
-                    {company.description}
-                  </p>
+                  <div
+                    className="text-stone-700 leading-relaxed [&_h2]:text-base [&_h2]:font-semibold [&_h2]:text-stone-800 [&_h2]:mb-2 [&_p]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-2 [&_li]:mb-1 [&_blockquote]:border-l-4 [&_blockquote]:border-emerald-300 [&_blockquote]:pl-3 [&_blockquote]:italic"
+                    dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }}
+                  />
                 </div>
               ) : (
                 <div className="bg-white rounded-xl p-5 border border-stone-200 shadow-sm">

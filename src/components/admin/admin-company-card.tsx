@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +8,7 @@ import { Building2, Package, Edit, Trash2, Tag } from "lucide-react";
 import { Company } from "@/types/company";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { getRichTextPreview, hasVisibleRichTextContent } from "@/lib/rich-text";
 
 interface AdminCompanyCardProps {
   company: Company;
@@ -20,6 +22,11 @@ export function AdminCompanyCard({
   onDelete,
 }: AdminCompanyCardProps) {
   const totalProducts = company.companyProducts.length;
+  const hasDescription = hasVisibleRichTextContent(company.description);
+  const previewDescription = useMemo(
+    () => getRichTextPreview(company.description, 110, "...."),
+    [company.description],
+  );
 
   return (
     <Card
@@ -57,6 +64,12 @@ export function AdminCompanyCard({
         <CardTitle className="text-xl mb-2 font-bold text-blue-800">
           {company.name}
         </CardTitle>
+
+        {hasDescription && (
+          <p className="text-sm text-gray-600 leading-relaxed">
+            {previewDescription}
+          </p>
+        )}
 
         {/* Company Statistics */}
         <div className="flex items-center justify-center space-x-4 mt-3">

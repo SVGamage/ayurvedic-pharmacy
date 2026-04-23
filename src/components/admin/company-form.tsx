@@ -14,6 +14,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ImageUpload } from "@/components/ui/image-upload";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { X, Pencil, Copy, Plus } from "lucide-react";
 
 interface PriceVariant {
@@ -296,14 +297,12 @@ export function CompanyForm({
               <Label htmlFor="description" className="text-blue-800 font-bold">
                 Description
               </Label>
-              <Input
-                id="description"
+              <RichTextEditor
                 value={formData.description || ""}
-                onChange={(e) =>
-                  handleInputChange("description", e.target.value)
-                }
+                onChange={(value) => handleInputChange("description", value)}
                 placeholder="Enter company description"
-                className="border-blue-200 focus:border-blue-400 focus:ring-blue-400"
+                theme="blue"
+                minHeightClassName="min-h-[140px]"
               />
             </div>
 
