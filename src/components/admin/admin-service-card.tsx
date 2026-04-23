@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +8,11 @@ import { CheckCircle, Clock, Star, Edit, Trash2 } from "lucide-react";
 import { Service } from "@/types/service";
 import { cn } from "@/lib/utils";
 import * as Icons from "lucide-react";
+import {
+  getRichTextPreview,
+  hasVisibleRichTextContent,
+  sanitizeRichText,
+} from "@/lib/rich-text";
 
 interface AdminServiceCardProps {
   service: Service;
@@ -36,6 +42,16 @@ export function AdminServiceCard({
   onEdit,
   onDelete,
 }: AdminServiceCardProps) {
+  const safeDescriptionHtml = useMemo(
+    () => sanitizeRichText(service.description),
+    [service.description],
+  );
+  const hasDescription = hasVisibleRichTextContent(safeDescriptionHtml);
+  const previewDescription = useMemo(
+    () => getRichTextPreview(service.description, 120, "...."),
+    [service.description],
+  );
+
   const getThemeColors = () => {
     switch (service.category) {
       case "ayurvedic":
@@ -85,14 +101,14 @@ export function AdminServiceCard({
         "group border-2 hover:shadow-2xl transition-all duration-300 relative overflow-hidden transform hover:-translate-y-2 rounded-xl",
         service.popular && "ring-2 ring-emerald-400 shadow-lg",
         colors.borderColor,
-        colors.cardBg
+        colors.cardBg,
       )}
     >
       {service.popular && (
         <Badge
           className={cn(
             "absolute top-3 left-3 z-10 text-white font-bold px-3 py-1 rounded-full animate-pulse",
-            colors.badgeBg
+            colors.badgeBg,
           )}
         >
           Most Popular
@@ -110,7 +126,7 @@ export function AdminServiceCard({
         <div
           className={cn(
             "mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg",
-            colors.iconBg
+            colors.iconBg,
           )}
         >
           <IconComponent className={cn("h-8 w-8", colors.iconColor)} />
@@ -118,9 +134,11 @@ export function AdminServiceCard({
         <CardTitle className={cn("text-xl mb-2 font-bold", colors.textAccent)}>
           {service.title}
         </CardTitle>
-        <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">
-          {service.description}
-        </p>
+        {hasDescription && (
+          <p className="text-gray-600 text-sm leading-relaxed">
+            {previewDescription}
+          </p>
+        )}
 
         {/* Rating Display */}
         <div className="flex items-center justify-center space-x-1 mt-3">
@@ -130,7 +148,7 @@ export function AdminServiceCard({
                 key={i}
                 className={cn(
                   "h-4 w-4",
-                  i < 4 ? "text-yellow-400 fill-current" : "text-gray-300"
+                  i < 4 ? "text-yellow-400 fill-current" : "text-gray-300",
                 )}
               />
             ))}
@@ -144,7 +162,7 @@ export function AdminServiceCard({
           className={cn(
             "flex items-center justify-between rounded-xl p-3 border",
             colors.iconBg,
-            "border-current/20"
+            "border-current/20",
           )}
         >
           <div className="flex items-center space-x-2">
@@ -168,7 +186,7 @@ export function AdminServiceCard({
                 <CheckCircle
                   className={cn(
                     "h-4 w-4 flex-shrink-0 mt-0.5",
-                    colors.checkColor
+                    colors.checkColor,
                   )}
                 />
                 <span className="text-sm text-gray-700 leading-relaxed">

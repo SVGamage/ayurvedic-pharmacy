@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -16,6 +15,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ImageUpload } from "@/components/ui/image-upload";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { X } from "lucide-react";
 
 interface ServiceFormData {
@@ -83,7 +83,7 @@ export function ServiceForm({
 
   const handleInputChange = (
     field: keyof ServiceFormData,
-    value: string | boolean | string[]
+    value: string | boolean | string[],
   ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -242,16 +242,12 @@ export function ServiceForm({
               >
                 Description *
               </Label>
-              <Textarea
-                id="description"
+              <RichTextEditor
                 value={formData.description}
-                onChange={(e) =>
-                  handleInputChange("description", e.target.value)
-                }
+                onChange={(value) => handleInputChange("description", value)}
                 placeholder="Describe the healing benefits and traditional aspects of this service..."
-                rows={3}
-                required
-                className="border-yellow-200 focus:border-yellow-400 focus:ring-yellow-400"
+                theme="yellow"
+                minHeightClassName="min-h-[140px]"
               />
             </div>
 

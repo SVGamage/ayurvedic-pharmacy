@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +24,11 @@ import {
 import { Service } from "@/types/service";
 import { cn } from "@/lib/utils";
 import { bookServiceViaWhatsApp } from "@/lib/whatsapp";
+import {
+  getRichTextPreview,
+  hasVisibleRichTextContent,
+  sanitizeRichText,
+} from "@/lib/rich-text";
 
 interface ServiceCardProps {
   service: Service;
@@ -43,6 +48,15 @@ export function ServiceCard({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const isFeatured = variant === "featured";
+  const safeDescriptionHtml = useMemo(
+    () => sanitizeRichText(service.description),
+    [service.description],
+  );
+  const hasDescription = hasVisibleRichTextContent(safeDescriptionHtml);
+  const previewDescription = useMemo(
+    () => getRichTextPreview(service.description, 120, "...."),
+    [service.description],
+  );
 
   const IconComponent = service.icon;
 
@@ -182,9 +196,11 @@ export function ServiceCard({
             </h4>
 
             {/* Description */}
-            <p className="text-sm text-stone-600 line-clamp-2 mb-4 leading-relaxed">
-              {service.description}
-            </p>
+            {hasDescription && (
+              <p className="text-sm text-stone-600 mb-4 leading-relaxed">
+                {previewDescription}
+              </p>
+            )}
 
             {/* Features Preview */}
             {service.features && service.features.length > 0 && (
@@ -408,9 +424,16 @@ export function ServiceCard({
                   <h3 className="font-serif text-sm sm:text-base font-semibold text-stone-800 mb-1.5 sm:mb-2">
                     About this Service
                   </h3>
-                  <p className="text-stone-600 text-xs sm:text-sm leading-relaxed">
-                    {service.description}
-                  </p>
+                  {hasDescription ? (
+                    <div
+                      className="text-stone-600 text-xs sm:text-sm leading-relaxed [&_h2]:text-base [&_h2]:font-semibold [&_h2]:text-stone-800 [&_h2]:mb-2 [&_p]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-2 [&_li]:mb-1 [&_blockquote]:border-l-4 [&_blockquote]:border-emerald-300 [&_blockquote]:pl-3 [&_blockquote]:italic"
+                      dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }}
+                    />
+                  ) : (
+                    <p className="text-stone-500 italic text-xs sm:text-sm">
+                      Service details will be shared during consultation.
+                    </p>
+                  )}
                 </div>
 
                 {/* What's Included */}
