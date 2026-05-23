@@ -260,7 +260,7 @@ export function ProductCard({
 
       {/* Product Details Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="w-[95vw] max-w-3xl h-[85dvh] sm:h-auto sm:max-h-[85vh] bg-gradient-to-br from-white to-stone-50 border-0 p-0 gap-0 rounded-2xl sm:rounded-3xl shadow-2xl">
+        <DialogContent className="w-[95vw] max-w-3xl h-[85dvh] sm:h-auto sm:max-h-[85vh] bg-gradient-to-br from-white to-stone-50 border-0 p-0 gap-0 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden">
           <div className="flex flex-col md:grid md:grid-cols-2 h-full md:h-auto md:max-h-[85vh] overflow-hidden">
             {/* Product Image Section - Fixed height, never shrinks */}
             <div className="relative h-[160px] sm:h-[200px] md:h-auto md:min-h-[400px] bg-gradient-to-br from-stone-100 to-stone-50 flex-shrink-0">
