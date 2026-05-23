@@ -254,7 +254,7 @@ export function ServiceCard({
 
       {/* Service Details Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="w-[95vw] max-w-3xl h-[85dvh] sm:h-auto sm:max-h-[85vh] bg-gradient-to-br from-white to-stone-50 border-0 p-0 gap-0 rounded-2xl sm:rounded-3xl shadow-2xl">
+        <DialogContent className="w-[95vw] max-w-3xl h-[85dvh] sm:h-auto sm:max-h-[85vh] bg-gradient-to-br from-white to-stone-50 border-0 p-0 gap-0 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden">
           <div className="flex flex-col md:grid md:grid-cols-2 h-full md:h-auto md:max-h-[85vh] overflow-hidden">
             {/* Left Column: Visual & Key Info */}
             <div className="relative bg-gradient-to-br from-stone-100 to-stone-50 flex flex-col border-b md:border-b-0 md:border-r border-stone-200 flex-shrink-0">
@@ -360,6 +360,29 @@ export function ServiceCard({
                 </div>
               )}
 
+              {/* Desktop Title + Meta */}
+              <div className="hidden md:block px-6 pt-5 pb-4">
+                <h2 className="font-serif text-2xl lg:text-3xl font-bold text-stone-800 mb-3 leading-tight tracking-tight">
+                  {service.title}
+                </h2>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <div className="flex items-center gap-2 bg-stone-100 px-3 py-1.5 rounded-xl">
+                    <Clock className="h-4 w-4 text-stone-500" />
+                    <span className="text-sm font-medium text-stone-700">
+                      {service.duration}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-stone-400 uppercase tracking-wider">
+                      Price:
+                    </span>
+                    <span className="text-xl font-bold text-emerald-600 tracking-tight">
+                      {service.price}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
               {/* Action Buttons - Hidden on mobile, shown on md+ */}
               <div
                 className={cn(
@@ -395,7 +418,7 @@ export function ServiceCard({
 
             {/* Right Column: Details - Scrollable */}
             <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-6 md:p-8 flex flex-col bg-white md:max-h-[85vh] scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              <DialogHeader className="mb-3 sm:mb-4 text-left">
+              <DialogHeader className="mb-3 sm:mb-4 text-left md:hidden">
                 <DialogTitle className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-stone-800 mb-2 sm:mb-3 leading-tight tracking-tight">
                   {service.title}
                 </DialogTitle>
