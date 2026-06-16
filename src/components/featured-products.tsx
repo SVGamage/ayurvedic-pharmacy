@@ -1,100 +1,69 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ProductCard } from "@/components/product-card";
 import { Product } from "@/types/product";
 import { ArrowRight } from "lucide-react";
+import { prisma } from "../../prisma/client";
 
-const featuredProducts: Product[] = [
-  {
-    id: "1",
-    name: "Ashwagandha Capsules",
-    categoryId: "stress-sleep",
-    category: {
-      id: "stress-sleep",
-      name: "Stress & Sleep",
-      isActive: true,
-      createdAt: "",
-      updatedAt: "",
-    },
-    productPrices: [
-      { variant: "60 Capsules", price: 2499 },
-      { variant: "120 Capsules", price: 4499 },
-    ],
-    rating: 4.8,
-    reviews: 156,
-    image: "/placeholder.svg?height=300&width=300",
-    badge: "Best Seller",
-    description:
-      "Premium quality Ashwagandha for stress relief and better sleep",
-  },
-  {
-    id: "2",
-    name: "Triphala Powder",
-    categoryId: "digestive-health",
-    category: {
-      id: "digestive-health",
-      name: "Digestive Health",
-      isActive: true,
-      createdAt: "",
-      updatedAt: "",
-    },
-    productPrices: [
-      { variant: "100g", price: 1899 },
-      { variant: "250g", price: 3999 },
-    ],
-    rating: 4.7,
-    reviews: 89,
-    image: "/placeholder.svg?height=300&width=300",
-    badge: "Organic",
-    description: "Traditional digestive support formula",
-  },
-  {
-    id: "3",
-    name: "Neem Oil",
-    categoryId: "skin-care",
-    category: {
-      id: "skin-care",
-      name: "Skin Care",
-      isActive: true,
-      createdAt: "",
-      updatedAt: "",
-    },
-    productPrices: [
-      { variant: "50ml", price: 1699 },
-      { variant: "100ml", price: 2999 },
-    ],
-    rating: 4.9,
-    reviews: 203,
-    image: "/placeholder.svg?height=300&width=300",
-    badge: "Pure",
-    description: "Pure neem oil for healthy, glowing skin",
-  },
-  {
-    id: "4",
-    name: "Turmeric Tablets",
-    categoryId: "immunity",
-    category: {
-      id: "immunity",
-      name: "Immunity",
-      isActive: true,
-      createdAt: "",
-      updatedAt: "",
-    },
-    productPrices: [
-      { variant: "60 Tablets", price: 2199 },
-      { variant: "120 Tablets", price: 3999 },
-    ],
-    rating: 4.6,
-    reviews: 134,
-    image: "/placeholder.svg?height=300&width=300",
-    badge: "New",
-    description: "Natural turmeric tablets for immunity support",
-  },
-];
+// Pull the products an admin has flagged as featured. Newest first so the
+// most recently highlighted products lead the section.
+async function getFeaturedProducts(): Promise<Product[]> {
+  try {
+    const products = await prisma.product.findMany({
+      where: { featured: true },
+      include: {
+        category: true,
+        subcategory: { include: { category: true } },
+        productPrices: true,
+      },
+      orderBy: { updatedAt: "desc" },
+      take: 4,
+    });
 
-export function FeaturedProducts() {
+    // Convert Date fields to plain strings so the data is serializable when
+    // passed to the client-side ProductCard.
+    return products.map((product) => ({
+      ...product,
+      badge: product.badge ?? undefined,
+      description: product.description ?? undefined,
+      categoryId: product.categoryId ?? undefined,
+      subcategoryId: product.subcategoryId ?? undefined,
+      createdAt: product.createdAt.toISOString(),
+      updatedAt: product.updatedAt.toISOString(),
+      category: product.category
+        ? {
+            ...product.category,
+            description: product.category.description ?? undefined,
+            image: product.category.image ?? undefined,
+            createdAt: product.category.createdAt.toISOString(),
+            updatedAt: product.category.updatedAt.toISOString(),
+          }
+        : undefined,
+      subcategory: product.subcategory
+        ? {
+            ...product.subcategory,
+            description: product.subcategory.description ?? undefined,
+            image: product.subcategory.image ?? undefined,
+            createdAt: product.subcategory.createdAt.toISOString(),
+            updatedAt: product.subcategory.updatedAt.toISOString(),
+            category: undefined,
+          }
+        : undefined,
+    }));
+  } catch (error) {
+    console.error("Error fetching featured products:", error);
+    return [];
+  }
+}
+
+export async function FeaturedProducts() {
+  const featuredProducts = await getFeaturedProducts();
+
+  // Hide the section entirely when nothing has been marked as featured.
+  if (featuredProducts.length === 0) {
+    return null;
+  }
+
   return (
     <section className="py-20 bg-stone-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

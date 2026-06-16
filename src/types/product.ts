@@ -39,6 +39,7 @@ export interface Product {
   reviews: number;
   image: string;
   badge?: string;
+  featured?: boolean;
   description?: string;
   createdAt?: string;
   updatedAt?: string;

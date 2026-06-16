@@ -14,6 +14,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ImageUpload } from "@/components/ui/image-upload";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import {
   Bold,
   Heading2,
@@ -210,6 +211,7 @@ export function ProductForm({
     reviews: product?.reviews || 0,
     image: product?.image || "",
     badge: product?.badge || "",
+    featured: product?.featured ?? false,
     description: product?.description || "",
   });
 
@@ -299,7 +301,7 @@ export function ProductForm({
 
   const handleInputChange = (
     field: keyof Product,
-    value: string | number | undefined | ProductPrice[],
+    value: string | number | boolean | undefined | ProductPrice[],
   ) => {
     setFormData((prev) => {
       const newData = { ...prev, [field]: value };
@@ -461,6 +463,27 @@ export function ProductForm({
                     placeholder="e.g., Best Seller, Traditional, Organic"
                     className="border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400"
                   />
+                </div>
+
+                <div className="space-y-3">
+                  <Label
+                    htmlFor="featured"
+                    className="text-emerald-800 font-bold"
+                  >
+                    Featured Product
+                  </Label>
+                  <div className="flex items-center gap-3 rounded-md border border-emerald-200 bg-emerald-50/50 px-3 py-2">
+                    <Switch
+                      id="featured"
+                      checked={formData.featured ?? false}
+                      onCheckedChange={(checked) =>
+                        handleInputChange("featured", checked)
+                      }
+                    />
+                    <span className="text-sm text-emerald-700">
+                      Show on homepage featured section
+                    </span>
+                  </div>
                 </div>
 
                 <div className="space-y-3">

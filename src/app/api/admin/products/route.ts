@@ -93,6 +93,7 @@ export async function POST(request: NextRequest) {
         reviews: body.reviews || 0,
         image: body.image,
         badge: body.badge || null,
+        featured: body.featured ?? false,
         description: body.description || null,
         productPrices: {
           create: (body.productPrices || []).map(
