@@ -101,6 +101,10 @@ interface PaginationData {
   total: number;
 }
 
+type SubCategoryWithCount = SubCategory & {
+  _count?: { products: number };
+};
+
 const heroSlides1: HeroSlide[] = [
   {
     id: 1,
@@ -233,7 +237,7 @@ export default function ProductsPage() {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [categories, setCategories] = useState<Category[]>([]);
-  const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
+  const [subcategories, setSubcategories] = useState<SubCategoryWithCount[]>([]);
   const [selectedSubcategory, setSelectedSubcategory] = useState("all");
   // const [companies, setCompanies] = useState<Company[]>([]);
   // const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
@@ -503,6 +507,16 @@ export default function ProductsPage() {
   // Filtering (search, category, subcategory) is handled server-side
   const filteredProducts = products;
 
+  // Only offer subcategories that actually have products, scoped to the
+  // selected category so the dropdown can't lead to empty results.
+  const visibleSubcategories = subcategories.filter((subcategory) => {
+    const hasProducts = (subcategory._count?.products ?? 0) > 0;
+    const inSelectedCategory =
+      selectedCategory === "All Products" ||
+      subcategory.category?.name === selectedCategory;
+    return hasProducts && inSelectedCategory;
+  });
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-8 md:pt-40 overflow-x-clip">
       {/* Three carousels in a row on large screens, single carousel on tablet/mobile */}
@@ -579,7 +593,7 @@ export default function ProductsPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Product Categories</SelectItem>
-              {subcategories.map((subcategory) => (
+              {visibleSubcategories.map((subcategory) => (
                 <SelectItem key={subcategory.id} value={subcategory.id}>
                   {subcategory.name}
                   {subcategory.category && (
