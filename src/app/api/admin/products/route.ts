@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { prisma } from "../../../../../prisma/client";
 
 export async function GET(request: NextRequest) {
@@ -7,27 +8,36 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "12");
     const search = searchParams.get("search") || "";
+    const category = searchParams.get("category") || "";
+    const subcategoryId = searchParams.get("subcategoryId") || "";
 
     const skip = (page - 1) * limit;
 
-    const where = search
-      ? {
-          OR: [
-            { name: { contains: search, mode: "insensitive" as const } },
-            { description: { contains: search, mode: "insensitive" as const } },
-            {
-              category: {
-                name: { contains: search, mode: "insensitive" as const },
-              },
-            },
-            {
-              subcategory: {
-                name: { contains: search, mode: "insensitive" as const },
-              },
-            },
-          ],
-        }
-      : {};
+    const conditions: Prisma.ProductWhereInput[] = [];
+
+    if (search) {
+      conditions.push({
+        OR: [
+          { name: { contains: search, mode: "insensitive" } },
+          { description: { contains: search, mode: "insensitive" } },
+          { category: { name: { contains: search, mode: "insensitive" } } },
+          {
+            subcategory: { name: { contains: search, mode: "insensitive" } },
+          },
+        ],
+      });
+    }
+
+    if (category && category !== "All Products") {
+      conditions.push({ category: { name: category } });
+    }
+
+    if (subcategoryId && subcategoryId !== "all") {
+      conditions.push({ subcategoryId });
+    }
+
+    const where: Prisma.ProductWhereInput =
+      conditions.length > 0 ? { AND: conditions } : {};
 
     const [products, total] = await Promise.all([
       prisma.product.findMany({

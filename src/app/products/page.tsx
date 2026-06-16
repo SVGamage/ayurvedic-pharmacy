@@ -29,7 +29,7 @@ import {
 //   ChevronRight,
 // } from "lucide-react";
 import { ProductCard } from "@/components/product-card";
-import { Product, SubCategory } from "@/types/product";
+import { Category, Product, SubCategory } from "@/types/product";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
 import CarouselGrid from "@/components/carousel-grid";
 import { AdminPagination } from "@/components/admin/admin-pagination";
@@ -155,13 +155,6 @@ const heroSlides3: HeroSlide[] = [
   },
 ];
 
-const productCategories = [
-  "All Products",
-  "Ayurvedic Products",
-  "Disease-Related Products",
-  "Traditional Products",
-];
-
 // Component for product card with variant selector
 // function CompanyProductCard({ product }: { product: CompanyProduct }) {
 //   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
@@ -239,6 +232,7 @@ export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Products");
+  const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
   const [selectedSubcategory, setSelectedSubcategory] = useState("all");
   // const [companies, setCompanies] = useState<Company[]>([]);
@@ -288,6 +282,7 @@ export default function ProductsPage() {
       limit = itemsPerPage,
       search = debouncedSearch,
       category = selectedCategory,
+      subcategory = selectedSubcategory,
     ) => {
       try {
         setIsSearching(true);
@@ -295,6 +290,10 @@ export default function ProductsPage() {
           page: page.toString(),
           limit: limit.toString(),
           ...(search && { search }),
+          ...(category &&
+            category !== "All Products" && { category }),
+          ...(subcategory &&
+            subcategory !== "all" && { subcategoryId: subcategory }),
         });
 
         const response = await fetch(`/api/admin/products?${params}`);
@@ -306,7 +305,7 @@ export default function ProductsPage() {
         const data = await response.json();
 
         // Convert API data to Product format
-        let productsData = data.products.map((product: ApiProduct) => ({
+        const productsData = data.products.map((product: ApiProduct) => ({
           id: product.id,
           name: product.name,
           categoryId: product.category?.id,
@@ -320,13 +319,6 @@ export default function ProductsPage() {
           badge: product.badge,
           description: product.description,
         }));
-
-        // Apply category filtering if not "All Products"
-        if (category !== "All Products") {
-          productsData = productsData.filter(
-            (product: Product) => product.category?.name === category,
-          );
-        }
 
         setProducts(productsData);
         setPaginationData({
@@ -344,7 +336,7 @@ export default function ProductsPage() {
         setIsInitialLoading(false);
       }
     },
-    [itemsPerPage, debouncedSearch, selectedCategory],
+    [itemsPerPage, debouncedSearch, selectedCategory, selectedSubcategory],
   );
 
   // const fetchCompanies = useCallback(async () => {
@@ -380,25 +372,62 @@ export default function ProductsPage() {
     }
   }, []);
 
+  const fetchCategories = useCallback(async () => {
+    try {
+      const response = await fetch("/api/admin/categories");
+      if (response.ok) {
+        const data = await response.json();
+        setCategories(data.categories || data);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  }, []);
+
   useEffect(() => {
     // fetchCompanies();
+    fetchCategories();
     fetchSubcategories();
-  }, [fetchSubcategories]);
+  }, [fetchCategories, fetchSubcategories]);
 
   // Fetch products from API
   useEffect(() => {
-    fetchProducts(1, itemsPerPage, debouncedSearch, selectedCategory);
-  }, [fetchProducts, itemsPerPage, debouncedSearch, selectedCategory]);
+    fetchProducts(
+      1,
+      itemsPerPage,
+      debouncedSearch,
+      selectedCategory,
+      selectedSubcategory,
+    );
+  }, [
+    fetchProducts,
+    itemsPerPage,
+    debouncedSearch,
+    selectedCategory,
+    selectedSubcategory,
+  ]);
 
   // Handle page change
   const handlePageChange = (page: number) => {
-    fetchProducts(page, itemsPerPage, debouncedSearch, selectedCategory);
+    fetchProducts(
+      page,
+      itemsPerPage,
+      debouncedSearch,
+      selectedCategory,
+      selectedSubcategory,
+    );
   };
 
   // Handle items per page change
   const handleItemsPerPageChange = (newItemsPerPage: number) => {
     setItemsPerPage(newItemsPerPage);
-    fetchProducts(1, newItemsPerPage, debouncedSearch, selectedCategory);
+    fetchProducts(
+      1,
+      newItemsPerPage,
+      debouncedSearch,
+      selectedCategory,
+      selectedSubcategory,
+    );
   };
 
   // Handle category change
@@ -471,13 +500,8 @@ export default function ProductsPage() {
     );
   }
 
-  // Apply subcategory filtering to the products from API
-  const filteredProducts = products.filter((product) => {
-    if (selectedSubcategory === "all") {
-      return true;
-    }
-    return product.subcategory?.id === selectedSubcategory;
-  });
+  // Filtering (search, category, subcategory) is handled server-side
+  const filteredProducts = products;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-8 md:pt-40 overflow-x-clip">
@@ -520,9 +544,10 @@ export default function ProductsPage() {
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
-              {productCategories.map((category) => (
-                <SelectItem key={category} value={category}>
-                  {category}
+              <SelectItem value="All Products">All Products</SelectItem>
+              {categories.map((category) => (
+                <SelectItem key={category.id} value={category.name}>
+                  {category.name}
                 </SelectItem>
               ))}
             </SelectContent>
