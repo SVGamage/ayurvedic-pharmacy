@@ -15,23 +15,33 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import Link from "next/link";
 import {
   Phone,
+  Smartphone,
   Mail,
   MapPin,
   Clock,
+  Share2,
   Facebook,
   Instagram,
-  Twitter,
-  Youtube,
   MessageCircle,
 } from "lucide-react";
 import {
   contactViaWhatsApp,
   emergencyConsultationViaWhatsApp,
+  submitContactFormViaWhatsApp,
 } from "@/lib/whatsapp";
-import { WHATSAPP_CONFIG } from "@/config/whatsapp";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
+import { TikTokIcon, ThreadsIcon } from "@/components/social-icons";
+
+const SERVICE_OPTIONS = [
+  { value: "ayurvedic-consultation", label: "Ayurvedic Consultation" },
+  { value: "online-consultation", label: "Online Consultation" },
+  { value: "nakshatra-services", label: "Nakshatra Services" },
+  { value: "product-inquiry", label: "Product Inquiry" },
+  { value: "general-inquiry", label: "General Inquiry" },
+] as const;
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -45,8 +55,17 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted:", formData);
+    const serviceLabel = SERVICE_OPTIONS.find(
+      (option) => option.value === formData.service
+    )?.label;
+    submitContactFormViaWhatsApp({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      service: serviceLabel,
+      subject: formData.subject,
+      message: formData.message,
+    });
   };
 
   const handleChange = (field: string, value: string) => {
@@ -139,21 +158,11 @@ export default function ContactPage() {
                         <SelectValue placeholder="Select a service" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="ayurvedic-consultation">
-                          Ayurvedic Consultation
-                        </SelectItem>
-                        <SelectItem value="online-consultation">
-                          Online Consultation
-                        </SelectItem>
-                        <SelectItem value="nakshatra-services">
-                          Nakshatra Services
-                        </SelectItem>
-                        <SelectItem value="product-inquiry">
-                          Product Inquiry
-                        </SelectItem>
-                        <SelectItem value="general-inquiry">
-                          General Inquiry
-                        </SelectItem>
+                        {SERVICE_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -225,55 +234,75 @@ export default function ContactPage() {
               </div>
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-emerald-100 rounded-full">
-                  <MessageCircle className="h-5 w-5 text-emerald-600 flex-shrink-0" />
+              <a
+                href="tel:+94702048015"
+                className="flex items-center space-x-3 group"
+              >
+                <div className="p-2 bg-emerald-100 rounded-full group-hover:bg-emerald-200 transition-colors">
+                  <Smartphone className="h-5 w-5 text-emerald-600 flex-shrink-0" />
                 </div>
                 <div>
-                  <p className="font-medium text-stone-900">WhatsApp</p>
-                  <p className="text-stone-600">
-                    {WHATSAPP_CONFIG.displayNumber}
-                  </p>
-                  <p className="text-sm text-stone-500">
-                    Quick ordering & booking
+                  <p className="font-medium text-stone-900">Mobile</p>
+                  <p className="text-stone-600 group-hover:text-emerald-700 transition-colors">
+                    +94 70 204 8015
                   </p>
                 </div>
-              </div>
+              </a>
 
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-emerald-100 rounded-full">
+              <a
+                href="tel:+94473477938"
+                className="flex items-center space-x-3 group"
+              >
+                <div className="p-2 bg-emerald-100 rounded-full group-hover:bg-emerald-200 transition-colors">
                   <Phone className="h-5 w-5 text-emerald-600 flex-shrink-0" />
                 </div>
                 <div>
-                  <p className="font-medium text-stone-900">Phone</p>
-                  <p className="text-stone-600">+1 (555) 123-4567</p>
-                  <p className="text-sm text-stone-500">Mon-Fri 9AM-7PM</p>
+                  <p className="font-medium text-stone-900">Telephone</p>
+                  <p className="text-stone-600 group-hover:text-emerald-700 transition-colors">
+                    +94 47 34 77 938
+                  </p>
                 </div>
-              </div>
+              </a>
 
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-emerald-100 rounded-full">
+              <a
+                href="mailto:rathnadeepaherbal@gmail.com"
+                className="flex items-center space-x-3 group"
+              >
+                <div className="p-2 bg-emerald-100 rounded-full group-hover:bg-emerald-200 transition-colors">
                   <Mail className="h-5 w-5 text-emerald-600 flex-shrink-0" />
                 </div>
                 <div>
                   <p className="font-medium text-stone-900">Email</p>
-                  <p className="text-stone-600">info@ayurvedapharmacy.com</p>
-                  <p className="text-sm text-stone-500">
-                    We reply within 24 hours
+                  <p className="text-stone-600 break-all group-hover:text-emerald-700 transition-colors">
+                    rathnadeepaherbal@gmail.com
                   </p>
                 </div>
-              </div>
+              </a>
 
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-emerald-100 rounded-full">
+                  <Share2 className="h-5 w-5 text-emerald-600 flex-shrink-0" />
+                </div>
+                <div>
+                  <p className="font-medium text-stone-900">Social Media</p>
+                  <p className="text-stone-600">Contact through social media</p>
+                </div>
+              </div>
+
+              <Link
+                href="/location"
+                className="flex items-center space-x-3 group"
+              >
+                <div className="p-2 bg-emerald-100 rounded-full group-hover:bg-emerald-200 transition-colors">
                   <MapPin className="h-5 w-5 text-emerald-600 flex-shrink-0" />
                 </div>
                 <div>
-                  <p className="font-medium text-stone-900">Address</p>
-                  <p className="text-stone-600">123 Wellness Street</p>
-                  <p className="text-stone-600">Ayurveda City, AC 12345</p>
+                  <p className="font-medium text-stone-900">Our Stores</p>
+                  <p className="text-stone-600 group-hover:text-emerald-700 transition-colors">
+                    Meet us in our stores
+                  </p>
                 </div>
-              </div>
+              </Link>
 
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-emerald-100 rounded-full">
@@ -281,8 +310,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-medium text-stone-900">Hours</p>
-                  <p className="text-stone-600">Mon-Fri: 9AM-7PM</p>
-                  <p className="text-stone-600">Sat-Sun: 10AM-5PM</p>
+                  <p className="text-stone-600">Mon-Sat: 8:30AM-7PM</p>
+                  <p className="text-stone-600">Sun: 9AM-1PM</p>
                 </div>
               </div>
             </CardContent>
@@ -298,34 +327,46 @@ export default function ContactPage() {
             </CardHeader>
             <CardContent className="pt-6">
               <div className="grid grid-cols-2 gap-4">
-                <Button
-                  variant="outline"
-                  className="flex items-center space-x-2 bg-transparent border-stone-200 hover:bg-stone-50 text-stone-600"
+                <Link
+                  href="https://www.facebook.com/share/17qai7aUM5/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="flex items-center justify-center space-x-2 rounded-md border border-stone-200 px-4 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50 hover:text-emerald-700 transition-colors"
                 >
                   <Facebook className="h-4 w-4" />
                   <span>Facebook</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex items-center space-x-2 bg-transparent border-stone-200 hover:bg-stone-50 text-stone-600"
+                </Link>
+                <Link
+                  href="https://www.instagram.com/rathnadeepa_herbals/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="flex items-center justify-center space-x-2 rounded-md border border-stone-200 px-4 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50 hover:text-emerald-700 transition-colors"
                 >
                   <Instagram className="h-4 w-4" />
                   <span>Instagram</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex items-center space-x-2 bg-transparent border-stone-200 hover:bg-stone-50 text-stone-600"
+                </Link>
+                <Link
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="TikTok"
+                  className="flex items-center justify-center space-x-2 rounded-md border border-stone-200 px-4 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50 hover:text-emerald-700 transition-colors"
                 >
-                  <Twitter className="h-4 w-4" />
-                  <span>Twitter</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex items-center space-x-2 bg-transparent border-stone-200 hover:bg-stone-50 text-stone-600"
+                  <TikTokIcon className="h-4 w-4" />
+                  <span>TikTok</span>
+                </Link>
+                <Link
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Threads"
+                  className="flex items-center justify-center space-x-2 rounded-md border border-stone-200 px-4 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50 hover:text-emerald-700 transition-colors"
                 >
-                  <Youtube className="h-4 w-4" />
-                  <span>YouTube</span>
-                </Button>
+                  <ThreadsIcon className="h-4 w-4" />
+                  <span>Threads</span>
+                </Link>
               </div>
             </CardContent>
           </Card>

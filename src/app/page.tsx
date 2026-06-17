@@ -4,7 +4,7 @@ import { ServiceHighlights } from "@/components/service-highlights";
 import { TestimonialsPreview } from "@/components/testimonials-preview";
 import WelcomeNote from "@/components/welcome-note";
 import EmbeddedMap from "@/components/embedded-map";
-import { MapPin, Phone, Clock } from "lucide-react";
+import { MapPin, Phone, Smartphone, Mail, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -75,7 +75,27 @@ export default function HomePage() {
                     <h3 className="font-semibold text-stone-900 mb-1">
                       Contact Us
                     </h3>
-                    <p className="text-stone-600">+94 71 234 5678</p>
+                    <a
+                      href="tel:+94702048015"
+                      className="flex items-center gap-2 text-stone-600 hover:text-emerald-700 transition-colors"
+                    >
+                      <Smartphone className="h-4 w-4" />
+                      +94 70 204 8015
+                    </a>
+                    <a
+                      href="tel:+94473477938"
+                      className="flex items-center gap-2 text-stone-600 hover:text-emerald-700 transition-colors"
+                    >
+                      <Phone className="h-4 w-4" />
+                      +94 47 34 77 938
+                    </a>
+                    <a
+                      href="mailto:rathnadeepaherbal@gmail.com"
+                      className="flex items-center gap-2 text-stone-600 hover:text-emerald-700 transition-colors break-all"
+                    >
+                      <Mail className="h-4 w-4" />
+                      rathnadeepaherbal@gmail.com
+                    </a>
                   </div>
                 </div>
               </div>

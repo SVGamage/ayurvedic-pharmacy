@@ -10,6 +10,7 @@ import Brand from "./brand";
 import { CartIcon, CartSheet } from "./cart";
 
 const navigation = [
+  { name: "Home", href: "/" },
   { name: "Products", href: "/products" },
   { name: "Services", href: "/services" },
   { name: "Companies", href: "/companies" },

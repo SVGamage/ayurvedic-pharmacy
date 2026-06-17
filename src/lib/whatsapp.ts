@@ -86,6 +86,46 @@ Thank you!`;
   window.open(whatsappUrl, "_blank");
 };
 
+// Contact form submission via WhatsApp
+export interface ContactFormDetails {
+  name: string;
+  email: string;
+  phone?: string;
+  service?: string;
+  subject: string;
+  message: string;
+}
+
+export const submitContactFormViaWhatsApp = (details: ContactFormDetails) => {
+  const lines = [
+    "Hello! I'd like to get in touch. Here are my details:",
+    "",
+    `👤 *Name:* ${details.name}`,
+    `📧 *Email:* ${details.email}`,
+  ];
+
+  if (details.phone) {
+    lines.push(`📱 *Phone:* ${details.phone}`);
+  }
+  if (details.service) {
+    lines.push(`🔖 *Service Interest:* ${details.service}`);
+  }
+
+  lines.push(
+    `📝 *Subject:* ${details.subject}`,
+    "",
+    "💬 *Message:*",
+    details.message,
+    "",
+    "Thank you!"
+  );
+
+  const encodedMessage = encodeURIComponent(lines.join("\n"));
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
+
+  window.open(whatsappUrl, "_blank");
+};
+
 // Emergency consultation via WhatsApp
 export const emergencyConsultationViaWhatsApp = () => {
   const message = `🚨 EMERGENCY CONSULTATION REQUEST 🚨
