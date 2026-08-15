@@ -21,6 +21,7 @@ import {
   Sparkles,
   Leaf,
 } from "lucide-react";
+import * as Icons from "lucide-react";
 import { Service } from "@/types/service";
 import { cn } from "@/lib/utils";
 import { bookServiceViaWhatsApp } from "@/lib/whatsapp";
@@ -29,6 +30,16 @@ import {
   hasVisibleRichTextContent,
   sanitizeRichText,
 } from "@/lib/rich-text";
+
+// Resolve icon from string name (used when service data comes from the API/DB)
+const getIconComponent = (iconName?: string) => {
+  if (!iconName) return Icons.Star;
+
+  const IconComponent = (Icons as unknown as Record<string, typeof Icons.Star>)[
+    iconName
+  ];
+  return IconComponent || Icons.Star;
+};
 
 interface ServiceCardProps {
   service: Service;
@@ -58,7 +69,7 @@ export function ServiceCard({
     [service.description],
   );
 
-  const IconComponent = service.icon;
+  const IconComponent = service.icon || getIconComponent(service.iconName);
 
   const handleCardClick = () => {
     setIsDialogOpen(true);

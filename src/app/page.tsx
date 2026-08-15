@@ -8,6 +8,8 @@ import { MapPin, Phone, Smartphone, Mail, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
+export const revalidate = 60;
+
 export default function HomePage() {
   return (
     <div className="space-y-0">
