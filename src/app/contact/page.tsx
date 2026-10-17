@@ -2,7 +2,8 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +27,9 @@ import {
   Facebook,
   Instagram,
   MessageCircle,
+  Stethoscope,
+  Users,
+  Leaf,
 } from "lucide-react";
 import {
   contactViaWhatsApp,
@@ -34,6 +38,11 @@ import {
 } from "@/lib/whatsapp";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
 import { TikTokIcon, ThreadsIcon } from "@/components/social-icons";
+import { ContactPageInfoData } from "@/types/contact-info";
+import {
+  hasVisibleRichTextContent,
+  sanitizeRichText,
+} from "@/lib/rich-text";
 
 const SERVICE_OPTIONS = [
   { value: "ayurvedic-consultation", label: "Ayurvedic Consultation" },
@@ -52,6 +61,47 @@ export default function ContactPage() {
     service: "",
     message: "",
   });
+
+  const [contactInfo, setContactInfo] = useState<ContactPageInfoData | null>(
+    null
+  );
+
+  useEffect(() => {
+    const fetchInfo = async () => {
+      try {
+        const res = await fetch("/api/contact-info");
+        if (res.ok) {
+          const data = await res.json();
+          setContactInfo(data);
+        }
+      } catch (error) {
+        console.error("Error loading contact page info:", error);
+      }
+    };
+    fetchInfo();
+  }, []);
+
+  const safeDoctorHtml = useMemo(
+    () => sanitizeRichText(contactInfo?.doctorDescription),
+    [contactInfo?.doctorDescription]
+  );
+  const hasDoctorDescription = hasVisibleRichTextContent(safeDoctorHtml);
+  const showDoctorSection = Boolean(
+    contactInfo?.doctorImage ||
+      hasDoctorDescription ||
+      contactInfo?.doctorName?.trim()
+  );
+
+  const safeTeamHtml = useMemo(
+    () => sanitizeRichText(contactInfo?.teamDescription),
+    [contactInfo?.teamDescription]
+  );
+  const hasTeamDescription = hasVisibleRichTextContent(safeTeamHtml);
+  const showTeamSection = Boolean(
+    contactInfo?.teamImage ||
+      hasTeamDescription ||
+      contactInfo?.teamTitle?.trim()
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,6 +134,129 @@ export default function ContactPage() {
         badges={["Expert Guidance", "Quick Response", "Personal Care"]}
         theme="green"
       />
+
+      {/* Doctor & Team Showcase Section */}
+      {(showDoctorSection || showTeamSection) && (
+        <section className="space-y-8 sm:space-y-12 mb-12 sm:mb-16">
+          {/* Doctor Showcase — Left & Right on Web View (md+), Stacked on Mobile */}
+          {showDoctorSection && (
+            <Card className="overflow-hidden border-stone-200 shadow-sm hover:shadow-md transition-shadow rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white via-white to-emerald-50/40 relative">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-100/40 rounded-full -mr-24 -mt-24 blur-3xl pointer-events-none" />
+              <div className="grid grid-cols-1 md:grid-cols-12 items-stretch">
+                {contactInfo?.doctorImage && (
+                  <div className="md:col-span-5 lg:col-span-4 relative w-full aspect-[4/4] sm:aspect-[4/3] md:aspect-auto md:min-h-[340px] lg:min-h-[380px] bg-stone-100 overflow-hidden">
+                    <Image
+                      src={contactInfo.doctorImage}
+                      alt={
+                        contactInfo.doctorName || "Our Ayurvedic Physician"
+                      }
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 42vw, 33vw"
+                      className="object-cover object-top"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-900/25 via-transparent to-transparent md:hidden" />
+                  </div>
+                )}
+
+                <CardContent
+                  className={`${
+                    contactInfo?.doctorImage
+                      ? "md:col-span-7 lg:col-span-8"
+                      : "md:col-span-12"
+                  } p-6 sm:p-8 lg:p-10 flex flex-col justify-center relative z-10`}
+                >
+                  <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200/80 text-emerald-700 px-3.5 py-1.5 rounded-full w-fit mb-4">
+                    <Stethoscope className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+                    <span className="text-xs font-semibold uppercase tracking-wider">
+                      {contactInfo?.doctorSpecialty?.trim() ||
+                        "Ayurvedic Physician"}
+                    </span>
+                  </div>
+
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-stone-800 mb-4 leading-tight">
+                    {contactInfo?.doctorName?.trim() ? (
+                      contactInfo.doctorName
+                    ) : (
+                      <>
+                        Meet Our{" "}
+                        <span className="text-emerald-700 italic">
+                          Ayurvedic Doctor
+                        </span>
+                      </>
+                    )}
+                  </h2>
+
+                  {hasDoctorDescription && (
+                    <div
+                      className="text-stone-600 text-sm sm:text-base leading-relaxed space-y-3 [&_h2]:text-lg [&_h2]:sm:text-xl [&_h2]:font-serif [&_h2]:font-semibold [&_h2]:text-stone-800 [&_h2]:mb-2 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_li]:mb-1 [&_blockquote]:border-l-4 [&_blockquote]:border-emerald-400 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-stone-700"
+                      dangerouslySetInnerHTML={{ __html: safeDoctorHtml }}
+                    />
+                  )}
+                </CardContent>
+              </div>
+            </Card>
+          )}
+
+          {/* Team Showcase — Horizontal Image First (Top), Description Vertically Below on All Screen Sizes */}
+          {showTeamSection && (
+            <Card className="overflow-hidden border-stone-200 shadow-sm hover:shadow-md transition-shadow rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white via-white to-stone-50/80 relative">
+              <div className="absolute bottom-0 right-0 w-64 h-64 bg-emerald-100/30 rounded-full -mr-24 -mb-24 blur-3xl pointer-events-none" />
+              <div className="flex flex-col">
+                {contactInfo?.teamImage && (
+                  <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[21/9] bg-stone-100 overflow-hidden border-b border-stone-100">
+                    <Image
+                      src={contactInfo.teamImage}
+                      alt={contactInfo.teamTitle || "Our Pharmacy Team"}
+                      fill
+                      sizes="(max-width: 1280px) 100vw, 1280px"
+                      className="object-cover object-center"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-900/20 via-transparent to-transparent" />
+                  </div>
+                )}
+
+                <CardContent className="p-6 sm:p-8 lg:p-10 relative z-10">
+                  <div className="max-w-4xl mx-auto">
+                    <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200/80 text-emerald-700 px-3.5 py-1.5 rounded-full w-fit mb-4">
+                      <Users className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+                      <span className="text-xs font-semibold uppercase tracking-wider">
+                        Our Wellness Team
+                      </span>
+                    </div>
+
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-stone-800 mb-4 leading-tight">
+                      {contactInfo?.teamTitle?.trim() ? (
+                        contactInfo.teamTitle
+                      ) : (
+                        <>
+                          Dedicated to Your{" "}
+                          <span className="text-emerald-700 italic">
+                            Natural Healing
+                          </span>
+                        </>
+                      )}
+                    </h2>
+
+                    {hasTeamDescription && (
+                      <div
+                        className="text-stone-600 text-sm sm:text-base leading-relaxed space-y-3 [&_h2]:text-lg [&_h2]:sm:text-xl [&_h2]:font-serif [&_h2]:font-semibold [&_h2]:text-stone-800 [&_h2]:mb-2 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_li]:mb-1 [&_blockquote]:border-l-4 [&_blockquote]:border-emerald-400 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-stone-700"
+                        dangerouslySetInnerHTML={{ __html: safeTeamHtml }}
+                      />
+                    )}
+
+                    <div className="mt-6 pt-4 border-t border-stone-100 flex items-center gap-2 text-xs sm:text-sm text-emerald-700 font-medium">
+                      <Leaf className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+                      <span>
+                        Authentic Ayurvedic Care • Personalized Attention
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </div>
+            </Card>
+          )}
+        </section>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
         {/* Enhanced Contact Form */}
@@ -197,7 +370,7 @@ export default function ContactPage() {
                   />
                 </div>
 
-                <div className="flex gap-4 pt-2">
+                <div className="flex flex-col sm:flex-row gap-4 pt-2">
                   <Button
                     type="submit"
                     className="flex-1 bg-emerald-700 hover:bg-emerald-800 text-white shadow-md"

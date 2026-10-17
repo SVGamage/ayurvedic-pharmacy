@@ -7,6 +7,7 @@ import { WhatsAppFloatingButton } from "@/components/whatsapp-floating-button";
 import { usePathname } from "next/navigation";
 import { CartProvider } from "@/contexts/cart-context";
 import { Toaster } from "@/components/ui/sonner";
+import { Toaster as ShadcnToaster } from "@/components/ui/toaster";
 
 export default function LayoutComponent({
   children,
@@ -26,6 +27,7 @@ export default function LayoutComponent({
       {!isExcluded && <Footer />}
       {!isExcluded && <WhatsAppFloatingButton />}
       <Toaster position="top-center" richColors />
+      <ShadcnToaster />
     </CartProvider>
   );
 }

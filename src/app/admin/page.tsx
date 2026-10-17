@@ -20,6 +20,7 @@ import {
   FolderTree,
   Tags,
   Building2,
+  Users,
 } from "lucide-react";
 import { ProductForm } from "@/components/admin/product-form";
 import { ServiceForm } from "@/components/admin/service-form";
@@ -28,9 +29,12 @@ import { CategoryForm } from "@/components/admin/category-form";
 import { SubCategoryForm } from "@/components/admin/subcategory-form";
 import { CategoryTable } from "@/components/admin/category-table";
 import { SubCategoryTable } from "@/components/admin/subcategory-table";
+import { ContactInfoForm } from "@/components/admin/contact-info-form";
 import { Product, Category, SubCategory } from "@/types/product";
 import { Company } from "@/types/company";
+import { ContactPageInfoData } from "@/types/contact-info";
 import { useToast } from "@/hooks/use-toast";
+import { toast as sonnerToast } from "sonner";
 
 interface ServiceData {
   id?: string;
@@ -71,6 +75,9 @@ export default function AdminPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
+  const [contactInfo, setContactInfo] = useState<ContactPageInfoData | null>(
+    null
+  );
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
   const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
   const [isCompanyDialogOpen, setIsCompanyDialogOpen] = useState(false);
@@ -207,6 +214,19 @@ export default function AdminPage() {
     }
   }, [toast]);
 
+  // Fetch contact page info (Team & Doctor)
+  const fetchContactInfo = useCallback(async () => {
+    try {
+      const response = await fetch("/api/admin/contact-info");
+      if (response.ok) {
+        const data = await response.json();
+        setContactInfo(data);
+      }
+    } catch (error) {
+      console.error("Error fetching contact info:", error);
+    }
+  }, []);
+
   useEffect(() => {
     const loadData = async () => {
       await Promise.all([
@@ -215,6 +235,7 @@ export default function AdminPage() {
         fetchCategories(),
         fetchSubcategories(),
         fetchCompanies(),
+        fetchContactInfo(),
       ]);
     };
     loadData();
@@ -224,7 +245,33 @@ export default function AdminPage() {
     fetchCategories,
     fetchSubcategories,
     fetchCompanies,
+    fetchContactInfo,
   ]);
+
+  // Contact Info handler
+  const handleContactInfoSubmit = async (data: ContactPageInfoData) => {
+    try {
+      setIsFormLoading(true);
+      const response = await fetch("/api/admin/contact-info", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const saved = await response.json();
+        setContactInfo(saved);
+        sonnerToast.success("Team & Doctor information updated successfully!");
+      } else {
+        throw new Error("Failed to save Team & Doctor information");
+      }
+    } catch (error) {
+      console.error("Error saving contact info:", error);
+      sonnerToast.error("Failed to save Team & Doctor information");
+    } finally {
+      setIsFormLoading(false);
+    }
+  };
 
   // Product handlers
   const handleCreateProduct = () => {
@@ -796,32 +843,39 @@ export default function AdminPage() {
         </div>
 
         {/* Main Content */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-emerald-100 p-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-emerald-100 p-4 sm:p-6">
           <Tabs defaultValue="categories" className="space-y-8">
-            <TabsList className="grid w-full grid-cols-2 bg-emerald-50 border border-emerald-200 rounded-xl p-1">
+            <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 h-auto bg-emerald-50 border border-emerald-200 rounded-xl p-1 gap-1">
               <TabsTrigger
                 value="categories"
-                className="data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-md rounded-lg font-semibold"
+                className="data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-md rounded-lg font-semibold py-2.5"
               >
                 <FolderTree className="h-4 w-4 mr-2" />
                 Categories
               </TabsTrigger>
               <TabsTrigger
                 value="subcategories"
-                className="data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-md rounded-lg font-semibold"
+                className="data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-md rounded-lg font-semibold py-2.5"
               >
                 <Tags className="h-4 w-4 mr-2" />
                 Subcategories
               </TabsTrigger>
+              <TabsTrigger
+                value="contact-info"
+                className="data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-md rounded-lg font-semibold py-2.5"
+              >
+                <Users className="h-4 w-4 mr-2" />
+                Team & Doctor
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="categories" className="space-y-6">
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                 <div>
-                  <h2 className="text-3xl font-bold text-emerald-800">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-emerald-800">
                     Categories
                   </h2>
-                  <p className="text-emerald-600 text-lg">
+                  <p className="text-emerald-600 text-base sm:text-lg">
                     Organize your Ayurvedic products into meaningful categories
                   </p>
                 </div>
@@ -843,12 +897,12 @@ export default function AdminPage() {
             </TabsContent>
 
             <TabsContent value="subcategories" className="space-y-6">
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                 <div>
-                  <h2 className="text-3xl font-bold text-yellow-800">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-yellow-800">
                     Subcategories
                   </h2>
-                  <p className="text-yellow-600 text-lg">
+                  <p className="text-yellow-600 text-base sm:text-lg">
                     Create detailed subcategories for precise product
                     organization
                   </p>
@@ -868,6 +922,24 @@ export default function AdminPage() {
                 onEdit={handleEditSubCategory}
                 onDelete={handleDeleteSubCategory}
                 isLoading={isLoading}
+              />
+            </TabsContent>
+
+            <TabsContent value="contact-info" className="space-y-6">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-emerald-800">
+                  Team & Doctor Showcase
+                </h2>
+                <p className="text-emerald-600 text-base sm:text-lg">
+                  Manage the team photo, team description, doctor photo, and
+                  doctor description displayed on the Contact Us page
+                </p>
+              </div>
+
+              <ContactInfoForm
+                initialData={contactInfo}
+                onSubmit={handleContactInfoSubmit}
+                isLoading={isFormLoading}
               />
             </TabsContent>
           </Tabs>

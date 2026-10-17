@@ -184,3 +184,18 @@ model Company {
 
   @@map("company")
 }
+
+model ContactPageInfo {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  teamTitle         String?
+  teamImage         String?
+  teamDescription   String?
+  doctorName        String?
+  doctorSpecialty   String?
+  doctorImage       String?
+  doctorDescription String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("contact_page_info")
+}
