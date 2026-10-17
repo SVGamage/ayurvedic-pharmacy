@@ -1,27 +1,22 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   CheckCircle,
   Clock,
   Star,
   MessageCircle,
-  Heart,
   Share2,
   Info,
   Sparkles,
   Leaf,
 } from "lucide-react";
 import * as Icons from "lucide-react";
+import { toast } from "sonner";
 import { Service } from "@/types/service";
 import { cn } from "@/lib/utils";
 import { bookServiceViaWhatsApp } from "@/lib/whatsapp";
@@ -30,9 +25,10 @@ import {
   hasVisibleRichTextContent,
   sanitizeRichText,
 } from "@/lib/rich-text";
+import { WhatsAppHandoffNote } from "@/components/whatsapp-handoff-note";
 
 // Resolve icon from string name (used when service data comes from the API/DB)
-const getIconComponent = (iconName?: string) => {
+export const getServiceIcon = (iconName?: string) => {
   if (!iconName) return Icons.Star;
 
   const IconComponent = (Icons as unknown as Record<string, typeof Icons.Star>)[
@@ -41,12 +37,23 @@ const getIconComponent = (iconName?: string) => {
   return IconComponent || Icons.Star;
 };
 
+// What to bring or prepare, by kind of service.
+const PREP_NOTES = {
+  ayurvedic:
+    "Tell us your main health concern when you book, so the doctor can prepare for your consultation.",
+  nakshatra:
+    "For a reading, have the date, time and place of birth ready for each person involved.",
+} as const;
+
 interface ServiceCardProps {
   service: Service;
   variant?: "default" | "compact" | "featured";
   className?: string;
   showRating?: boolean;
   rating?: number;
+  /** Open the details dialog on mount (used for ?service= deep links). */
+  defaultOpen?: boolean;
+  onDialogClose?: () => void;
 }
 
 export function ServiceCard({
@@ -55,10 +62,14 @@ export function ServiceCard({
   className,
   showRating = false,
   rating = 0,
+  defaultOpen = false,
+  onDialogClose,
 }: ServiceCardProps) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(defaultOpen);
+  const [preferredTime, setPreferredTime] = useState("");
+  const timeFieldId = useId();
   const isFeatured = variant === "featured";
+  const isNakshatra = service.category === "nakshatra";
   const safeDescriptionHtml = useMemo(
     () => sanitizeRichText(service.description),
     [service.description],
@@ -69,472 +80,334 @@ export function ServiceCard({
     [service.description],
   );
 
-  const IconComponent = service.icon || getIconComponent(service.iconName);
+  const IconComponent = service.icon || getServiceIcon(service.iconName);
 
-  const handleCardClick = () => {
-    setIsDialogOpen(true);
+  const book = (withTime: boolean) =>
+    bookServiceViaWhatsApp(service.title, service.price, service.duration, {
+      preferredTime: withTime ? preferredTime : undefined,
+      isNakshatra,
+    });
+
+  const handleShare = async () => {
+    const url = service.id
+      ? `${window.location.origin}/services?service=${service.id}`
+      : `${window.location.origin}/services`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: service.title, url });
+      } catch {
+        // Share sheet dismissed.
+      }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success("Link copied", { description: service.title });
+    } catch {
+      toast.error("Couldn't copy the link", { description: url });
+    }
   };
 
-  const handleBookClick = (e?: React.MouseEvent) => {
-    if (e) {
-      e.stopPropagation();
-    }
-    bookServiceViaWhatsApp(service.title, service.price, service.duration);
+  const handleDialogChange = (open: boolean) => {
+    setIsDialogOpen(open);
+    if (!open) onDialogClose?.();
   };
 
   const categoryLabel =
     service.category === "ayurvedic"
-      ? "Ayurvedic Therapy"
+      ? "Ayurvedic"
       : service.category === "nakshatra"
-        ? "Nakshatra Vana"
+        ? "Nakshatra"
         : "Wellness";
+
+  const focusRing =
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2";
 
   return (
     <>
       <div
         className={cn(
-          "group relative cursor-pointer",
+          "group relative cursor-pointer h-full",
           isFeatured ? "lg:col-span-2" : "",
           className,
         )}
-        onClick={handleCardClick}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onClick={() => setIsDialogOpen(true)}
       >
-        {/* Card Container with Layered Shadow Effect */}
-        <div className="relative bg-gradient-to-b from-white to-stone-50/80 rounded-3xl overflow-hidden transition-all duration-500 ease-out hover:-translate-y-2 border border-stone-200/60 hover:border-emerald-200 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_-12px_rgba(16,185,129,0.15),0_8px_20px_-8px_rgba(0,0,0,0.08)]">
-          {/* Decorative Corner Accent */}
-          <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-emerald-50/80 to-transparent pointer-events-none z-0" />
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-stone-100/50 to-transparent pointer-events-none z-0" />
-
-          {/* Image/Icon Section */}
-          <div className="relative">
-            <div className="relative h-52 overflow-hidden bg-gradient-to-br from-stone-100 to-stone-50 flex items-center justify-center">
-              {/* Show Image if available, otherwise show Icon */}
-              {service.image ? (
-                <>
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover transition-all duration-700 ease-out group-hover:scale-110"
+        <div className="relative h-full flex flex-col bg-white rounded-3xl overflow-hidden transition-all duration-500 ease-out hover:-translate-y-2 border border-stone-200/70 hover:border-emerald-200 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_-12px_rgba(16,185,129,0.15),0_8px_20px_-8px_rgba(0,0,0,0.08)]">
+          {/* Image / icon */}
+          <div className="relative h-52 overflow-hidden bg-stone-100 flex items-center justify-center">
+            {service.image ? (
+              <Image
+                src={service.image}
+                alt=""
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+            ) : (
+              IconComponent && (
+                <div className="rounded-3xl bg-white p-6 shadow-sm border border-stone-100">
+                  <IconComponent
+                    className="h-14 w-14 text-emerald-700"
+                    strokeWidth={1.5}
+                    aria-hidden="true"
                   />
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </>
-              ) : (
-                <>
-                  {/* Animated Background Pattern (only when no image) */}
-                  <div className="absolute inset-0 opacity-30">
-                    <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-emerald-200/40 rounded-full blur-3xl transition-transform duration-700 group-hover:scale-150" />
-                    <div className="absolute bottom-1/4 right-1/4 w-24 h-24 bg-amber-200/30 rounded-full blur-2xl transition-transform duration-700 group-hover:scale-125 delay-100" />
-                  </div>
-
-                  {/* Icon Container */}
-                  <div className="relative z-[1] transform transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-1">
-                    <div className="relative">
-                      {/* Glow effect behind icon */}
-                      <div className="absolute inset-0 bg-emerald-400/20 blur-2xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      {IconComponent && (
-                        <div className="relative bg-white/80 backdrop-blur-sm p-6 rounded-3xl shadow-lg shadow-emerald-500/10 border border-white/50">
-                          <IconComponent
-                            className="h-16 w-16 text-emerald-600"
-                            strokeWidth={1.5}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Gradient Overlay on Hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </>
-              )}
-
-              {/* Popular Badge - Top Left */}
-              {service.popular && (
-                <div className="absolute top-4 left-4 z-10">
-                  <div className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide shadow-lg shadow-emerald-500/25">
-                    <Sparkles className="w-3 h-3" />
-                    Most Popular
-                  </div>
                 </div>
-              )}
+              )
+            )}
 
-              {/* Duration Badge - Top Right */}
-              <div className="absolute top-4 right-4 z-10">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-white/90 backdrop-blur-md rounded-2xl" />
-                  <div className="relative px-3 py-2 flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-stone-500" />
-                    <span className="text-sm font-semibold text-stone-700">
-                      {service.duration}
-                    </span>
-                  </div>
-                </div>
+            {service.popular && (
+              <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 bg-emerald-700 text-white px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide">
+                <Sparkles className="w-3 h-3" aria-hidden="true" />
+                Most Popular
               </div>
+            )}
 
-              {/* Rating Badge - Bottom Left */}
-              {showRating && rating > 0 && (
-                <div className="absolute bottom-4 left-4 z-10">
-                  <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg">
-                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                    <span className="text-sm font-semibold text-stone-700">
-                      {rating.toFixed(1)}
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Content Section */}
-          <div className="relative p-5 pt-4">
-            {/* Category Tag */}
-            <div className="flex items-center gap-2 mb-3">
-              <div className="flex items-center gap-1.5 text-emerald-600">
-                <Leaf className="w-3 h-3" />
-                <span className="text-[11px] font-semibold uppercase tracking-wider">
-                  {categoryLabel}
+            {service.duration && (
+              <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 rounded-2xl bg-white/95 px-3 py-2 shadow-sm">
+                <Clock className="w-3.5 h-3.5 text-stone-600" aria-hidden="true" />
+                <span className="text-sm font-semibold text-stone-700">
+                  {service.duration}
                 </span>
               </div>
+            )}
+
+            {showRating && rating > 0 && (
+              <div className="absolute bottom-4 left-4 z-10 flex items-center gap-1.5 bg-white/95 px-3 py-1.5 rounded-full shadow-sm">
+                <Star
+                  className="w-3.5 h-3.5 fill-amber-400 text-amber-400"
+                  aria-hidden="true"
+                />
+                <span className="text-sm font-semibold text-stone-700">
+                  <span className="sr-only">Rated </span>
+                  {rating.toFixed(1)}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Content */}
+          <div className="relative flex flex-1 flex-col p-5 pt-4">
+            <div className="flex items-center gap-1.5 text-emerald-700 mb-3">
+              <Leaf className="w-3 h-3" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-wider">
+                {categoryLabel}
+              </span>
             </div>
 
-            {/* Service Title */}
-            <h4 className="font-serif text-xl font-semibold text-stone-800 tracking-tight mb-3 line-clamp-2 leading-snug group-hover:text-emerald-700 transition-colors duration-300">
-              {service.title}
-            </h4>
+            <h3 className="mb-3">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsDialogOpen(true);
+                }}
+                className={cn(
+                  "text-left font-serif text-xl font-semibold text-stone-800 tracking-tight line-clamp-2 leading-snug group-hover:text-emerald-700 transition-colors duration-300 rounded",
+                  focusRing,
+                )}
+              >
+                {service.title}
+              </button>
+            </h3>
 
-            {/* Description */}
             {hasDescription && (
               <p className="text-sm text-stone-600 mb-4 leading-relaxed">
                 {previewDescription}
               </p>
             )}
 
-            {/* Features Preview */}
             {service.features && service.features.length > 0 && (
-              <div className="space-y-2 mb-4">
+              <ul className="space-y-2 mb-4">
                 {service.features.slice(0, 2).map((feature, idx) => (
-                  <div
+                  <li
                     key={idx}
                     className="flex items-start gap-2.5 text-sm text-stone-600"
                   >
-                    <div className="mt-0.5 p-0.5 rounded-full bg-emerald-100">
-                      <CheckCircle className="h-3 w-3 text-emerald-600" />
-                    </div>
+                    <CheckCircle
+                      className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-700"
+                      aria-hidden="true"
+                    />
                     <span className="line-clamp-1">{feature}</span>
-                  </div>
+                  </li>
                 ))}
                 {service.features.length > 2 && (
-                  <p className="text-xs text-emerald-600 pl-6 font-semibold">
-                    +{service.features.length - 2} more included
-                  </p>
+                  <li className="text-xs text-stone-600 pl-6">
+                    and {service.features.length - 2} more
+                  </li>
                 )}
-              </div>
+              </ul>
             )}
 
-            {/* Price & CTA Section */}
-            <div className="pt-4 border-t border-stone-100">
-              {/* Price Display */}
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex flex-col">
-                  <span className="text-[11px] font-medium text-stone-400 uppercase tracking-wider">
-                    Starting at
-                  </span>
-                  <span className="text-2xl font-bold text-emerald-600 tracking-tight">
-                    {service.price}
-                  </span>
-                </div>
-              </div>
-
-              {/* CTA Button */}
+            <div className="mt-auto pt-4 border-t border-stone-100">
+              <p className="mb-4 text-2xl font-bold text-stone-800 tracking-tight tabular-nums">
+                {service.price}
+              </p>
               <button
-                className="w-full relative overflow-hidden flex items-center justify-center gap-2.5 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white py-3.5 rounded-2xl text-sm font-semibold transition-all duration-300 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 hover:shadow-xl group/btn"
-                onClick={handleBookClick}
+                type="button"
+                className={cn(
+                  "w-full min-h-12 flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm font-semibold transition-colors",
+                  focusRing,
+                )}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  book(false);
+                }}
               >
-                <MessageCircle className="w-4 h-4 transition-transform duration-300 group-hover/btn:scale-110" />
-                <span>Book Appointment</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700" />
+                <MessageCircle className="w-4 h-4" aria-hidden="true" />
+                Book on WhatsApp
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Service Details Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="w-[95vw] max-w-3xl h-[85dvh] sm:h-auto sm:max-h-[85vh] bg-gradient-to-br from-white to-stone-50 border-0 p-0 gap-0 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden">
-          <div className="flex flex-col md:grid md:grid-cols-2 h-full md:h-auto md:max-h-[85vh] overflow-hidden">
-            {/* Left Column: Visual & Key Info */}
-            <div className="relative bg-gradient-to-br from-stone-100 to-stone-50 flex flex-col border-b md:border-b-0 md:border-r border-stone-200 flex-shrink-0">
-              {/* Image or Icon Section - Fixed height */}
+      {/* Service details */}
+      <Dialog open={isDialogOpen} onOpenChange={handleDialogChange}>
+        <DialogContent className="w-[95vw] max-w-3xl h-[88dvh] sm:h-auto sm:max-h-[88vh] bg-white border-0 p-0 gap-0 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden">
+          <div className="flex h-full flex-col md:grid md:grid-cols-[2fr_3fr] md:h-auto md:max-h-[88vh] overflow-hidden">
+            {/* Visual */}
+            <div className="relative h-[150px] sm:h-[200px] md:h-auto md:min-h-[420px] flex-shrink-0 bg-stone-100 flex items-center justify-center">
               {service.image ? (
-                <div className="relative h-[160px] sm:h-[200px] md:h-64 flex-shrink-0">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    className="object-cover"
-                  />
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
-
-                  {/* Badges over image */}
-                  <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex items-center gap-1.5 sm:gap-2 z-10 flex-wrap">
-                    <div className="flex items-center gap-1 sm:gap-1.5 text-white bg-emerald-600/90 backdrop-blur-sm px-2 py-1 sm:px-3 sm:py-1.5 rounded-full">
-                      <Leaf className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                      <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider">
-                        {categoryLabel}
-                      </span>
-                    </div>
-                    {service.popular && (
-                      <Badge className="bg-amber-500/90 backdrop-blur-sm text-white border-0 text-[11px] sm:text-xs px-2 py-0.5 sm:px-2.5 sm:py-1">
-                        <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-0.5 sm:mr-1" />
-                        Popular
-                      </Badge>
-                    )}
-                  </div>
-
-                  {/* Price overlay on image - mobile only */}
-                  <div className="absolute bottom-3 right-3 z-10 sm:hidden">
-                    <div className="flex items-center gap-2 bg-white/95 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg">
-                      <div className="flex items-center gap-1.5">
-                        <Clock className="h-3.5 w-3.5 text-stone-500" />
-                        <span className="text-xs font-medium text-stone-700">
-                          {service.duration}
-                        </span>
-                      </div>
-                      <span className="text-base font-bold text-emerald-600">
-                        {service.price}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <Image
+                  src={service.image}
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 95vw, 320px"
+                  className="object-cover"
+                />
               ) : (
-                <div className="relative h-[160px] sm:h-[200px] md:h-64 flex-shrink-0 overflow-hidden">
-                  {/* Decorative Background Elements */}
-                  <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute top-1/3 left-1/4 w-32 sm:w-48 h-32 sm:h-48 bg-emerald-200/30 rounded-full blur-3xl" />
-                    <div className="absolute bottom-1/4 right-1/3 w-24 sm:w-32 h-24 sm:h-32 bg-amber-200/20 rounded-full blur-2xl" />
-                  </div>
-
-                  <div className="relative z-10 p-3 sm:p-4 md:p-6 h-full flex flex-col justify-center">
-                    {/* Badges */}
-                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap absolute top-3 left-3 sm:top-4 sm:left-4">
-                      <div className="flex items-center gap-1 sm:gap-1.5 text-emerald-600 bg-emerald-50/90 backdrop-blur-sm px-2 py-1 sm:px-3 sm:py-1.5 rounded-full">
-                        <Leaf className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                        <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider">
-                          {categoryLabel}
-                        </span>
-                      </div>
-                      {service.popular && (
-                        <Badge
-                          variant="outline"
-                          className="border-amber-200 text-amber-700 bg-amber-50/90 backdrop-blur-sm text-[11px] sm:text-xs"
-                        >
-                          <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-0.5 sm:mr-1" />
-                          Popular
-                        </Badge>
-                      )}
-                    </div>
-
-                    {/* Icon Display */}
-                    <div className="flex items-center justify-center">
-                      <div className="relative">
-                        <div className="absolute inset-0 bg-emerald-400/20 blur-3xl rounded-full scale-150" />
-                        {IconComponent && (
-                          <div className="relative bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl shadow-xl shadow-emerald-500/10 border border-white/80">
-                            <IconComponent
-                              className="h-8 w-8 sm:h-12 sm:w-12 text-emerald-600"
-                              strokeWidth={1}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Price info - mobile only when no image */}
-                    <div className="flex items-center justify-between bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 sm:hidden absolute bottom-3 left-3 right-3">
-                      <div className="flex items-center gap-1.5">
-                        <Clock className="h-3.5 w-3.5 text-stone-500" />
-                        <span className="text-xs font-medium text-stone-700">
-                          {service.duration}
-                        </span>
-                      </div>
-                      <span className="text-base font-bold text-emerald-600">
-                        {service.price}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                IconComponent && (
+                  <IconComponent
+                    className="h-14 w-14 text-emerald-700"
+                    strokeWidth={1.25}
+                    aria-hidden="true"
+                  />
+                )
               )}
-
-              {/* Desktop Title + Meta */}
-              <div className="hidden md:block px-6 pt-5 pb-4">
-                <h2 className="font-serif text-2xl lg:text-3xl font-bold text-stone-800 mb-3 leading-tight tracking-tight">
-                  {service.title}
-                </h2>
-                <div className="flex items-center gap-3 flex-wrap">
-                  <div className="flex items-center gap-2 bg-stone-100 px-3 py-1.5 rounded-xl">
-                    <Clock className="h-4 w-4 text-stone-500" />
-                    <span className="text-sm font-medium text-stone-700">
-                      {service.duration}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-medium text-stone-400 uppercase tracking-wider">
-                      Price:
-                    </span>
-                    <span className="text-xl font-bold text-emerald-600 tracking-tight">
-                      {service.price}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Action Buttons - Hidden on mobile, shown on md+ */}
-              <div
-                className={cn(
-                  "hidden md:block relative z-10 space-y-2 p-4 sm:p-6 mt-auto",
-                )}
-              >
-                <Button
-                  onClick={handleBookClick}
-                  className="w-full relative overflow-hidden bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white font-semibold py-5 sm:py-6 rounded-xl sm:rounded-2xl shadow-xl shadow-emerald-500/20 transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-500/30 group text-sm sm:text-base"
-                >
-                  <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 mr-2 transition-transform group-hover:scale-110" />
-                  Book Appointment
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                </Button>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    className="flex-1 border-2 border-stone-200 text-stone-600 hover:bg-stone-50 hover:text-emerald-700 hover:border-emerald-200 rounded-lg sm:rounded-xl py-4 sm:py-5 font-semibold transition-all duration-300 text-xs sm:text-sm"
-                  >
-                    <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />{" "}
-                    Save
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="flex-1 border-2 border-stone-200 text-stone-600 hover:bg-stone-50 hover:text-emerald-700 hover:border-emerald-200 rounded-lg sm:rounded-xl py-4 sm:py-5 font-semibold transition-all duration-300 text-xs sm:text-sm"
-                  >
-                    <Share2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />{" "}
-                    Share
-                  </Button>
-                </div>
-              </div>
             </div>
 
-            {/* Right Column: Details - Scrollable */}
-            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-6 md:p-8 flex flex-col bg-white md:max-h-[85vh] scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              <DialogHeader className="mb-3 sm:mb-4 text-left md:hidden">
-                <DialogTitle className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-stone-800 mb-2 sm:mb-3 leading-tight tracking-tight">
-                  {service.title}
-                </DialogTitle>
-                {/* Duration & Price - visible on sm+ */}
-                <div className="hidden sm:flex items-center gap-2 sm:gap-3 flex-wrap">
-                  <div className="flex items-center gap-1.5 sm:gap-2 bg-stone-100 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl">
-                    <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-stone-500" />
-                    <span className="text-xs sm:text-sm font-medium text-stone-700">
-                      {service.duration}
+            {/* Details: scroll area with a pinned booking footer */}
+            <div className="flex min-h-0 flex-1 flex-col md:max-h-[88vh]">
+              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-5 sm:p-6 md:p-8">
+                <div className="mb-3 flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-emerald-800">
+                    <Leaf className="h-3 w-3" aria-hidden="true" />
+                    {categoryLabel}
+                  </span>
+                  {service.popular && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-700 px-3 py-1 text-[11px] font-semibold text-white">
+                      <Sparkles className="h-3 w-3" aria-hidden="true" />
+                      Popular
                     </span>
-                  </div>
-                  <div className="flex items-center gap-1 sm:gap-1.5">
-                    <span className="text-[11px] sm:text-xs font-medium text-stone-400 uppercase tracking-wider">
-                      Price:
-                    </span>
-                    <span className="text-lg sm:text-xl font-bold text-emerald-600 tracking-tight">
-                      {service.price}
-                    </span>
-                  </div>
-                </div>
-              </DialogHeader>
-
-              <div className="space-y-4 sm:space-y-5 flex-grow">
-                {/* About Section */}
-                <div>
-                  <h3 className="font-serif text-sm sm:text-base font-semibold text-stone-800 mb-1.5 sm:mb-2">
-                    About this Service
-                  </h3>
-                  {hasDescription ? (
-                    <div
-                      className="text-stone-600 text-xs sm:text-sm leading-relaxed [&_h2]:text-base [&_h2]:font-semibold [&_h2]:text-stone-800 [&_h2]:mb-2 [&_p]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-2 [&_li]:mb-1 [&_blockquote]:border-l-4 [&_blockquote]:border-emerald-300 [&_blockquote]:pl-3 [&_blockquote]:italic"
-                      dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }}
-                    />
-                  ) : (
-                    <p className="text-stone-500 italic text-xs sm:text-sm">
-                      Service details will be shared during consultation.
-                    </p>
                   )}
                 </div>
 
-                {/* What's Included */}
-                <div>
-                  <h3 className="font-serif text-sm sm:text-base font-semibold text-stone-800 mb-1.5 sm:mb-2">
-                    What&apos;s Included
-                  </h3>
-                  <ul className="space-y-1.5 sm:space-y-2">
-                    {service.features.map((feature, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-2 sm:gap-2.5 text-stone-600"
-                      >
-                        <div className="mt-0.5 p-0.5 rounded-full bg-emerald-100 flex-shrink-0">
-                          <CheckCircle className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-600" />
-                        </div>
-                        <span className="text-xs sm:text-sm leading-relaxed">
-                          {feature}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                <DialogTitle className="font-serif text-2xl sm:text-3xl font-semibold text-stone-800 leading-tight">
+                  {service.title}
+                </DialogTitle>
+
+                <div className="mt-3 mb-6 flex flex-wrap items-center gap-x-4 gap-y-2">
+                  {service.duration && (
+                    <span className="inline-flex items-center gap-1.5 text-sm font-medium text-stone-700">
+                      <Clock className="h-4 w-4 text-stone-500" aria-hidden="true" />
+                      {service.duration}
+                    </span>
+                  )}
+                  <span className="text-xl font-bold text-stone-800 tabular-nums">
+                    {service.price}
+                  </span>
                 </div>
 
-                {/* Important Note */}
-                <div className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-emerald-100">
-                  <div className="flex gap-2 sm:gap-3">
-                    <div className="p-1 sm:p-1.5 rounded-lg flex-shrink-0">
-                      <Info className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-600" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-emerald-900 text-xs sm:text-sm mb-0.5">
-                        Important Note
-                      </h4>
-                      <p className="text-xs sm:text-sm text-emerald-800/80 leading-relaxed">
-                        Consultation with our Ayurvedic doctor is recommended
-                        before booking specific therapies. Please arrive 10
-                        minutes early for your appointment.
-                      </p>
-                    </div>
-                  </div>
+                <section className="mb-5">
+                  <h3 className="mb-2 font-serif text-base font-semibold text-stone-800">
+                    About this service
+                  </h3>
+                  {hasDescription ? (
+                    <div
+                      className="max-w-prose text-sm leading-relaxed text-stone-600 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:text-stone-800 [&_h2]:mb-2 [&_p]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-2 [&_li]:mb-1 [&_blockquote]:border-l-4 [&_blockquote]:border-emerald-300 [&_blockquote]:pl-3 [&_blockquote]:italic"
+                      dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }}
+                    />
+                  ) : (
+                    <p className="text-sm italic text-stone-600">
+                      We&apos;ll share the details when you book.
+                    </p>
+                  )}
+                </section>
+
+                {service.features.length > 0 && (
+                  <section className="mb-5">
+                    <h3 className="mb-2 font-serif text-base font-semibold text-stone-800">
+                      What&apos;s included
+                    </h3>
+                    <ul className="space-y-2">
+                      {service.features.map((feature, idx) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2.5 text-sm leading-relaxed text-stone-600"
+                        >
+                          <CheckCircle
+                            className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-700"
+                            aria-hidden="true"
+                          />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+
+                <p className="mb-5 flex gap-2.5 text-sm leading-relaxed text-stone-700">
+                  <Info
+                    className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-700"
+                    aria-hidden="true"
+                  />
+                  {PREP_NOTES[isNakshatra ? "nakshatra" : "ayurvedic"]}
+                </p>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor={timeFieldId} className="text-sm text-stone-700">
+                    Preferred day or time{" "}
+                    <span className="text-stone-500">(optional)</span>
+                  </Label>
+                  <Input
+                    id={timeFieldId}
+                    value={preferredTime}
+                    onChange={(e) => setPreferredTime(e.target.value)}
+                    placeholder="e.g. Saturday morning"
+                    className="h-11 bg-white placeholder:text-stone-400"
+                  />
                 </div>
+
+                <WhatsAppHandoffNote kind="booking" className="mt-5 sm:hidden" />
               </div>
 
-              {/* Mobile Action Buttons - Only visible on mobile */}
-              <div className="md:hidden mt-4 pt-4 border-t border-stone-100 space-y-2 pb-[env(safe-area-inset-bottom)]">
-                <Button
-                  onClick={handleBookClick}
-                  className="w-full relative overflow-hidden bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white font-semibold h-12 rounded-xl shadow-lg shadow-emerald-500/20 transition-all duration-300 group text-sm"
-                >
-                  <MessageCircle className="h-4 w-4 mr-2 transition-transform group-hover:scale-110" />
-                  Book Appointment
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                </Button>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    className="flex-1 border-2 border-stone-200 text-stone-600 hover:bg-stone-50 rounded-lg h-10 font-medium transition-all duration-300 text-xs"
+              {/* Pinned booking footer: always visible, even on short phones */}
+              <div className="flex-shrink-0 space-y-3 border-t border-stone-100 bg-white p-4 sm:px-6 md:px-8 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+                <WhatsAppHandoffNote kind="booking" className="hidden sm:block" />
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => book(true)}
+                    className={cn(
+                      "flex-1 min-h-12 inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 text-sm sm:text-base font-semibold text-white transition-colors hover:bg-emerald-700",
+                      focusRing,
+                    )}
                   >
-                    <Heart className="h-3.5 w-3.5 mr-1.5" /> Save
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="flex-1 border-2 border-stone-200 text-stone-600 hover:bg-stone-50 rounded-lg h-10 font-medium transition-all duration-300 text-xs"
+                    <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
+                    Book on WhatsApp
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleShare}
+                    aria-label={`Share ${service.title}`}
+                    className={cn(
+                      "inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-stone-200 text-stone-600 transition-colors hover:border-emerald-400 hover:text-emerald-800",
+                      focusRing,
+                    )}
                   >
-                    <Share2 className="h-3.5 w-3.5 mr-1.5" /> Share
-                  </Button>
+                    <Share2 className="h-5 w-5" aria-hidden="true" />
+                  </button>
                 </div>
               </div>
             </div>

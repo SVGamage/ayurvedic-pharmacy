@@ -72,22 +72,38 @@ Thank you!`;
 };
 
 // Service booking via WhatsApp
+export interface ServiceBookingDetails {
+  /** Free text, e.g. "Saturday morning". */
+  preferredTime?: string;
+  /** Nakshatra readings need birth details; prompt the customer to have them ready. */
+  isNakshatra?: boolean;
+}
+
 export const bookServiceViaWhatsApp = (
   serviceName: string,
   servicePrice: string,
-  serviceDuration: string
+  serviceDuration: string,
+  details: ServiceBookingDetails = {},
 ) => {
-  const message = `Hello! I would like to book the following service:
+  const lines = [
+    ORDER_GREETING,
+    "I'd like to book:",
+    "",
+    `🗓️ ${serviceName}`,
+    serviceDuration ? `⏱️ ${serviceDuration}` : null,
+    servicePrice ? `💰 ${servicePrice}` : null,
+    details.preferredTime?.trim()
+      ? `📅 Preferred time: ${details.preferredTime.trim()}`
+      : null,
+    "",
+    details.isNakshatra
+      ? "I'll share my date, time and place of birth when you reply."
+      : "Please let me know an available time.",
+    "",
+    "Thank you!",
+  ].filter((line): line is string => line !== null);
 
-🔮 Service: ${serviceName}
-💰 Price: ${servicePrice}
-⏰ Duration: ${serviceDuration}
-
-Could you please help me schedule an appointment at a convenient time?
-
-Thank you!`;
-
-  const encodedMessage = encodeURIComponent(message);
+  const encodedMessage = encodeURIComponent(lines.join("\n"));
   const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
 
   window.open(whatsappUrl, "_blank");
