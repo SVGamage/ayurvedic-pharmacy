@@ -319,6 +319,15 @@ Friendly and tactile, like a counter bell.
 ### Footer
 Forest Night ground. Column headings are uppercase white labels; links are 12px Leaf Mist and turn white on hover. Contact rows lead with small Forest Shade icon discs. The wordmark inverts to pale greens.
 
+### WhatsApp Handoff Note
+`WhatsAppHandoffNote` (kinds: order, booking, message). A Dew panel with emerald-900 text that says, in English and then Sinhala, what happens after the tap: no payment now, we confirm stock/delivery or a time, we reply 8 AM–7 PM, closed on Poya days. It sits directly above or beside every WhatsApp send button (cart, brand page, service dialog, contact form). Only confirmed facts go in it.
+
+### Brand Tile and Brand Page
+Brand index tiles are short horizontal rows, not image cards: a 64px Dew square with the logo or a serif monogram, the English name in serif, the Sinhala name on its own line, and a product count. Brand pages list products as rows in one hairline-bordered panel, with size chips, the selected price and the same two actions as product cards. Bilingual names stored as "English (සිංහල)" are always split onto two lines, never truncated.
+
+### Open Status
+`OpenStatus` shows a live "Open now · closes 7:00 PM" or "Closed now · opens 8:00 AM" line in Sri Lanka time, with a Sinhala line and the standing "Closed on Poya days" reminder. It can't know Poya dates, so the reminder always shows.
+
 ### Page Hero (signature)
 `ReusableHeroSection`: centred, with an eyebrow chip, a two-line serif Display title (solid then italic colour), a Body Lead subtitle, and a row of graduated dots (6, 8, 12, 8 and 6px) as a decorative divider. Blurred colour blobs sit behind it, and the theme colour varies by page.
 
@@ -333,6 +342,7 @@ Forest Night ground. Column headings are uppercase white labels; links are 12px 
 - **Do** give Sinhala text body size or larger, on solid or darkened ground.
 - **Do** label a price "From" only when a product's sizes cost different amounts, and show the lowest one.
 - **Do** say what happens next at the WhatsApp handoff (no payment now, we confirm stock and delivery, closed on Poya days), in English and Sinhala.
+- **Do** send every WhatsApp message to the shop's own number, never a manufacturer's, and open it with the bilingual greeting "ආයුබෝවන්! / Hello!".
 - **Do** give every icon-only control an `aria-label`, and give small visual controls (carousel dots, footer links) at least a 24px-tall hit area.
 
 ### Don't:
