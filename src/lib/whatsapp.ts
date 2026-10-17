@@ -213,23 +213,15 @@ Thank you!`;
   window.open(whatsappUrl, "_blank");
 };
 
-// Contact company via WhatsApp
-export const contactCompanyViaWhatsApp = (
-  companyName: string,
-  phone?: string,
-) => {
-  const targetPhone = phone
-    ? phone.replace(/\+/g, "")
-    : LOCAL_WHATSAPP_CONFIG.phoneNumber;
-
-  const message = `Hello! I'm interested in products from ${companyName}.
-
-Could you please provide more information about available products and pricing?
+// Ask the shop about a brand it stocks. Always goes to Rathnadeepa, never the manufacturer.
+export const contactCompanyViaWhatsApp = (companyName: string) => {
+  const message = `${ORDER_GREETING}
+I'm looking for ${companyName} products. Could you tell me what you have in stock and the prices?
 
 Thank you!`;
 
   const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${targetPhone}&text=${encodedMessage}`;
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
 
   window.open(whatsappUrl, "_blank");
 };
