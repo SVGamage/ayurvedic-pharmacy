@@ -40,8 +40,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${tangerine.variable} font-sans`}>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${inter.variable} ${tangerine.variable} font-sans`}
+        suppressHydrationWarning
+      >
         <LayoutComponent>{children}</LayoutComponent>
       </body>
     </html>
