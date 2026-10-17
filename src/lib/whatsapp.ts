@@ -140,30 +140,27 @@ Thank you!`;
 // Contact form submission via WhatsApp
 export interface ContactFormDetails {
   name: string;
-  email: string;
+  email?: string;
   phone?: string;
-  service?: string;
-  subject: string;
+  /** What the message is about, e.g. "Product inquiry". */
+  topic?: string;
   message: string;
 }
 
 export const submitContactFormViaWhatsApp = (details: ContactFormDetails) => {
-  const lines = [
-    "Hello! I'd like to get in touch. Here are my details:",
-    "",
-    `👤 *Name:* ${details.name}`,
-    `📧 *Email:* ${details.email}`,
-  ];
+  const lines = [ORDER_GREETING, "", `👤 *Name:* ${details.name}`];
 
-  if (details.phone) {
-    lines.push(`📱 *Phone:* ${details.phone}`);
+  if (details.phone?.trim()) {
+    lines.push(`📱 *Phone:* ${details.phone.trim()}`);
   }
-  if (details.service) {
-    lines.push(`🔖 *Service Interest:* ${details.service}`);
+  if (details.email?.trim()) {
+    lines.push(`📧 *Email:* ${details.email.trim()}`);
+  }
+  if (details.topic) {
+    lines.push(`🔖 *About:* ${details.topic}`);
   }
 
   lines.push(
-    `📝 *Subject:* ${details.subject}`,
     "",
     "💬 *Message:*",
     details.message,
@@ -172,6 +169,22 @@ export const submitContactFormViaWhatsApp = (details: ContactFormDetails) => {
   );
 
   const encodedMessage = encodeURIComponent(lines.join("\n"));
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
+
+  window.open(whatsappUrl, "_blank");
+};
+
+// Ask the in-house doctor a question before visiting or ordering
+export const askDoctorViaWhatsApp = (doctorName?: string) => {
+  const who = doctorName?.trim() ? doctorName.trim() : "your doctor";
+  const message = `${ORDER_GREETING}
+I'd like to ask ${who} a question.
+
+(Please describe the concern, and the age of the person if it's for someone else.)
+
+Thank you!`;
+
+  const encodedMessage = encodeURIComponent(message);
   const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
 
   window.open(whatsappUrl, "_blank");
