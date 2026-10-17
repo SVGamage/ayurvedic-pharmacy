@@ -30,18 +30,18 @@ typography:
     fontWeight: 700
     lineHeight: 1.25
   display:
-    fontFamily: "Source Serif 4, serif"
+    fontFamily: "Source Serif 4, Georgia, serif"
     fontSize: "clamp(2.25rem, 5vw, 3.75rem)"
     fontWeight: 700
     lineHeight: 1.25
   hero:
-    fontFamily: "Source Serif 4, serif"
+    fontFamily: "Source Serif 4, Georgia, serif"
     fontSize: "clamp(1.875rem, 4vw, 3rem)"
     fontWeight: 500
     lineHeight: 1.1
     letterSpacing: "-0.025em"
   headline:
-    fontFamily: "Source Serif 4, serif"
+    fontFamily: "Source Serif 4, Georgia, serif"
     fontSize: "clamp(1.875rem, 3vw, 2.25rem)"
     fontWeight: 700
     lineHeight: 1.2
@@ -67,6 +67,18 @@ typography:
     fontWeight: 600
     lineHeight: 1
     letterSpacing: "0.05em"
+  label-micro:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "11px"
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: "0.05em"
+  sinhala:
+    fontFamily: "Inter, Noto Sans Sinhala, sans-serif"
+    fontSize: "1rem"
+    fontWeight: 400
+    lineHeight: 1.8
+    letterSpacing: "0"
 rounded:
   sm: "4px"
   md: "6px"
@@ -183,7 +195,7 @@ A warm, earthy palette: stone paper and ink, with emerald herb greens doing all 
 - **Wordmark Green / Wordmark Green Light** (`wordmark-green`, `wordmark-green-light`): only the two lines of the script wordmark ("Rathnadeepa" / "Herbals"). In the footer they invert to Tailwind green-100 and green-300.
 
 ### Tertiary
-- **Turmeric** (`turmeric`): rating stars (filled), the `--accent` token, small warm highlights. Never a button or large fill.
+- **Turmeric** (`turmeric`): rating stars (filled) and small warm highlights. Never a button or large fill. It is *not* the `--accent` token: shadcn's `--accent` (its hover/selected fill) is Dew with Forest Shade text.
 
 ### Neutral
 - **Stone Paper** (`stone-paper`): page background (`--background`), scrolled header glass, mobile menu.
@@ -204,8 +216,11 @@ A warm, earthy palette: stone paper and ink, with emerald herb greens doing all 
 ## Typography
 
 **Brand Font:** Tangerine 700 (cursive fallback), loaded via `next/font` as `--font-tangerine`
-**Display / Headline Font:** declared as Source Serif 4 (`--font-serif`), *not loaded*, so it currently renders in the browser's default serif (see Known gaps)
+**Display / Headline Font:** Source Serif 4, variable weight with the optical-size axis, roman and italic. Loaded via `next/font` as `--font-source-serif` and exposed as `--font-serif` (Georgia fallback, metric-adjusted).
 **Body / Label Font:** Inter (system-ui stack fallback), loaded as `--font-inter`
+**Sinhala Font:** Noto Sans Sinhala, loaded as `--font-sinhala`. It sits second in the sans stack and is fetched only when Sinhala glyphs render.
+
+All font variable classes sit on `<html>` so the `:root` tokens can resolve them.
 
 **Character:** A handwritten family signature over a bookish serif voice, with a clean modern sans doing the shopkeeping.
 
@@ -216,22 +231,26 @@ A warm, earthy palette: stone paper and ink, with emerald herb greens doing all 
 - **Headline** (serif 700, 30px to 36px, `stone-ink`): section titles, typically ending in an italic `herb-green-deep` phrase.
 - **Title** (Inter 600, 14px mobile to 18px desktop, tracking −0.025em): card and product names, clamped to two lines.
 - **Body** (Inter 400, 14px, line-height 1.625, `stone-ink-soft`): descriptions and card text. **Body Lead** (18px) sits under section headlines, max about 42rem wide and centred.
-- **Label** (Inter 600, 10px to 12px, uppercase, tracking 0.05em): eyebrow chips, category tags, footer column headings, price captions.
+- **Label** (Inter 600, 12px, uppercase, tracking 0.05em): eyebrow chips, category tags, footer column headings.
+- **Label Micro** (Inter 500–600, 11px, uppercase, tracking 0.05em): the mobile step of card labels and badges (price caption, category, badge, rating count). 11px is the storefront floor; nothing customer-facing goes smaller. Variant names and running text never go below 12px.
+- **Sinhala** (Inter → Noto Sans Sinhala, at least body size, line-height 1.8, no tracking): applied through `:lang(si)`. `TextSlideshow` tags Sinhala strings with `lang="si"` automatically.
 
 ### Named Rules
 **The Signature Rule.** Tangerine appears only in the wordmark. Never set headings, prices or Sinhala in script.
 
 **The Italic Phrase Rule.** A serif headline may end with one italic emerald phrase. One per heading, never the whole line.
 
-**The Sinhala Legibility Rule.** Sinhala copy (for example, the bilingual hero subtitle) is set in the body sans at body sizes or larger, on solid or darkened ground. It inherits the system Sinhala fallback today; no Sinhala webfont is loaded.
+**The Sinhala Legibility Rule.** Sinhala copy (for example, the bilingual hero subtitle) is set in the body sans at body size or larger, on solid or darkened ground, and always carries `lang="si"` so Noto Sans Sinhala and the 1.8 leading apply.
+
+**The 11px Floor Rule.** No customer-facing text is smaller than 11px, and only uppercase micro-labels may use 11px. The cart count bubble (10px) is the one exception.
 
 ## Layout
 
 - **Container:** `max-w-7xl` (1280px), centred, with 24px side padding (`px-6`; some sections use `px-4 sm:px-6 lg:px-8`).
 - **Section rhythm:** 80px vertical padding (`py-20`) for major bands and 64px (`py-16`) for lighter ones. Section intros are centred, with 64px (`mb-16`) before the grid.
 - **Grids:** product, service and company cards use 2 columns on mobile and 3–4 on desktop, with 16–32px gaps. Content-and-map or content-and-image sections use a two-column split (`md:grid-cols-2 gap-12`).
-- **Hero:** a rounded, inset media frame (not full-bleed), padded below the fixed header (128–160px top). It is 4:5 on mobile and 21:9 on desktop, with copy anchored bottom-left over a stone gradient.
-- **Header:** fixed and transparent at the top of the page; once scrolled it becomes `stone-paper` at 80% opacity, with a backdrop blur and a hairline border. Desktop links appear from `md` (768px) up; below that, a slide-down sheet menu.
+- **Hero:** a rounded, inset media frame (not full-bleed), padded below the fixed header (128–160px top). The copy sits in flow at the bottom-left over a stone gradient, so the frame's height follows the copy, with a floor of 480px on mobile and 528px from `md` up (about 21:9 at full container width). Never fix the hero to an aspect ratio: the longer Sinhala slide would clip.
+- **Header:** fixed and transparent at the top of the page; once scrolled it becomes `stone-paper` at 80% opacity, with a backdrop blur and a hairline border. Desktop links and the Book Consult CTA appear from `xl` (1280px) up, the narrowest width where the full wordmark, links, cart and CTA fit. Below that, a hamburger opens a slide-down sheet menu.
 - **Mobile:** cards shrink their type and padding by roughly one step (`text-sm sm:text-lg`, `p-3 sm:p-5`) rather than reflowing.
 - **Floating:** a WhatsApp action button stays fixed at the bottom-right on every page.
 
@@ -311,16 +330,17 @@ Forest Night ground. Column headings are uppercase white labels; links are 12px 
 - **Do** write section headlines in serif with at most one italic emerald phrase.
 - **Do** darken imagery with a stone gradient (`stone-900/90` → transparent) before setting text on it.
 - **Do** give Sinhala text body size or larger, on solid or darkened ground.
+- **Do** give every icon-only control an `aria-label`, and give small visual controls (carousel dots, footer links) at least a 24px-tall hit area.
 
 ### Don't:
 - **Don't** use Tangerine outside the wordmark.
 - **Don't** introduce gray or slate neutrals, or a second accent hue; turmeric stays a pinch.
 - **Don't** let turmeric/amber become a button or a large fill.
 - **Don't** put hard square corners on customer-facing actions or cards.
+- **Don't** use coloured side stripes (`border-l-4`) on panels; use a hairline border all round.
+- **Don't** show testimonials, ratings or reviews that aren't real. The testimonials section is hidden until real reviews exist.
 
 ### Known gaps (recorded, not resolved)
-- **Serif font isn't loaded.** `--font-serif` names Source Serif 4, but no font loader includes it, so serif headings render in the browser's default serif and vary by OS. Decide whether to load it or choose another serif.
 - **The dark theme is unfinished.** A `.dark` token set exists, with blue secondary and accent colours (`#4682b4`, `#6495ed`) that are off-palette. It has no toggle and hasn't been designed. Don't build on it as it stands.
 - **Button styles are mixed.** Gradient fills, shimmer sweeps and hover-scale buttons sit alongside flat Herb Green pills, and nothing decides between them.
-- **Unused animations.** `globals.css` defines float, glow, pulse and a gradient-text utility (green → yellow). Treat them as legacy unless a surface brief chooses them.
-- **No Sinhala webfont.** Sinhala renders in whatever the system has.
+- **Admin typography.** Admin pages still use gradient-text h1s and 10px labels. They were left out of the storefront typeset pass.

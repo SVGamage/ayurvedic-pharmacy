@@ -43,7 +43,7 @@ export function CartItem({ item }: CartItemProps) {
         <h4 className="text-xs sm:text-sm font-medium text-stone-800 line-clamp-2 pr-1 leading-tight">
           {item.name}
         </h4>
-        <p className="text-[10px] sm:text-xs text-stone-500 mt-0.5">
+        <p className="text-xs text-stone-500 mt-0.5">
           {item.selectedVariant.variant}
         </p>
         <p className="text-xs sm:text-sm font-semibold text-emerald-600 mt-0.5 sm:mt-1">

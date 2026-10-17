@@ -49,7 +49,7 @@ export function Navigation() {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="hidden xl:flex items-center space-x-8">
           {navigation.map((link) => (
             <Link
               key={link.name}
@@ -67,17 +67,19 @@ export function Navigation() {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center space-x-2 md:space-x-4">
+        <div className="flex items-center space-x-2 xl:space-x-4">
           <CartIcon />
           <Link href="/services">
-            <Button className="hidden md:flex items-center space-x-2 bg-emerald-900 text-white px-6 py-2 rounded-full hover:bg-emerald-800 transition-all text-xs font-medium tracking-wide shadow-lg shadow-emerald-900/20">
+            <Button className="hidden xl:flex items-center space-x-2 bg-emerald-900 text-white px-6 py-2 rounded-full hover:bg-emerald-800 transition-all text-xs font-medium tracking-wide shadow-lg shadow-emerald-900/20">
               <span>Book Consult</span>
               <ArrowRight className="w-3 h-3 ml-1" />
             </Button>
           </Link>
           <button
-            className="md:hidden p-2 text-stone-600 hover:bg-stone-100 rounded-full transition-colors"
+            className="xl:hidden p-2.5 text-stone-600 hover:bg-stone-100 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6" />
@@ -91,7 +93,7 @@ export function Navigation() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-stone-50 border-b border-stone-200 shadow-lg animate-in slide-in-from-top-5 duration-200">
+        <div className="xl:hidden absolute top-full left-0 w-full bg-stone-50 border-b border-stone-200 shadow-lg animate-in slide-in-from-top-5 duration-200">
           <div className="space-y-1 px-4 py-6">
             {navigation.map((link) => (
               <Link

@@ -121,7 +121,7 @@ export function ProductCard({
                   <div className="relative">
                     <div className="absolute inset-0 bg-white/90 backdrop-blur-md rounded-xl sm:rounded-2xl" />
                     <div className="relative px-2.5 py-1.5 sm:px-4 sm:py-2 flex flex-col items-end">
-                      <span className="text-[8px] sm:text-[10px] font-medium text-stone-400 uppercase tracking-wider">
+                      <span className="text-[11px] sm:text-xs font-medium text-stone-400 uppercase tracking-wider">
                         From
                       </span>
                       <span className="text-sm sm:text-lg font-bold text-emerald-600 tracking-tight">
@@ -137,7 +137,7 @@ export function ProductCard({
               {/* Badge - Top Left */}
               {product.badge && (
                 <div className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10">
-                  <div className="flex items-center gap-1 sm:gap-1.5 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-semibold tracking-wide shadow-lg shadow-emerald-500/25">
+                  <div className="flex items-center gap-1 sm:gap-1.5 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-semibold tracking-wide shadow-lg shadow-emerald-500/25">
                     <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 flex-shrink-0" />
                     <span className="truncate max-w-[80px] sm:max-w-none">
                       {product.badge}
@@ -155,7 +155,7 @@ export function ProductCard({
                       {product.rating.toFixed(1)}
                     </span>
                     {product.reviews > 0 && (
-                      <span className="text-[10px] sm:text-xs text-stone-400 font-medium">
+                      <span className="text-[11px] sm:text-xs text-stone-400 font-medium">
                         ({product.reviews})
                       </span>
                     )}
@@ -171,7 +171,7 @@ export function ProductCard({
             <div className="flex items-center gap-2 mb-2 sm:mb-3">
               <div className="flex items-center gap-1 sm:gap-1.5 text-emerald-600 min-w-0">
                 <Leaf className="w-2.5 h-2.5 sm:w-3 sm:h-3 flex-shrink-0" />
-                <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider truncate">
+                <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider truncate">
                   {displayCategory}
                 </span>
               </div>
@@ -197,7 +197,7 @@ export function ProductCard({
                         e.stopPropagation();
                         setSelectedVariant(priceVariant);
                       }}
-                      className={`relative px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-xs font-medium rounded-lg sm:rounded-xl transition-all duration-300 ${
+                      className={`relative px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-medium rounded-lg sm:rounded-xl transition-all duration-300 ${
                         selectedVariant?.variant === priceVariant.variant
                           ? "bg-emerald-600 text-white shadow-md shadow-emerald-500/25"
                           : "bg-stone-100 text-stone-600 hover:bg-emerald-50 hover:text-emerald-600"
@@ -213,7 +213,7 @@ export function ProductCard({
             {/* Single variant price display */}
             {prices.length === 1 && (
               <div className="mb-3 sm:mb-4">
-                <span className="inline-block px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-xs font-medium rounded-lg sm:rounded-xl bg-stone-100 text-stone-600">
+                <span className="inline-block px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-medium rounded-lg sm:rounded-xl bg-stone-100 text-stone-600">
                   {prices[0].variant}
                 </span>
               </div>
@@ -291,7 +291,7 @@ export function ProductCard({
               <div className="flex items-center gap-2 mb-2 sm:mb-4">
                 <div className="flex items-center gap-1 sm:gap-1.5 text-emerald-600 bg-emerald-50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full">
                   <Leaf className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                  <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
+                  <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider">
                     {displayCategory}
                   </span>
                 </div>

@@ -47,7 +47,7 @@ import ProductLoading, {
   ProductGridSkeleton,
 } from "@/components/product-loading";
 import { cn } from "@/lib/utils";
-import { Package, Search } from "lucide-react";
+import { AlertCircle, Package, Search } from "lucide-react";
 // import { Company, CompanyProduct } from "@/types/company";
 
 interface ApiProduct {
@@ -486,11 +486,11 @@ export default function ProductsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="text-red-500 text-xl mb-4">⚠️</div>
-            <h3 className="text-lg font-semibold text-gray-600 mb-2">
+            <AlertCircle className="h-10 w-10 mx-auto mb-4 text-red-500" aria-hidden="true" />
+            <h3 className="text-lg font-serif font-semibold text-stone-800 mb-2">
               Error Loading Products
             </h3>
-            <p className="text-gray-500">{error}</p>
+            <p className="text-stone-600">{error}</p>
             <Button
               onClick={() => window.location.reload()}
               className="mt-4"
@@ -629,7 +629,7 @@ export default function ProductsPage() {
       ) : (
         <div className="text-center py-12">
           <Package className="h-16 w-16 mx-auto mb-4 text-stone-300" />
-          <p className="text-gray-500 text-lg">
+          <p className="text-stone-500 text-lg">
             No products found matching your criteria.
           </p>
         </div>
@@ -801,7 +801,7 @@ export default function ProductsPage() {
 
                           <CollapsibleContent className="space-y-2">
                             {filteredProducts.length > 0 ? (
-                              <div className="ml-4 p-4 bg-stone-50 rounded-lg border-l-4 border-emerald-300 max-h-[400px] overflow-y-auto">
+                              <div className="ml-4 p-4 bg-stone-50 rounded-lg border border-emerald-200 max-h-[400px] overflow-y-auto">
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                                   {filteredProducts.map((product) => (
                                     <CompanyProductCard
@@ -812,7 +812,7 @@ export default function ProductsPage() {
                                 </div>
                               </div>
                             ) : (
-                              <div className="ml-4 p-4 bg-stone-50 rounded-lg border-l-4 border-stone-300">
+                              <div className="ml-4 p-4 bg-stone-50 rounded-lg border border-stone-200">
                                 <p className="text-sm text-stone-500 text-center">
                                   No products found matching &quot;
                                   {companyProductSearch}&quot;

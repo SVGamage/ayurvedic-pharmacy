@@ -16,6 +16,12 @@ interface TextSlideshowProps {
   as?: React.ElementType;
 }
 
+const SINHALA = /[\u0D80-\u0DFF]/;
+
+/** Tag Sinhala strings so the Sinhala font stack and `:lang(si)` leading apply. */
+const langOf = (text: React.ReactNode) =>
+  typeof text === "string" && SINHALA.test(text) ? "si" : undefined;
+
 export function TextSlideshow({
   texts,
   interval = 5000,
@@ -42,6 +48,7 @@ export function TextSlideshow({
       {texts.map((text, index) => (
         <Component
           key={index}
+          lang={langOf(text)}
           aria-hidden={index !== currentIndex}
           className={cn(
             "col-start-1 row-start-1 transition-all duration-700 ease-in-out",

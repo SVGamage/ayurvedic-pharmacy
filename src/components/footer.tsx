@@ -30,11 +30,11 @@ export function Footer() {
             <h5 className="text-xs font-semibold text-white uppercase tracking-wider mb-6">
               Quick Links
             </h5>
-            <ul className="space-y-3">
+            <ul className="space-y-1">
               <li>
                 <Link
                   href="/products"
-                  className="text-xs text-emerald-200 hover:text-white transition-colors"
+                  className="inline-block py-1.5 text-xs text-emerald-200 hover:text-white transition-colors"
                 >
                   Products
                 </Link>
@@ -42,7 +42,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/services"
-                  className="text-xs text-emerald-200 hover:text-white transition-colors"
+                  className="inline-block py-1.5 text-xs text-emerald-200 hover:text-white transition-colors"
                 >
                   Services
                 </Link>
@@ -50,25 +50,9 @@ export function Footer() {
               <li>
                 <Link
                   href="/location"
-                  className="text-xs text-emerald-200 hover:text-white transition-colors"
+                  className="inline-block py-1.5 text-xs text-emerald-200 hover:text-white transition-colors"
                 >
                   Location
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms"
-                  className="text-xs text-emerald-200 hover:text-white transition-colors"
-                >
-                  Terms of Services
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  className="text-xs text-emerald-200 hover:text-white transition-colors"
-                >
-                  Privacy Policy
                 </Link>
               </li>
             </ul>
@@ -182,7 +166,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-emerald-800 pt-8 flex flex-col md:flex-row justify-center items-center">
-          <p className="text-[10px] text-emerald-300">
+          <p className="text-[11px] text-emerald-300">
             © 2024 Rathnadeepa Herbals. All rights reserved.
           </p>
         </div>

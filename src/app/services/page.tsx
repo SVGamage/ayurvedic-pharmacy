@@ -141,11 +141,11 @@ export default function ServicesPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="text-red-500 text-xl mb-4">⚠️</div>
-            <h3 className="text-lg font-semibold text-gray-600 mb-2">
+            <Icons.AlertCircle className="h-10 w-10 mx-auto mb-4 text-red-500" aria-hidden="true" />
+            <h3 className="text-lg font-serif font-semibold text-stone-800 mb-2">
               Error Loading Services
             </h3>
-            <p className="text-gray-500">{error}</p>
+            <p className="text-stone-600">{error}</p>
             <Button
               onClick={() => window.location.reload()}
               className="mt-4"

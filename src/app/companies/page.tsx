@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Building2 } from "lucide-react";
+import { AlertCircle, Search, Building2 } from "lucide-react";
 import { Company } from "@/types/company";
 import { CompanyCard } from "@/components/company-card";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
@@ -189,13 +189,11 @@ export default function CompaniesPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="text-red-500 text-xl mb-4">
-              <Building2 className="h-12 w-12 mx-auto text-red-400" />
-            </div>
-            <h3 className="text-lg font-semibold text-gray-600 mb-2">
+            <AlertCircle className="h-10 w-10 mx-auto mb-4 text-red-500" aria-hidden="true" />
+            <h3 className="text-lg font-serif font-semibold text-stone-800 mb-2">
               Error Loading Companies
             </h3>
-            <p className="text-gray-500">{error}</p>
+            <p className="text-stone-600">{error}</p>
             <Button
               onClick={() => window.location.reload()}
               className="mt-4"
@@ -255,7 +253,7 @@ export default function CompaniesPage() {
       ) : (
         <div className="text-center py-12">
           <Building2 className="h-16 w-16 mx-auto mb-4 text-stone-300" />
-          <p className="text-gray-500 text-lg">
+          <p className="text-stone-500 text-lg">
             No companies found matching your criteria.
           </p>
         </div>

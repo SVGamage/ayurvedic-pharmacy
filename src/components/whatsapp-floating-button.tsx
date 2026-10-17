@@ -31,9 +31,9 @@ export function WhatsAppFloatingButton() {
 
         {/* Tooltip */}
         {showTooltip && (
-          <div className="absolute bottom-16 right-0 bg-gray-800 text-white text-sm px-3 py-2 rounded-lg whitespace-nowrap transition-opacity duration-300">
+          <div className="absolute bottom-16 right-0 bg-stone-800 text-white text-sm px-3 py-2 rounded-lg whitespace-nowrap transition-opacity duration-300">
             Chat with us on WhatsApp
-            <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-gray-800"></div>
+            <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-stone-800"></div>
           </div>
         )}
       </div>

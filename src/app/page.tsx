@@ -1,7 +1,6 @@
 import { HeroSection } from "@/components/hero-section";
 import { FeaturedProducts } from "@/components/featured-products";
 import { ServiceHighlights } from "@/components/service-highlights";
-import { TestimonialsPreview } from "@/components/testimonials-preview";
 import WelcomeNote from "@/components/welcome-note";
 import EmbeddedMap from "@/components/embedded-map";
 import { MapPin, Phone, Smartphone, Mail, Clock } from "lucide-react";
@@ -17,7 +16,7 @@ export default function HomePage() {
       <WelcomeNote />
       <FeaturedProducts />
       <ServiceHighlights />
-      <TestimonialsPreview />
+      {/* Testimonials are hidden until real customer reviews replace the placeholder data in testimonials-preview.tsx. */}
 
       {/* Location Section */}
       <section className="py-20 bg-white">
