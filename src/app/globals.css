@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* The header is fixed; keep focused and anchored targets clear of it. */
+html {
+  scroll-padding-top: 9rem;
+}
+
 /* Typography */
 h1,
 h2,

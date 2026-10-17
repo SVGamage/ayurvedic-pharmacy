@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCart } from "@/contexts/cart-context";
+import { WhatsAppHandoffNote } from "@/components/whatsapp-handoff-note";
 import type { CartItem as CartItemType } from "@/types/product";
 import { CartItem } from "./cart-item";
 import { formatCurrency } from "@/config/currency";
@@ -184,16 +185,7 @@ export function CartSheet() {
             </div>
 
             {/* How ordering works */}
-            <div className="rounded-xl bg-emerald-50 px-3 py-2.5 text-xs text-emerald-900 leading-relaxed">
-              <p>
-                No payment now. We&apos;ll reply on WhatsApp to confirm stock
-                and delivery anywhere in Sri Lanka. Closed on Poya days.
-              </p>
-              <p lang="si" className="mt-1 text-emerald-800">
-                දැන් ගෙවීමක් අවශ්‍ය නැත. තොගය සහ බෙදාහැරීම WhatsApp හරහා අපි
-                තහවුරු කරමු. පෝය දිනවල වසා ඇත.
-              </p>
-            </div>
+            <WhatsAppHandoffNote kind="order" />
 
             <Button
               onClick={handleCheckout}
