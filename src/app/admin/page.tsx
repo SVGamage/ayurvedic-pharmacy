@@ -21,6 +21,7 @@ import {
   Tags,
   Building2,
   Users,
+  HelpCircle,
 } from "lucide-react";
 import { ProductForm } from "@/components/admin/product-form";
 import { ServiceForm } from "@/components/admin/service-form";
@@ -30,9 +31,12 @@ import { SubCategoryForm } from "@/components/admin/subcategory-form";
 import { CategoryTable } from "@/components/admin/category-table";
 import { SubCategoryTable } from "@/components/admin/subcategory-table";
 import { ContactInfoForm } from "@/components/admin/contact-info-form";
+import { FaqForm } from "@/components/admin/faq-form";
+import { FaqTable } from "@/components/admin/faq-table";
 import { Product, Category, SubCategory } from "@/types/product";
 import { Company } from "@/types/company";
 import { ContactPageInfoData } from "@/types/contact-info";
+import { Faq } from "@/types/faq";
 import { useToast } from "@/hooks/use-toast";
 import { toast as sonnerToast } from "sonner";
 
@@ -78,11 +82,13 @@ export default function AdminPage() {
   const [contactInfo, setContactInfo] = useState<ContactPageInfoData | null>(
     null
   );
+  const [faqs, setFaqs] = useState<Faq[]>([]);
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
   const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
   const [isCompanyDialogOpen, setIsCompanyDialogOpen] = useState(false);
   const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
   const [isSubCategoryDialogOpen, setIsSubCategoryDialogOpen] = useState(false);
+  const [isFaqDialogOpen, setIsFaqDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editingService, setEditingService] = useState<ServiceData | null>(
     null
@@ -91,6 +97,7 @@ export default function AdminPage() {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [editingSubCategory, setEditingSubCategory] =
     useState<SubCategory | null>(null);
+  const [editingFaq, setEditingFaq] = useState<Faq | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isFormLoading, setIsFormLoading] = useState(false);
   const { toast } = useToast();
@@ -99,11 +106,9 @@ export default function AdminPage() {
   const fetchProducts = useCallback(async () => {
     try {
       setIsLoading(true);
-      // For dashboard overview, get a larger limit to show all products
       const response = await fetch("/api/admin/products?limit=1000");
       if (response.ok) {
         const data = await response.json();
-        // Handle the new paginated response format
         setProducts(data.products || data);
       } else {
         throw new Error("Failed to fetch products");
@@ -124,11 +129,9 @@ export default function AdminPage() {
   const fetchServices = useCallback(async () => {
     try {
       setIsLoading(true);
-      // For dashboard overview, get a larger limit to show all services
       const response = await fetch("/api/admin/services?limit=1000");
       if (response.ok) {
         const data = await response.json();
-        // Handle the new paginated response format
         setServices(data.services || data);
       } else {
         throw new Error("Failed to fetch services");
@@ -227,6 +230,19 @@ export default function AdminPage() {
     }
   }, []);
 
+  // Fetch FAQs
+  const fetchFaqs = useCallback(async () => {
+    try {
+      const response = await fetch("/api/admin/faqs");
+      if (response.ok) {
+        const data = await response.json();
+        setFaqs(data);
+      }
+    } catch (error) {
+      console.error("Error fetching FAQs:", error);
+    }
+  }, []);
+
   useEffect(() => {
     const loadData = async () => {
       await Promise.all([
@@ -236,6 +252,7 @@ export default function AdminPage() {
         fetchSubcategories(),
         fetchCompanies(),
         fetchContactInfo(),
+        fetchFaqs(),
       ]);
     };
     loadData();
@@ -246,6 +263,7 @@ export default function AdminPage() {
     fetchSubcategories,
     fetchCompanies,
     fetchContactInfo,
+    fetchFaqs,
   ]);
 
   // Contact Info handler
@@ -273,6 +291,72 @@ export default function AdminPage() {
     }
   };
 
+  // FAQ handlers
+  const handleCreateFaq = () => {
+    setEditingFaq(null);
+    setIsFaqDialogOpen(true);
+  };
+
+  const handleEditFaq = (faq: Faq) => {
+    setEditingFaq(faq);
+    setIsFaqDialogOpen(true);
+  };
+
+  const handleFaqSubmit = async (data: Partial<Faq>) => {
+    try {
+      setIsFormLoading(true);
+      let response;
+
+      if (editingFaq) {
+        response = await fetch(`/api/admin/faqs/${editingFaq.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+      } else {
+        response = await fetch("/api/admin/faqs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+      }
+
+      if (response.ok) {
+        await fetchFaqs();
+        setIsFaqDialogOpen(false);
+        setEditingFaq(null);
+        sonnerToast.success(
+          `FAQ ${editingFaq ? "updated" : "added"} successfully!`
+        );
+      } else {
+        throw new Error(`Failed to ${editingFaq ? "update" : "create"} FAQ`);
+      }
+    } catch (error) {
+      console.error("Error saving FAQ:", error);
+      sonnerToast.error(`Failed to ${editingFaq ? "update" : "create"} FAQ`);
+    } finally {
+      setIsFormLoading(false);
+    }
+  };
+
+  const handleDeleteFaq = async (faqId: string) => {
+    try {
+      const response = await fetch(`/api/admin/faqs/${faqId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        await fetchFaqs();
+        sonnerToast.success("FAQ deleted successfully!");
+      } else {
+        throw new Error("Failed to delete FAQ");
+      }
+    } catch (error) {
+      console.error("Error deleting FAQ:", error);
+      sonnerToast.error("Failed to delete FAQ");
+    }
+  };
+
   // Product handlers
   const handleCreateProduct = () => {
     setEditingProduct(null);
@@ -284,14 +368,12 @@ export default function AdminPage() {
       let response;
 
       if (editingProduct) {
-        // Update existing product
         response = await fetch(`/api/admin/products/${editingProduct.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         });
       } else {
-        // Create new product
         response = await fetch("/api/admin/products", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -336,14 +418,12 @@ export default function AdminPage() {
       let response;
 
       if (editingService) {
-        // Update existing service
         response = await fetch(`/api/admin/services/${editingService.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         });
       } else {
-        // Create new service
         response = await fetch("/api/admin/services", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -382,7 +462,6 @@ export default function AdminPage() {
     setIsCompanyDialogOpen(true);
   };
 
-  // Convert Company to CompanyFormData
   const companyToFormData = (company: Company): CompanyFormData => ({
     id: company.id,
     name: company.name,
@@ -398,14 +477,12 @@ export default function AdminPage() {
       let response;
 
       if (editingCompany) {
-        // Update existing company
         response = await fetch(`/api/admin/company/${editingCompany.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         });
       } else {
-        // Create new company
         response = await fetch("/api/admin/company", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -455,14 +532,12 @@ export default function AdminPage() {
       let response;
 
       if (editingCategory) {
-        // Update existing category
         response = await fetch(`/api/admin/categories/${editingCategory.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         });
       } else {
-        // Create new category
         response = await fetch("/api/admin/categories", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -539,7 +614,6 @@ export default function AdminPage() {
       let response;
 
       if (editingSubCategory) {
-        // Update existing subcategory
         response = await fetch(
           `/api/admin/subcategories/${editingSubCategory.id}`,
           {
@@ -549,7 +623,6 @@ export default function AdminPage() {
           }
         );
       } else {
-        // Create new subcategory
         response = await fetch("/api/admin/subcategories", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -806,7 +879,7 @@ export default function AdminPage() {
         </div>
 
         {/* Extended Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           <Card className="bg-gradient-to-br from-white to-emerald-50 border-emerald-200 shadow-md">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-lg font-bold text-emerald-800">
@@ -840,12 +913,31 @@ export default function AdminPage() {
               <p className="text-sm text-yellow-600">Product subcategories</p>
             </CardContent>
           </Card>
+
+          <Card className="bg-gradient-to-br from-white to-teal-50 border-teal-200 shadow-md">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-lg font-bold text-teal-800">
+                FAQs
+              </CardTitle>
+              <div className="p-2 bg-teal-100 rounded-full">
+                <HelpCircle className="h-5 w-5 text-teal-600" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-teal-700 mb-1">
+                {faqs.length}
+              </div>
+              <p className="text-sm text-teal-600">
+                {faqs.filter((f) => f.isActive).length} active on Contact page
+              </p>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Main Content */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-emerald-100 p-4 sm:p-6">
           <Tabs defaultValue="categories" className="space-y-8">
-            <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 h-auto bg-emerald-50 border border-emerald-200 rounded-xl p-1 gap-1">
+            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto bg-emerald-50 border border-emerald-200 rounded-xl p-1 gap-1">
               <TabsTrigger
                 value="categories"
                 className="data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-md rounded-lg font-semibold py-2.5"
@@ -866,6 +958,13 @@ export default function AdminPage() {
               >
                 <Users className="h-4 w-4 mr-2" />
                 Team & Doctor
+              </TabsTrigger>
+              <TabsTrigger
+                value="faqs"
+                className="data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-md rounded-lg font-semibold py-2.5"
+              >
+                <HelpCircle className="h-4 w-4 mr-2" />
+                FAQs
               </TabsTrigger>
             </TabsList>
 
@@ -940,6 +1039,33 @@ export default function AdminPage() {
                 initialData={contactInfo}
                 onSubmit={handleContactInfoSubmit}
                 isLoading={isFormLoading}
+              />
+            </TabsContent>
+
+            <TabsContent value="faqs" className="space-y-6">
+              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                <div>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-emerald-800">
+                    Frequently Asked Questions
+                  </h2>
+                  <p className="text-emerald-600 text-base sm:text-lg">
+                    Add, edit, or remove FAQs displayed on the Contact Us page
+                  </p>
+                </div>
+                <Button
+                  onClick={handleCreateFaq}
+                  className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white shadow-lg transform hover:scale-105 transition-all duration-200"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add FAQ
+                </Button>
+              </div>
+
+              <FaqTable
+                faqs={faqs}
+                onEdit={handleEditFaq}
+                onDelete={handleDeleteFaq}
+                isLoading={isLoading}
               />
             </TabsContent>
           </Tabs>
@@ -1036,6 +1162,21 @@ export default function AdminPage() {
             subcategory={editingSubCategory || undefined}
             onSubmit={handleSubCategorySubmit}
             onCancel={() => setIsSubCategoryDialogOpen(false)}
+            isLoading={isFormLoading}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* FAQ Dialog */}
+      <Dialog open={isFaqDialogOpen} onOpenChange={setIsFaqDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{editingFaq ? "Edit FAQ" : "Add New FAQ"}</DialogTitle>
+          </DialogHeader>
+          <FaqForm
+            faq={editingFaq || undefined}
+            onSubmit={handleFaqSubmit}
+            onCancel={() => setIsFaqDialogOpen(false)}
             isLoading={isFormLoading}
           />
         </DialogContent>

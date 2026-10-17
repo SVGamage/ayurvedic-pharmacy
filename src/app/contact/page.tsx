@@ -39,6 +39,7 @@ import {
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
 import { TikTokIcon, ThreadsIcon } from "@/components/social-icons";
 import { ContactPageInfoData } from "@/types/contact-info";
+import { Faq } from "@/types/faq";
 import {
   hasVisibleRichTextContent,
   sanitizeRichText,
@@ -65,20 +66,32 @@ export default function ContactPage() {
   const [contactInfo, setContactInfo] = useState<ContactPageInfoData | null>(
     null
   );
+  const [faqs, setFaqs] = useState<Faq[]>([]);
 
   useEffect(() => {
-    const fetchInfo = async () => {
+    const fetchPageData = async () => {
       try {
-        const res = await fetch("/api/contact-info");
-        if (res.ok) {
-          const data = await res.json();
+        const [infoRes, faqRes] = await Promise.all([
+          fetch("/api/contact-info"),
+          fetch("/api/faqs"),
+        ]);
+
+        if (infoRes.ok) {
+          const data = await infoRes.json();
           setContactInfo(data);
         }
+
+        if (faqRes.ok) {
+          const faqData = await faqRes.json();
+          if (Array.isArray(faqData)) {
+            setFaqs(faqData);
+          }
+        }
       } catch (error) {
-        console.error("Error loading contact page info:", error);
+        console.error("Error loading contact page data:", error);
       }
     };
-    fetchInfo();
+    fetchPageData();
   }, []);
 
   const safeDoctorHtml = useMemo(
@@ -144,7 +157,7 @@ export default function ContactPage() {
               <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-100/40 rounded-full -mr-24 -mt-24 blur-3xl pointer-events-none" />
               <div className="grid grid-cols-1 md:grid-cols-12 items-stretch">
                 {contactInfo?.doctorImage && (
-                  <div className="md:col-span-5 lg:col-span-4 relative w-full aspect-[4/4] sm:aspect-[4/3] md:aspect-auto md:min-h-[340px] lg:min-h-[380px] bg-stone-100 overflow-hidden">
+                  <div className="md:col-span-5 lg:col-span-4 relative w-full h-80 sm:h-96 md:h-auto md:min-h-[380px] bg-stone-100 overflow-hidden">
                     <Image
                       src={contactInfo.doctorImage}
                       alt={
@@ -571,66 +584,39 @@ export default function ContactPage() {
       </div>
 
       {/* Enhanced FAQ Section */}
-      <Card className="shadow-sm border-stone-200">
-        <CardHeader className="pb-4 bg-stone-50 border-b border-stone-100">
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center mb-3 bg-white px-3 py-1 rounded-full border border-stone-200">
-              <span className="text-sm font-medium text-stone-600 tracking-wider uppercase">
-                Common Questions
-              </span>
+      {faqs.length > 0 && (
+        <Card className="shadow-sm border-stone-200">
+          <CardHeader className="pb-4 bg-stone-50 border-b border-stone-100">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center mb-3 bg-white px-3 py-1 rounded-full border border-stone-200">
+                <span className="text-sm font-medium text-stone-600 tracking-wider uppercase">
+                  Common Questions
+                </span>
+              </div>
+              <CardTitle className="text-2xl font-serif font-bold text-stone-800">
+                Frequently Asked Questions
+              </CardTitle>
             </div>
-            <CardTitle className="text-2xl font-serif font-bold text-stone-800">
-              Frequently Asked Questions
-            </CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent className="pt-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-4 rounded-xl bg-stone-50 border border-stone-100">
-              <h4 className="font-serif font-semibold mb-2 text-stone-800">
-                How do I book a consultation?
-              </h4>
-              <p className="text-stone-600 text-sm">
-                You can book online through our website, call us directly, or
-                visit our center. Online bookings are available 24/7.
-              </p>
+          </CardHeader>
+          <CardContent className="pt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {faqs.map((faq) => (
+                <div
+                  key={faq.id}
+                  className="p-4 rounded-xl bg-stone-50 border border-stone-100"
+                >
+                  <h4 className="font-serif font-semibold mb-2 text-stone-800">
+                    {faq.question}
+                  </h4>
+                  <p className="text-stone-600 text-sm whitespace-pre-line">
+                    {faq.answer}
+                  </p>
+                </div>
+              ))}
             </div>
-
-            <div className="p-4 rounded-xl bg-stone-50 border border-stone-100">
-              <h4 className="font-serif font-semibold mb-2 text-stone-800">
-                Do you offer online consultations?
-              </h4>
-              <p className="text-stone-600 text-sm">
-                Yes, we provide secure video consultations with our experienced
-                Ayurvedic doctors. Prescriptions and follow-ups are handled
-                digitally.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-xl bg-stone-50 border border-stone-100">
-              <h4 className="font-serif font-semibold mb-2 text-stone-800">
-                Are your products certified?
-              </h4>
-              <p className="text-stone-600 text-sm">
-                All our products are certified organic and follow traditional
-                Ayurvedic preparation methods. We maintain the highest quality
-                standards.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-xl bg-stone-50 border border-stone-100">
-              <h4 className="font-serif font-semibold mb-2 text-stone-800">
-                What is included in Nakshatra services?
-              </h4>
-              <p className="text-stone-600 text-sm">
-                Our Nakshatra services include horoscope reading, auspicious
-                timing calculations, name selection, and personalized ritual
-                guidance.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
