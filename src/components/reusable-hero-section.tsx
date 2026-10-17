@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Leaf } from "lucide-react";
+import { TextSlideshow } from "@/components/text-slideshow";
 
 interface HeroSectionProps {
   /** Pre-title text that appears above the main title */
@@ -11,10 +12,12 @@ interface HeroSectionProps {
   titleLine1: string;
   /** Main title - second line (usually in green gradient) */
   titleLine2: string;
-  /** Subtitle text that appears below the main title */
-  subtitle: string;
+  /** Subtitle text (or array of texts for slideshow) that appears below the main title */
+  subtitle: string | string[];
+  /** Optional interval in ms when subtitle is an array (default: 5000ms) */
+  subtitleInterval?: number;
   /** Description text that appears in the highlighted box */
-  description: string;
+  description?: string;
   /** Array of badge texts to display in the description box */
   badges?: string[];
   /** Custom background decorations (optional) */
@@ -136,6 +139,7 @@ export function ReusableHeroSection({
   titleLine1,
   titleLine2,
   subtitle,
+  subtitleInterval = 5000,
   backgroundDecorations,
   className,
   theme = "green",
@@ -149,6 +153,8 @@ export function ReusableHeroSection({
     titleLine1: customGradients?.titleLine1 || colors.titleColor1,
     titleLine2: customGradients?.titleLine2Text || colors.titleColor2,
   };
+
+  const subtitles = Array.isArray(subtitle) ? subtitle : [subtitle];
 
   return (
     <div className={cn("relative py-12 text-center", className)}>
@@ -181,9 +187,11 @@ export function ReusableHeroSection({
 
       {/* Enhanced subtitle */}
       <div className="max-w-3xl mx-auto mb-10 relative z-10">
-        <p className="text-xl text-stone-600 leading-relaxed font-light">
-          {subtitle}
-        </p>
+        <TextSlideshow
+          texts={subtitles}
+          interval={subtitleInterval}
+          textClassName="text-xl text-stone-600 leading-relaxed font-light"
+        />
       </div>
 
       {/* Decorative elements */}

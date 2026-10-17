@@ -168,7 +168,10 @@ export default function ServicesPage() {
         preTitle="Expert Care"
         titleLine1="Transformative"
         titleLine2="Wellness Services"
-        subtitle="Experience holistic healing through our comprehensive Ayurvedic consultations and traditional Nakshatra services"
+        subtitle={[
+          "You can now access Ayurvedic treatments, consultation services, and all the traditional Nakshatra services you need - all in one place.",
+          "අපගේ ආයුර්වේද සත්කාරයක්, උපදේශන සේවාවන් සහ ඔබට අවශ්‍ය සියළුම නැකත් සේවාවන් දැන් එකම ස්තානයකින් ලබාගත හැක."
+        ]}
         description="Our expert practitioners combine ancient wisdom with modern convenience to guide you towards optimal health and spiritual well-being."
         badges={[
           "Expert Practitioners",

@@ -14,6 +14,7 @@ import heroImage3 from "@/assets/hero-3.jpg";
 import { useEffect, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import Link from "next/link";
+import { TextSlideshow } from "@/components/text-slideshow";
 
 // Hero slides data with content
 const heroSlides = [
@@ -32,10 +33,12 @@ const heroSlides = [
 ];
 
 const staticContent = {
-  tag: "NATURAL PHARMACY",
+  tag: "AYURVEDIC PHARMACY",
   title: "Ancient Wisdom,\nModern Healing.",
-  description:
-    "Experience the purest ayurvedic formulations derived from nature's finest herbs. Certified, authentic, and effective.",
+  descriptions: [
+    "Pure herbal formulations crafted with medicinal ingredients from nature, combined with traditional Ayurvedic knowledge passed down through generations. Certified, authentic, and trusted Ayurvedic products, bringing generations of tradition and trust to you, now available from us.",
+    "ස්වභාවධර්මයේ ඖෂධීය අමුද්‍රව්‍ය, පරම්පරා ගණනාවක් පුරා පැවත එන සම්ප්‍රදායික දැනුම එක්කරමින් නිෂ්පාදනය කළ පිරිසිදු ශාකසාර ඖෂධ සංයෝග, සහතික කළ, විශ්වාසනීය හා අව්‍යාජ ආයුර්වේද නිෂ්පාදන, පරම්පරා ගණනාවක විශ්වාසය සමඟ දැන් ඔබට අප වෙතින්.",
+  ],
   primaryButton: { text: "Shop Remedies", href: "/products" },
   secondaryButton: { text: "Learn More", href: "/about" },
 };
@@ -98,9 +101,12 @@ export function HeroSection() {
               <h1 className="text-3xl md:text-5xl font-medium text-white tracking-tight mb-4 whitespace-pre-line font-serif">
                 {staticContent.title}
               </h1>
-              <p className="text-stone-300 max-w-lg text-sm md:text-base leading-relaxed mb-8">
-                {staticContent.description}
-              </p>
+              <TextSlideshow
+                texts={staticContent.descriptions}
+                interval={5000}
+                className="max-w-xl mb-8"
+                textClassName="text-stone-200 text-sm md:text-base leading-relaxed"
+              />
               <div className="flex flex-wrap gap-4">
                 <Button
                   className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-6 py-6 text-sm font-medium tracking-wide transition-all hover:scale-105"
@@ -111,7 +117,7 @@ export function HeroSection() {
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
-                <Button
+                {/*<Button
                   variant="outline"
                   className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white rounded-full px-6 py-6 text-sm font-medium tracking-wide backdrop-blur-sm transition-all hover:scale-105"
                   asChild
@@ -119,7 +125,7 @@ export function HeroSection() {
                   <Link href={staticContent.secondaryButton.href}>
                     {staticContent.secondaryButton.text}
                   </Link>
-                </Button>
+                </Button>*/}
               </div>
             </div>
           </div>

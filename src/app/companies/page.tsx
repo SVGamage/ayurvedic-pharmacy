@@ -215,9 +215,12 @@ export default function CompaniesPage() {
       {/* Hero Section */}
       <ReusableHeroSection
         preTitle="Trusted Brands"
-        titleLine1="Our Partner"
+        titleLine1="Available"
         titleLine2="Ayurvedic Companies"
-        subtitle="Explore Sri Lanka's leading Ayurvedic manufacturers and their product collections"
+        subtitle={[
+          "Sri Lanka’s leading Ayurvedic manufacturers and their products, now available from us.",
+          "ශ්‍රී ලංකාවේ ප්‍රමුඛ පෙළේ ආයුර්වේද නිෂ්පාදකයින් සහ ඔවුන්ගේ නිෂ්පාදන දැන් අප වෙතින්."
+        ]}
         description="Bringing together the finest traditional brands for your wellness needs"
         badges={[
           "Certified Brands",

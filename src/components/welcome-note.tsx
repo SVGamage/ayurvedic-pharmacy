@@ -1,5 +1,11 @@
 import { Leaf } from "lucide-react";
-
+import { TextSlideshow } from "./text-slideshow";
+const staticContent = {
+  descriptions: [
+    "We bring the timeless wisdom of Ayurveda into modern life through natural herbal remedies, thoughtfully created to support your health and well-being.",
+    "පුරාණ ආයුර්වේද දැනුමේ සාරය, නූතන ජීවන රටාවට ගැළපෙන ස්වභාවධර්මයේ ඖෂධීය සත්කාරයන් ඔබේ සුවපත් ජීවිතයක් උදෙසා අරමුණු කරගෙන ඔබ වෙත ගෙන ඒමට අපි කැපවී සිටිමු."
+  ]
+}
 export default function WelcomeNote() {
   return (
     <div className="relative py-16 my-8 overflow-hidden">
@@ -15,11 +21,12 @@ export default function WelcomeNote() {
           <span className="text-emerald-700 italic">Wellness Journey</span>
         </h2>
 
-        <p className="text-lg md:text-xl text-stone-600 leading-relaxed max-w-2xl mx-auto">
-          Embrace the ancient wisdom of Ayurveda tailored for modern life. We
-          are dedicated to bringing you the purest natural remedies and holistic
-          care.
-        </p>
+        <TextSlideshow
+          texts={staticContent.descriptions}
+          interval={5000}
+          className="max-w-2xl mx-auto"
+          textClassName="text-lg md:text-xl text-stone-600 leading-relaxed"
+        />
 
         <div className="mt-8 flex justify-center">
           <div className="h-1 w-24 bg-gradient-to-r from-transparent via-emerald-400 to-transparent rounded-full" />

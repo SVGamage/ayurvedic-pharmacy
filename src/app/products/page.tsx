@@ -526,7 +526,10 @@ export default function ProductsPage() {
         preTitle="Authentic Wellness"
         titleLine1="Let's Shop"
         titleLine2="Premium Ayurvedic Products"
-        subtitle="Bringing together Sri Lanka’s trusted Ayurvedic brands for your wellness journey"
+        subtitle={[
+          "Bringing together Sri Lanka’s trusted Ayurvedic brands for your wellness journey",
+          "ඔබේ නිරෝගීමත් ජීවන ගමන වෙනුවෙන් ශ්‍රී ලංකාවේ විශ්වාසනීය ආයුර්වේද සන්නාමයන් දැන් එකම තැනකට එක්කරමින් ඔබ වෙතට."
+        ]}
         description="Carefully crafted with time-honored formulations to support your natural healing journey"
         badges={[
           "Organic Certified",

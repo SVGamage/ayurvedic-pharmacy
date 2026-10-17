@@ -15,7 +15,10 @@ export default function LocationPage() {
         preTitle="Find Our Sanctuary"
         titleLine1="Visit Our"
         titleLine2="Wellness Center"
-        subtitle="Experience authentic Ayurvedic healing in our serene wellness center"
+        subtitle={[
+          "Over 30 years of trusted Ayurvedic experience and services, now available from us.",
+          "වසර 30කට වඩා වැඩි විශ්වාසනීය පලපුරුදු ආයුර්වේද සේවාවන් දැන් අප වෙතින්."
+        ]}
         description="Located in the heart of the city, our center provides a peaceful sanctuary where ancient healing traditions meet modern comfort. Step into our tranquil space and begin your journey to natural wellness."
         badges={["Free Parking", "Extended Hours", "24/7 Emergency"]}
         theme="green"
