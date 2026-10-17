@@ -62,9 +62,9 @@ export default function HomePage() {
                       Opening Hours
                     </h3>
                     <p className="text-stone-600">
-                      Monday - Saturday: 8:30 AM - 7:00 PM
+                      Everyday: 8:00 AM - 7:00 PM
                       <br />
-                      Sunday: 9:00 AM - 1:00 PM
+                      Poya Days: Closed (Holiday)
                     </p>
                   </div>
                 </div>
@@ -78,11 +78,11 @@ export default function HomePage() {
                       Contact Us
                     </h3>
                     <a
-                      href="tel:+94702048015"
+                      href="tel:+94760575304"
                       className="flex items-center gap-2 text-stone-600 hover:text-emerald-700 transition-colors"
                     >
                       <Smartphone className="h-4 w-4" />
-                      +94 70 204 8015
+                      +94 76 057 5304
                     </a>
                     <a
                       href="tel:+94473477938"

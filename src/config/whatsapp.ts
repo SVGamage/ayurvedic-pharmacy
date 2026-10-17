@@ -5,10 +5,10 @@ export const WHATSAPP_CONFIG = {
   // WhatsApp phone number (without + sign for wa.me links)
   // Format: Country code + Area code + Number (no spaces, dashes, or parentheses)
   // Example: "15551234567" for +1 (555) 123-4567
-  phoneNumber: "94702048015",
+  phoneNumber: "94760575304",
 
   // Formatted display number for UI (with formatting for readability)
-  displayNumber: "+94 (070) 204-8015",
+  displayNumber: "+94 (076) 057-5304",
 
   // Business name for WhatsApp messages
   businessName: "AyurVeda Pharmacy",

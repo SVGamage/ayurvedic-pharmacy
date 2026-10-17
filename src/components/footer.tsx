@@ -81,14 +81,14 @@ export function Footer() {
             </h5>
             <div className="space-y-4">
               <a
-                href="tel:+94702048015"
+                href="tel:+94760575304"
                 className="flex items-center space-x-3 group"
               >
                 <div className="p-2 bg-emerald-800 rounded-full text-emerald-300 group-hover:bg-emerald-700 transition-colors">
                   <Smartphone className="h-3 w-3" />
                 </div>
                 <span className="text-xs text-emerald-200 group-hover:text-white transition-colors">
-                  +94 70 204 8015
+                  +94 76 057 5304
                 </span>
               </a>
               <a

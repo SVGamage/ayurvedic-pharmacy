@@ -12,9 +12,8 @@ export const pharmacyLocation = {
 // Additional location data
 export const locationInfo = {
   operatingHours: {
-    "Monday - Friday": "8:00 AM - 7:00 PM",
-    Saturday: "8:00 AM - 5:00 PM",
-    Sunday: "8:00 AM - 4:00 PM",
+    Everyday: "8:00 AM - 7:00 PM",
+    "Poya Days": "Closed (Holiday)",
   },
   emergencyNote: "Emergency consultations available 24/7",
   email: {

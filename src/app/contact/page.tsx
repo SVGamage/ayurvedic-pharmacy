@@ -235,7 +235,7 @@ export default function ContactPage() {
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
               <a
-                href="tel:+94702048015"
+                href="tel:+94760575304"
                 className="flex items-center space-x-3 group"
               >
                 <div className="p-2 bg-emerald-100 rounded-full group-hover:bg-emerald-200 transition-colors">
@@ -244,7 +244,7 @@ export default function ContactPage() {
                 <div>
                   <p className="font-medium text-stone-900">Mobile</p>
                   <p className="text-stone-600 group-hover:text-emerald-700 transition-colors">
-                    +94 70 204 8015
+                    +94 76 057 5304
                   </p>
                 </div>
               </a>
@@ -310,8 +310,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-medium text-stone-900">Hours</p>
-                  <p className="text-stone-600">Mon-Sat: 8:30AM-7PM</p>
-                  <p className="text-stone-600">Sun: 9AM-1PM</p>
+                  <p className="text-stone-600">Everyday: 8:00 AM - 7:00 PM</p>
+                  <p className="text-stone-600">Poya Days: Closed (Holiday)</p>
                 </div>
               </div>
             </CardContent>
