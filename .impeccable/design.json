@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-17T15:00:00Z",
+  "generatedAt": "2026-10-17T19:00:00Z",
   "title": "Design System: Rathnadeepa Herbals",
   "extensions": {
     "colorMeta": {
@@ -531,6 +531,8 @@
       "Do write section headlines in serif with at most one italic emerald phrase.",
       "Do darken imagery with a stone gradient (`stone-900/90` → transparent) before setting text on it.",
       "Do give Sinhala text body size or larger, on solid or darkened ground.",
+      "Do label a price \"From\" only when a product's sizes cost different amounts, and show the lowest one.",
+      "Do say what happens next at the WhatsApp handoff (no payment now, we confirm stock and delivery, closed on Poya days), in English and Sinhala.",
       "Do give every icon-only control an `aria-label`, and give small visual controls (carousel dots, footer links) at least a 24px-tall hit area."
     ],
     "donts": [

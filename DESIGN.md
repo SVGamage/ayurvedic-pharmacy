@@ -287,15 +287,16 @@ Friendly and tactile, like a counter bell.
 - **Primary:** Herb Green fill, white Inter 500 text at 14px with slight tracking. The hero size is about 48px tall with 24px horizontal padding. Hover moves to Herb Green Deep, and the hero CTA also scales to 1.05.
 - **Nav CTA:** Forest Night pill with 12px tracked text and a small trailing arrow, under a soft `forest-night`-tinted shadow. Hover moves to Forest Shade.
 - **Outline (Add to Cart):** 2px Herb Green border, Herb Green Deep text and a white fill. Hover fills with Dew.
-- **WhatsApp:** a Herb Green → Sprout gradient with Emerald glow and a light shimmer sweep on hover (a known gap; see below).
+- **WhatsApp (the till):** flat Herb Green, the filled primary on product cards, the product dialog and the cart ("Order on WhatsApp" / "Send order on WhatsApp"). Add to Cart is the outlined secondary beneath it. No gradients, shimmer or glow on the product path.
 - **Ghost on imagery:** white at 10% opacity with a white 20% border and backdrop blur, used over the hero.
 - **Focus:** 2px Herb Green ring with a 2px offset (shadcn base).
 
 ### Chips / Badges
 - **Eyebrow chip:** white at 80% with a blur, a hairline stone border and a pill shape. It carries a small leaf icon and uppercase label text in emerald. It sits above every page hero title.
 - **Hero tag:** translucent Forest Night with an emerald-300 label and an emerald-500/30 border, used over the image.
-- **Product badge:** Herb Green → Sprout gradient pill with white 10–12px semibold text and a sparkle icon.
-- **Variant chips:** 12px-rounded; Stone Shelf when unselected, emerald-tinted when selected.
+- **Product badge:** flat emerald-700 pill with white 11–12px semibold text and a sparkle icon.
+- **Category chips (filters):** pill radio group, at least 40px tall. Selected is emerald-700 with white text; unselected is white with a stone hairline. Only categories that have products are shown.
+- **Size chips:** 12px-rounded, at least 40px tall, with `aria-pressed`. Selected is emerald-700 with white text (≥4.5:1); unselected is white with a stone hairline.
 
 ### Cards / Containers
 - **Corner Style:** 24px (product, service, company cards), 8px (shadcn base card).
@@ -330,6 +331,8 @@ Forest Night ground. Column headings are uppercase white labels; links are 12px 
 - **Do** write section headlines in serif with at most one italic emerald phrase.
 - **Do** darken imagery with a stone gradient (`stone-900/90` → transparent) before setting text on it.
 - **Do** give Sinhala text body size or larger, on solid or darkened ground.
+- **Do** label a price "From" only when a product's sizes cost different amounts, and show the lowest one.
+- **Do** say what happens next at the WhatsApp handoff (no payment now, we confirm stock and delivery, closed on Poya days), in English and Sinhala.
 - **Do** give every icon-only control an `aria-label`, and give small visual controls (carousel dots, footer links) at least a 24px-tall hit area.
 
 ### Don't:
@@ -342,5 +345,5 @@ Forest Night ground. Column headings are uppercase white labels; links are 12px 
 
 ### Known gaps (recorded, not resolved)
 - **The dark theme is unfinished.** A `.dark` token set exists, with blue secondary and accent colours (`#4682b4`, `#6495ed`) that are off-palette. It has no toggle and hasn't been designed. Don't build on it as it stands.
-- **Button styles are mixed.** Gradient fills, shimmer sweeps and hover-scale buttons sit alongside flat Herb Green pills, and nothing decides between them.
+- **Button styles are mixed outside /products.** The product path (cards, dialog, cart) is flat. Service cards and some other pages still use gradient fills, shimmer sweeps and hover-scale buttons.
 - **Admin typography.** Admin pages still use gradient-text h1s and 10px labels. They were left out of the storefront typeset pass.

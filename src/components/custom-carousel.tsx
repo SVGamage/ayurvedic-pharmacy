@@ -14,8 +14,10 @@ export interface HeroSlide {
 
 export default function CustomCarousel({
   heroSlides,
+  heightClassName = "h-[300px] lg:h-[400px]",
 }: {
   heroSlides: HeroSlide[];
+  heightClassName?: string;
 }) {
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
@@ -40,7 +42,7 @@ export default function CustomCarousel({
         <CarouselContent className="-ml-0">
           {heroSlides.map((slide, index) => (
             <CarouselItem key={slide.id} className="pl-0">
-              <div className="relative h-[300px] lg:h-[400px]">
+              <div className={`relative ${heightClassName}`}>
                 {/* Skeleton loading placeholder */}
                 {!loadedImages.has(slide.id) && (
                   <Skeleton className="absolute inset-0 w-full h-full rounded-none" />
@@ -49,7 +51,7 @@ export default function CustomCarousel({
                 {/* Optimized Next.js Image */}
                 <Image
                   src={slide.image}
-                  alt={`Slide ${slide.id}`}
+                  alt=""
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className={`object-cover transition-opacity duration-500 ${

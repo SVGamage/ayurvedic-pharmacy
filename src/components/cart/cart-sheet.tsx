@@ -1,6 +1,7 @@
 "use client";
 
-import { ShoppingBag, Trash2, MessageCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ShoppingBag, MessageCircle } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -9,28 +10,80 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useCart } from "@/contexts/cart-context";
+import type { CartItem as CartItemType } from "@/types/product";
 import { CartItem } from "./cart-item";
 import { formatCurrency } from "@/config/currency";
-import { orderCartViaWhatsApp } from "@/lib/whatsapp";
+import {
+  orderCartViaWhatsApp,
+  type OrderCustomerDetails,
+} from "@/lib/whatsapp";
 import { toast } from "sonner";
 
+// Remembered so repeat buyers don't retype their name and town.
+const DETAILS_KEY = "rathnadeepa-order-details";
+
 export function CartSheet() {
-  const { items, isOpen, closeCart, clearCart, totalItems, totalPrice } =
-    useCart();
+  const {
+    items,
+    isOpen,
+    closeCart,
+    clearCart,
+    restoreItems,
+    totalItems,
+    totalPrice,
+  } = useCart();
+  const [details, setDetails] = useState<OrderCustomerDetails>({});
+  // Kept so "Clear cart" can be undone inside the sheet (it's modal, so a toast can't be clicked).
+  const [clearedItems, setClearedItems] = useState<CartItemType[] | null>(
+    null,
+  );
+
+  useEffect(() => {
+    if (items.length > 0) setClearedItems(null);
+  }, [items.length]);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(DETAILS_KEY);
+      if (saved) setDetails(JSON.parse(saved));
+    } catch {
+      // Storage unavailable: the fields simply start empty.
+    }
+  }, []);
+
+  const updateDetails = (field: keyof OrderCustomerDetails, value: string) => {
+    setDetails((prev) => {
+      const next = { ...prev, [field]: value };
+      try {
+        localStorage.setItem(DETAILS_KEY, JSON.stringify(next));
+      } catch {
+        // Not critical; the order still sends.
+      }
+      return next;
+    });
+  };
 
   const handleClearCart = () => {
+    setClearedItems(items);
     clearCart();
-    toast.success("Cart cleared");
+  };
+
+  const handleUndoClear = () => {
+    if (clearedItems) restoreItems(clearedItems);
+    setClearedItems(null);
   };
 
   const handleCheckout = () => {
-    if (items.length === 0) {
-      toast.error("Your cart is empty");
-      return;
-    }
-    orderCartViaWhatsApp(items);
+    if (items.length === 0) return;
+    orderCartViaWhatsApp(items, details);
     closeCart();
+    toast.success("Your order is ready in WhatsApp", {
+      description:
+        "Press send there. We'll reply to confirm stock and delivery.",
+    });
   };
 
   return (
@@ -41,7 +94,7 @@ export function CartSheet() {
       >
         {/* Header */}
         <SheetHeader className="px-4 sm:px-6 py-3 sm:py-4 border-b border-stone-100 flex-shrink-0">
-          <SheetTitle className="text-base sm:text-lg font-semibold text-stone-800">
+          <SheetTitle className="text-lg sm:text-xl font-serif font-semibold text-stone-800">
             Your Cart
           </SheetTitle>
           <SheetDescription className="text-xs sm:text-sm text-stone-500">
@@ -59,11 +112,22 @@ export function CartSheet() {
                 <ShoppingBag className="w-8 h-8 sm:w-10 sm:h-10 text-stone-400" />
               </div>
               <h3 className="text-base sm:text-lg font-medium text-stone-700 mb-1.5 sm:mb-2">
-                Your cart is empty
+                {clearedItems ? "Cart cleared" : "Your cart is empty"}
               </h3>
-              <p className="text-xs sm:text-sm text-stone-500 max-w-[200px]">
-                Browse our products and add items to your cart
-              </p>
+              {clearedItems ? (
+                <Button
+                  variant="outline"
+                  onClick={handleUndoClear}
+                  className="mt-1 rounded-full border-stone-300 px-5"
+                >
+                  Undo
+                </Button>
+              ) : (
+                <p className="text-xs sm:text-sm text-stone-500 max-w-[220px]">
+                  Add remedies from the shop, then send the list to us on
+                  WhatsApp.
+                </p>
+              )}
             </div>
           ) : (
             <div className="py-2">
@@ -73,42 +137,80 @@ export function CartSheet() {
                   item={item}
                 />
               ))}
+
+              {/* Optional details that go into the WhatsApp message */}
+              <div className="mt-2 mb-4 grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="order-name" className="text-xs text-stone-600">
+                    Your name <span className="text-stone-400">(optional)</span>
+                  </Label>
+                  <Input
+                    id="order-name"
+                    autoComplete="name"
+                    value={details.name ?? ""}
+                    onChange={(e) => updateDetails("name", e.target.value)}
+                    className="h-11 bg-white"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="order-town" className="text-xs text-stone-600">
+                    Town for delivery{" "}
+                    <span className="text-stone-400">(optional)</span>
+                  </Label>
+                  <Input
+                    id="order-town"
+                    autoComplete="address-level2"
+                    value={details.town ?? ""}
+                    onChange={(e) => updateDetails("town", e.target.value)}
+                    className="h-11 bg-white"
+                  />
+                </div>
+              </div>
             </div>
           )}
         </div>
 
         {/* Footer - Sticky */}
         {items.length > 0 && (
-          <div className="border-t border-stone-200 px-4 sm:px-6 py-3 sm:py-4 bg-stone-50 space-y-3 sm:space-y-4 flex-shrink-0 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:pb-4">
+          <div className="border-t border-stone-200 px-4 sm:px-6 py-3 sm:py-4 bg-stone-50 space-y-3 flex-shrink-0 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:pb-4">
             {/* Subtotal */}
             <div className="flex items-center justify-between">
-              <span className="text-xs sm:text-sm font-medium text-stone-600">
+              <span className="text-sm font-medium text-stone-600">
                 Subtotal
               </span>
-              <span className="text-base sm:text-lg font-bold text-emerald-600">
+              <span className="text-lg font-bold text-stone-800 tabular-nums">
                 {formatCurrency(totalPrice)}
               </span>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col gap-2">
-              <Button
-                onClick={handleCheckout}
-                className="w-full relative overflow-hidden bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white font-semibold h-12 sm:h-14 rounded-xl shadow-lg shadow-emerald-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/30 group text-sm sm:text-base"
-              >
-                <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2 transition-transform group-hover:scale-110" />
-                Order via WhatsApp
-                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-              </Button>
+            {/* How ordering works */}
+            <div className="rounded-xl bg-emerald-50 px-3 py-2.5 text-xs text-emerald-900 leading-relaxed">
+              <p>
+                No payment now. We&apos;ll reply on WhatsApp to confirm stock
+                and delivery anywhere in Sri Lanka. Closed on Poya days.
+              </p>
+              <p lang="si" className="mt-1 text-emerald-800">
+                දැන් ගෙවීමක් අවශ්‍ය නැත. තොගය සහ බෙදාහැරීම WhatsApp හරහා අපි
+                තහවුරු කරමු. පෝය දිනවල වසා ඇත.
+              </p>
+            </div>
 
-              <Button
+            <Button
+              onClick={handleCheckout}
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold h-12 sm:h-14 rounded-xl text-sm sm:text-base"
+            >
+              <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              Send order on WhatsApp
+            </Button>
+
+            <div className="text-center">
+              <button
+                type="button"
                 onClick={handleClearCart}
-                variant="outline"
-                className="w-full border-2 border-stone-200 text-stone-600 hover:bg-red-50 hover:text-red-600 hover:border-red-200 rounded-xl h-10 sm:h-12 font-medium transition-all duration-300 text-xs sm:text-sm"
+                className="inline-flex min-h-10 items-center px-3 text-xs font-medium text-stone-500 underline-offset-4 hover:text-red-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 rounded-md"
               >
-                <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2" />
-                Clear All
-              </Button>
+                Clear cart
+              </button>
             </div>
           </div>
         )}

@@ -2,18 +2,18 @@ import { Package } from "lucide-react";
 
 export default function ProductLoading() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-yellow-50 flex items-center justify-center">
+    <div
+      className="min-h-screen bg-stone-50 flex items-center justify-center"
+      role="status"
+    >
       <div className="text-center">
-        <div className="relative">
-          <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-            <Package className="h-10 w-10 text-emerald-600" />
-          </div>
-          <div className="absolute inset-0 w-20 h-20 border-4 border-emerald-200 rounded-full animate-spin border-t-emerald-600 mx-auto"></div>
+        <div className="relative w-16 h-16 mx-auto mb-5">
+          <div className="absolute inset-0 rounded-full border-4 border-emerald-100 border-t-emerald-600 animate-spin motion-reduce:animate-none" />
+          <Package className="absolute inset-0 m-auto h-7 w-7 text-emerald-700" />
         </div>
-        <h3 className="text-2xl font-bold text-emerald-800 mb-2">
-          Loading Ayurvedic Products...
-        </h3>
-        <p className="text-emerald-600">Preparing your wellness catalog</p>
+        <p className="text-xl font-serif font-semibold text-stone-800">
+          Loading products…
+        </p>
       </div>
     </div>
   );
@@ -36,10 +36,10 @@ function ProductCardSkeleton() {
           <div className="h-7 bg-stone-100 rounded-lg w-16 animate-pulse" />
           <div className="h-7 bg-stone-100 rounded-lg w-16 animate-pulse" />
         </div>
-        {/* Add to cart button */}
-        <div className="h-10 sm:h-11 bg-emerald-50 border-2 border-emerald-100 rounded-xl sm:rounded-2xl animate-pulse" />
         {/* WhatsApp button */}
-        <div className="h-11 sm:h-12 bg-emerald-100 rounded-xl sm:rounded-2xl animate-pulse" />
+        <div className="h-11 bg-emerald-100 rounded-xl sm:rounded-2xl animate-pulse" />
+        {/* Add to cart button */}
+        <div className="h-11 bg-emerald-50 border-2 border-emerald-100 rounded-xl sm:rounded-2xl animate-pulse" />
       </div>
     </div>
   );
@@ -47,7 +47,7 @@ function ProductCardSkeleton() {
 
 export function ProductGridSkeleton({ count = 6 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6" aria-busy="true" aria-label="Loading products">
       {Array.from({ length: count }).map((_, i) => (
         <ProductCardSkeleton key={i} />
       ))}

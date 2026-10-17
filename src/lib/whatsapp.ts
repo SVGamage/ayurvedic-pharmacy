@@ -14,19 +14,54 @@ const LOCAL_WHATSAPP_CONFIG: WhatsAppConfig = {
   baseUrl: WHATSAPP_CONFIG.whatsappBaseUrl,
 };
 
+// Bilingual opener used on order messages (Sinhala first, then English).
+const ORDER_GREETING = "ආයුබෝවන්! / Hello!";
+
 // Product ordering via WhatsApp
 export const orderProductViaWhatsApp = (
   productName: string,
   productPrice: number,
-  productId: string
 ) => {
-  const message = `Hello! I'm interested in ordering the following product:
+  const message = `${ORDER_GREETING}
+I'd like to order:
 
-📦 Product: ${productName}
-💰 Price: ${formatCurrencyForWhatsApp(productPrice)}
-🆔 Product ID: ${productId}
+📦 ${productName}
+💰 ${formatCurrencyForWhatsApp(productPrice)}
 
-Could you please provide more information about availability and delivery options?
+Please confirm availability and delivery to my area.
+
+Thank you!`;
+
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
+
+  window.open(whatsappUrl, "_blank");
+};
+
+// Ask about a product that has no listed price, or ask the doctor about it
+export const askAboutProductViaWhatsApp = (
+  productName: string,
+  intent: "price" | "doctor",
+) => {
+  const ask =
+    intent === "price"
+      ? `Could you tell me the price and available sizes of ${productName}?`
+      : `I'd like to ask your doctor about ${productName} before ordering. Is it suitable for me?`;
+  const message = `${ORDER_GREETING}
+${ask}
+
+Thank you!`;
+
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
+
+  window.open(whatsappUrl, "_blank");
+};
+
+// Ask the shop to find something the catalog search didn't
+export const askForProductViaWhatsApp = (searchTerm: string) => {
+  const message = `${ORDER_GREETING}
+I couldn't find "${searchTerm}" on your website. Do you have it, or something similar?
 
 Thank you!`;
 
@@ -211,7 +246,15 @@ export const getWhatsAppConfig = (): WhatsAppConfig => {
 };
 
 // Order cart items via WhatsApp
-export const orderCartViaWhatsApp = (items: CartItem[]) => {
+export interface OrderCustomerDetails {
+  name?: string;
+  town?: string;
+}
+
+export const orderCartViaWhatsApp = (
+  items: CartItem[],
+  customer: OrderCustomerDetails = {},
+) => {
   const itemsList = items
     .map(
       (item, i) =>
@@ -225,7 +268,16 @@ export const orderCartViaWhatsApp = (items: CartItem[]) => {
     0
   );
 
-  const message = `Hello! I would like to order:
+  const customerLines = [
+    customer.name?.trim() && `👤 Name: ${customer.name.trim()}`,
+    customer.town?.trim() && `📍 Deliver to: ${customer.town.trim()}`,
+  ].filter(Boolean);
+  const customerBlock = customerLines.length
+    ? `\n${customerLines.join("\n")}\n`
+    : "";
+
+  const message = `${ORDER_GREETING}
+I would like to order:
 
 🛒 *ORDER DETAILS*
 ${itemsList}
@@ -234,8 +286,8 @@ ${itemsList}
 📦 Total Items: ${totalQuantity}
 💰 Total: ${formatCurrencyForWhatsApp(total)}
 ───────────────────
-
-Please confirm availability and delivery details.
+${customerBlock}
+Please confirm availability and delivery to my area.
 
 Thank you!`;
 
