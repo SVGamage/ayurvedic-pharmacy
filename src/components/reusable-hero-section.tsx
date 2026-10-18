@@ -24,6 +24,8 @@ interface HeroSectionProps {
   backgroundDecorations?: ReactNode;
   /** Additional CSS classes for the container */
   className?: string;
+  /** Tighter spacing and smaller title, for pages where content should start on the first screen */
+  compact?: boolean;
   /** Color theme for the hero section */
   theme?: "green" | "blue" | "purple" | "yellow" | "red";
   /** Custom gradient colors for the title lines */
@@ -144,6 +146,7 @@ export function ReusableHeroSection({
   className,
   theme = "green",
   customGradients,
+  compact = false,
 }: HeroSectionProps) {
   const colors = themeColors[theme];
 
@@ -157,12 +160,18 @@ export function ReusableHeroSection({
   const subtitles = Array.isArray(subtitle) ? subtitle : [subtitle];
 
   return (
-    <div className={cn("relative py-12 text-center", className)}>
+    <div
+      className={cn(
+        "relative text-center",
+        compact ? "pt-2 pb-6 sm:pb-8" : "py-12",
+        className,
+      )}
+    >
       {/* Background decorations */}
       {backgroundDecorations || <DefaultBackgroundDecorations theme={theme} />}
 
       {/* Main title with gradient */}
-      <div className="mb-8 relative z-10">
+      <div className={cn("relative z-10", compact ? "mb-4" : "mb-8")}>
         <div className="inline-flex items-center justify-center mb-6 bg-white/80 backdrop-blur-sm px-4 py-1.5 rounded-full shadow-sm border border-stone-100">
           <Leaf className={cn("h-4 w-4 mr-2", colors.iconColor)} />
           <span
@@ -175,7 +184,14 @@ export function ReusableHeroSection({
           </span>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold mb-6 leading-tight">
+        <h1
+          className={cn(
+            "font-serif font-bold leading-tight",
+            compact
+              ? "text-3xl sm:text-4xl lg:text-5xl mb-2"
+              : "text-4xl sm:text-5xl lg:text-6xl mb-6",
+          )}
+        >
           <span className={cn("block mb-2", textColors.titleLine1)}>
             {titleLine1}
           </span>
@@ -186,16 +202,30 @@ export function ReusableHeroSection({
       </div>
 
       {/* Enhanced subtitle */}
-      <div className="max-w-3xl mx-auto mb-10 relative z-10">
+      <div
+        className={cn(
+          "max-w-3xl mx-auto relative z-10",
+          compact ? "mb-0" : "mb-10",
+        )}
+      >
         <TextSlideshow
           texts={subtitles}
           interval={subtitleInterval}
-          textClassName="text-xl text-stone-600 leading-relaxed font-light"
+          textClassName={cn(
+            "text-stone-600 leading-relaxed",
+            compact ? "text-base sm:text-lg" : "text-xl font-light",
+          )}
         />
       </div>
 
       {/* Decorative elements */}
-      <div className="flex justify-center items-center space-x-3">
+      <div
+        className={cn(
+          "flex justify-center items-center space-x-3",
+          compact && "hidden",
+        )}
+        aria-hidden="true"
+      >
         <div
           className={cn("w-1.5 h-1.5 rounded-full opacity-40", colors.dots)}
         ></div>

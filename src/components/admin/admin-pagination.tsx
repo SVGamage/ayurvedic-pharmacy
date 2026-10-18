@@ -28,6 +28,8 @@ interface AdminPaginationProps {
   onPageChange: (page: number) => void;
   onItemsPerPageChange: (itemsPerPage: number) => void;
   pageSizeOptions?: number[];
+  /** Plural noun for the status line, e.g. "products". */
+  itemLabel?: string;
 }
 
 export function AdminPagination({
@@ -40,6 +42,7 @@ export function AdminPagination({
   onPageChange,
   onItemsPerPageChange,
   pageSizeOptions = [5, 10, 20, 50],
+  itemLabel = "entries",
 }: AdminPaginationProps) {
   // Add safety checks for undefined/null values
   const safeCurrentPage = currentPage || 1;
@@ -104,14 +107,14 @@ export function AdminPagination({
       {/* Pagination Info */}
       <div className="flex items-center justify-between text-sm">
         <div className="flex items-center gap-2">
-          <span className="text-emerald-700 font-medium">
-            Showing {startItem} to {endItem} of {safeTotalItems} entries
+          <span className="text-stone-600 tabular-nums">
+            Showing {startItem}–{endItem} of {safeTotalItems} {itemLabel}
           </span>
         </div>
 
         {/* Items per page selector */}
         <div className="flex items-center gap-3">
-          <span className="text-emerald-700 font-medium">Show</span>
+          <span className="text-stone-600">Show</span>
           <Select
             value={safeItemsPerPage.toString()}
             onValueChange={(value) => onItemsPerPageChange(Number(value))}
@@ -127,7 +130,7 @@ export function AdminPagination({
               ))}
             </SelectContent>
           </Select>
-          <span className="text-emerald-700 font-medium">per page</span>
+          <span className="text-stone-600">per page</span>
         </div>
       </div>
 

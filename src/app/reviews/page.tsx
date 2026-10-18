@@ -3,6 +3,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, Quote, ThumbsUp, MessageCircle } from "lucide-react";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
+import type { Metadata } from "next";
+
+// Placeholder reviews: unlinked and kept out of search until real reviews exist.
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 const reviews = [
   {

@@ -1,0 +1,548 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-17T21:00:00Z",
+  "title": "Design System: Rathnadeepa Herbals",
+  "extensions": {
+    "colorMeta": {
+      "herb-green": {
+        "role": "primary",
+        "displayName": "Herb Green",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#065f46",
+          "#047857",
+          "#059669",
+          "#10b981",
+          "#6ee7b7",
+          "#ecfdf5"
+        ]
+      },
+      "herb-green-deep": {
+        "role": "primary",
+        "displayName": "Herb Green Deep",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#065f46",
+          "#047857",
+          "#059669",
+          "#34d399",
+          "#a7f3d0",
+          "#ecfdf5"
+        ]
+      },
+      "forest-shade": {
+        "role": "primary",
+        "displayName": "Forest Shade",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#065f46",
+          "#047857",
+          "#059669",
+          "#34d399",
+          "#a7f3d0",
+          "#ecfdf5"
+        ]
+      },
+      "forest-night": {
+        "role": "primary",
+        "displayName": "Forest Night",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#065f46",
+          "#047857",
+          "#059669",
+          "#34d399",
+          "#a7f3d0",
+          "#ecfdf5"
+        ]
+      },
+      "sprout": {
+        "role": "primary",
+        "displayName": "Sprout",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#047857",
+          "#059669",
+          "#10b981",
+          "#34d399",
+          "#6ee7b7",
+          "#d1fae5"
+        ]
+      },
+      "leaf-mist": {
+        "role": "secondary",
+        "displayName": "Leaf Mist",
+        "tonalRamp": [
+          "#064e3b",
+          "#047857",
+          "#10b981",
+          "#34d399",
+          "#6ee7b7",
+          "#a7f3d0",
+          "#d1fae5",
+          "#ecfdf5"
+        ]
+      },
+      "leaf-wash": {
+        "role": "secondary",
+        "displayName": "Leaf Wash",
+        "tonalRamp": [
+          "#064e3b",
+          "#047857",
+          "#10b981",
+          "#34d399",
+          "#6ee7b7",
+          "#a7f3d0",
+          "#d1fae5",
+          "#ecfdf5"
+        ]
+      },
+      "dew": {
+        "role": "secondary",
+        "displayName": "Dew",
+        "tonalRamp": [
+          "#064e3b",
+          "#047857",
+          "#10b981",
+          "#34d399",
+          "#6ee7b7",
+          "#a7f3d0",
+          "#d1fae5",
+          "#ecfdf5"
+        ]
+      },
+      "wordmark-green": {
+        "role": "secondary",
+        "displayName": "Wordmark Green",
+        "tonalRamp": [
+          "#052e16",
+          "#14532d",
+          "#166534",
+          "#15803d",
+          "#16a34a",
+          "#4ade80",
+          "#86efac",
+          "#dcfce7"
+        ]
+      },
+      "wordmark-green-light": {
+        "role": "secondary",
+        "displayName": "Wordmark Green Light",
+        "tonalRamp": [
+          "#052e16",
+          "#14532d",
+          "#166534",
+          "#15803d",
+          "#16a34a",
+          "#4ade80",
+          "#86efac",
+          "#dcfce7"
+        ]
+      },
+      "turmeric": {
+        "role": "tertiary",
+        "displayName": "Turmeric",
+        "tonalRamp": [
+          "#451a03",
+          "#78350f",
+          "#92400e",
+          "#b45309",
+          "#d97706",
+          "#fbbf24",
+          "#fde68a",
+          "#fffbeb"
+        ]
+      },
+      "stone-paper": {
+        "role": "neutral",
+        "displayName": "Stone Paper",
+        "tonalRamp": [
+          "#0c0a09",
+          "#1c1917",
+          "#292524",
+          "#57534e",
+          "#78716c",
+          "#a8a29e",
+          "#e7e5e4",
+          "#fafaf9"
+        ]
+      },
+      "stone-shelf": {
+        "role": "neutral",
+        "displayName": "Stone Shelf",
+        "tonalRamp": [
+          "#0c0a09",
+          "#1c1917",
+          "#292524",
+          "#57534e",
+          "#78716c",
+          "#a8a29e",
+          "#e7e5e4",
+          "#f5f5f4"
+        ]
+      },
+      "stone-line": {
+        "role": "neutral",
+        "displayName": "Stone Line",
+        "tonalRamp": [
+          "#0c0a09",
+          "#1c1917",
+          "#292524",
+          "#57534e",
+          "#78716c",
+          "#a8a29e",
+          "#e7e5e4",
+          "#fafaf9"
+        ]
+      },
+      "stone-quiet": {
+        "role": "neutral",
+        "displayName": "Stone Quiet",
+        "tonalRamp": [
+          "#0c0a09",
+          "#1c1917",
+          "#292524",
+          "#57534e",
+          "#78716c",
+          "#a8a29e",
+          "#e7e5e4",
+          "#fafaf9"
+        ]
+      },
+      "stone-muted": {
+        "role": "neutral",
+        "displayName": "Stone Muted",
+        "tonalRamp": [
+          "#0c0a09",
+          "#1c1917",
+          "#292524",
+          "#57534e",
+          "#78716c",
+          "#a8a29e",
+          "#e7e5e4",
+          "#fafaf9"
+        ]
+      },
+      "stone-ink-soft": {
+        "role": "neutral",
+        "displayName": "Stone Ink Soft",
+        "tonalRamp": [
+          "#0c0a09",
+          "#1c1917",
+          "#292524",
+          "#57534e",
+          "#78716c",
+          "#a8a29e",
+          "#e7e5e4",
+          "#fafaf9"
+        ]
+      },
+      "stone-ink": {
+        "role": "neutral",
+        "displayName": "Stone Ink",
+        "tonalRamp": [
+          "#0c0a09",
+          "#1c1917",
+          "#292524",
+          "#57534e",
+          "#78716c",
+          "#a8a29e",
+          "#e7e5e4",
+          "#fafaf9"
+        ]
+      },
+      "stone-ink-deep": {
+        "role": "neutral",
+        "displayName": "Stone Ink Deep",
+        "tonalRamp": [
+          "#0c0a09",
+          "#1c1917",
+          "#292524",
+          "#57534e",
+          "#78716c",
+          "#a8a29e",
+          "#e7e5e4",
+          "#fafaf9"
+        ]
+      },
+      "card-white": {
+        "role": "neutral",
+        "displayName": "Card White",
+        "tonalRamp": [
+          "#0c0a09",
+          "#1c1917",
+          "#292524",
+          "#57534e",
+          "#78716c",
+          "#a8a29e",
+          "#e7e5e4",
+          "#ffffff"
+        ]
+      },
+      "alert-red": {
+        "role": "neutral",
+        "displayName": "Alert Red",
+        "tonalRamp": [
+          "#450a0a",
+          "#7f1d1d",
+          "#991b1b",
+          "#b91c1c",
+          "#ef4444",
+          "#f87171",
+          "#fecaca",
+          "#fef2f2"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "brand": {
+        "displayName": "Brand Script",
+        "purpose": "Rathnadeepa Herbals wordmark only."
+      },
+      "display": {
+        "displayName": "Display",
+        "purpose": "Inner-page hero titles; second line italic and coloured."
+      },
+      "hero": {
+        "displayName": "Hero",
+        "purpose": "Homepage carousel title over imagery."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles with one italic emerald phrase."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card and product names, two-line clamp."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions and card copy."
+      },
+      "body-lead": {
+        "displayName": "Body Lead",
+        "purpose": "Section intro paragraphs, centred, ~42rem."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase eyebrows, tags, footer headings, price captions."
+      },
+      "label-micro": {
+        "displayName": "Label Micro",
+        "purpose": "11px mobile step for card labels and badges; the storefront floor."
+      },
+      "sinhala": {
+        "displayName": "Sinhala",
+        "purpose": "Sinhala copy via :lang(si): Noto Sans Sinhala, 1.8 leading."
+      }
+    },
+    "shadows": [
+      {
+        "name": "rest",
+        "value": "0 4px 20px -4px rgba(0,0,0,0.06)",
+        "purpose": "Interactive cards at rest."
+      },
+      {
+        "name": "herbal-lift",
+        "value": "0 20px 40px -12px rgba(16,185,129,0.15), 0 8px 20px -8px rgba(0,0,0,0.08)",
+        "purpose": "Card hover, paired with translateY(-8px)."
+      },
+      {
+        "name": "emerald-glow",
+        "value": "0 10px 15px -3px rgba(16,185,129,0.2), 0 4px 6px -4px rgba(16,185,129,0.2)",
+        "purpose": "WhatsApp/gradient buttons and floating badges."
+      },
+      {
+        "name": "forest-cta",
+        "value": "0 10px 15px -3px rgba(6,78,59,0.2), 0 4px 6px -4px rgba(6,78,59,0.2)",
+        "purpose": "Forest Night nav CTA."
+      },
+      {
+        "name": "utility-sm",
+        "value": "0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1)",
+        "purpose": "shadcn base cards and static panels."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Default Tailwind transitions (colors, shadows)."
+      },
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "fadeInUp entrance (0.8s) on hero copy."
+      },
+      {
+        "name": "duration-card",
+        "value": "500ms",
+        "purpose": "Card lift and border transitions."
+      },
+      {
+        "name": "duration-image",
+        "value": "700ms",
+        "purpose": "Image zoom inside frames on hover."
+      },
+      {
+        "name": "duration-nav",
+        "value": "300ms",
+        "purpose": "Header glass transition on scroll."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Herb Green pill for storefront calls to action (Shop Remedies).",
+      "html": "<button class=\"ds-btn-primary\">Shop Remedies <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; background: #059669; color: #fff; border: none; border-radius: 9999px; padding: 0 24px; height: 48px; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.025em; cursor: pointer; transition: all 150ms cubic-bezier(0.4,0,0.2,1); } .ds-btn-primary:hover { background: #047857; transform: scale(1.05); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #fafaf9, 0 0 0 4px #059669; } .ds-btn-primary:active { transform: scale(0.98); }"
+    },
+    {
+      "name": "Nav CTA",
+      "kind": "button",
+      "refersTo": "button-nav-cta",
+      "description": "Forest Night pill in the header, grounding the brand.",
+      "html": "<button class=\"ds-btn-nav\">Order Now <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button>",
+      "css": ".ds-btn-nav { display: inline-flex; align-items: center; gap: 6px; background: #064e3b; color: #fff; border: none; border-radius: 9999px; padding: 8px 24px; font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.025em; cursor: pointer; box-shadow: 0 10px 15px -3px rgba(6,78,59,0.2), 0 4px 6px -4px rgba(6,78,59,0.2); transition: background 150ms; } .ds-btn-nav:hover { background: #065f46; } .ds-btn-nav:focus-visible { outline: none; box-shadow: 0 0 0 2px #fafaf9, 0 0 0 4px #059669; }"
+    },
+    {
+      "name": "Add to Cart (Outline)",
+      "kind": "button",
+      "refersTo": "button-outline-herb",
+      "description": "Full-width outlined in-card action.",
+      "html": "<button class=\"ds-btn-outline\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"8\" cy=\"21\" r=\"1\"/><circle cx=\"19\" cy=\"21\" r=\"1\"/><path d=\"M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12\"/></svg>Add to Cart</button>",
+      "css": ".ds-btn-outline { display: flex; width: 240px; align-items: center; justify-content: center; gap: 10px; background: #fff; color: #047857; border: 2px solid #059669; border-radius: 16px; padding: 12px 16px; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 300ms; } .ds-btn-outline:hover { background: #ecfdf5; } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px #fff, 0 0 0 4px #059669; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "shadcn base field on stone paper.",
+      "html": "<input class=\"ds-input\" placeholder=\"Search remedies…\" />",
+      "css": ".ds-input { height: 40px; width: 280px; border: 1px solid #e7e5e4; background: #fafaf9; border-radius: 6px; padding: 8px 12px; font-family: Inter, system-ui, sans-serif; font-size: 14px; color: #1c1917; transition: box-shadow 150ms; } .ds-input::placeholder { color: #57534e; } .ds-input:focus-visible { outline: none; box-shadow: 0 0 0 2px #fafaf9, 0 0 0 4px #059669; }"
+    },
+    {
+      "name": "Eyebrow Chip",
+      "kind": "chip",
+      "refersTo": "eyebrow-chip",
+      "description": "Leaf-marked label above page hero titles.",
+      "html": "<span class=\"ds-eyebrow\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z\"/><path d=\"M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12\"/></svg>OUR PRODUCTS</span>",
+      "css": ".ds-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.8); backdrop-filter: blur(4px); border: 1px solid #f5f5f4; border-radius: 9999px; padding: 6px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); color: #047857; font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; }"
+    },
+    {
+      "name": "Product Card",
+      "kind": "card",
+      "refersTo": "card-product",
+      "description": "Picked-up-jar card: square image, glass price tile, leaf category label, two actions.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-media\"><span class=\"ds-card-price\"><small>FROM</small>Rs. 1,250</span></div><div class=\"ds-card-body\"><span class=\"ds-card-cat\">HERBAL OILS</span><h4 class=\"ds-card-title\">Kohomba Hair Oil</h4><p class=\"ds-card-desc\">Traditional neem oil for scalp care.</p><button class=\"ds-card-btn\">Order via WhatsApp</button></div></article>",
+      "css": ".ds-card { width: 260px; background: linear-gradient(to bottom, #fff, rgba(250,250,249,0.8)); border: 1px solid rgba(231,229,228,0.6); border-radius: 24px; overflow: hidden; box-shadow: 0 4px 20px -4px rgba(0,0,0,0.06); transition: all 500ms cubic-bezier(0,0,0.2,1); font-family: Inter, system-ui, sans-serif; } .ds-card:hover { transform: translateY(-8px); border-color: #a7f3d0; box-shadow: 0 20px 40px -12px rgba(16,185,129,0.15), 0 8px 20px -8px rgba(0,0,0,0.08); } .ds-card-media { position: relative; aspect-ratio: 1; background: linear-gradient(135deg, #f5f5f4, #fafaf9); } .ds-card-price { position: absolute; top: 16px; right: 16px; display: flex; flex-direction: column; align-items: flex-end; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); border-radius: 16px; padding: 8px 16px; color: #059669; font-size: 18px; font-weight: 700; letter-spacing: -0.025em; } .ds-card-price small { font-size: 10px; font-weight: 500; color: #a8a29e; letter-spacing: 0.05em; } .ds-card-body { padding: 16px 20px 20px; } .ds-card-cat { color: #059669; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; } .ds-card-title { margin: 8px 0 12px; color: #292524; font-size: 18px; font-weight: 600; letter-spacing: -0.025em; line-height: 1.375; transition: color 300ms; } .ds-card:hover .ds-card-title { color: #047857; } .ds-card-desc { margin: 0 0 16px; color: #57534e; font-size: 14px; line-height: 1.625; } .ds-card-btn { width: 100%; border: none; border-radius: 16px; padding: 14px; background: linear-gradient(to right, #059669, #10b981); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 10px 15px -3px rgba(16,185,129,0.2); } .ds-card-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px #fff, 0 0 0 4px #059669; }"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "description": "Scrolled glass header: links in stone ink, active in forest shade.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-nav-brand\">Rathnadeepa</span><div class=\"ds-nav-links\"><a href=\"#\" class=\"is-active\">Home</a><a href=\"#\">Products</a><a href=\"#\">Services</a><a href=\"#\">Contact</a></div></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 16px 24px; background: rgba(250,250,249,0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(231,229,228,0.6); box-shadow: 0 1px 2px rgba(0,0,0,0.05); font-family: Inter, system-ui, sans-serif; } .ds-nav-brand { font-family: Tangerine, cursive; font-size: 40px; font-weight: 700; color: #166534; line-height: 1; } .ds-nav-links { display: flex; gap: 32px; } .ds-nav-links a { color: #57534e; font-size: 16px; font-weight: 500; text-decoration: none; transition: color 150ms; } .ds-nav-links a:hover { color: #047857; } .ds-nav-links a.is-active { color: #065f46; font-weight: 600; } .ds-nav-links a:focus-visible { outline: 2px solid #059669; outline-offset: 4px; border-radius: 4px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Village Apothecary",
+    "overview": "This is the trusted family dispensary on the Hambantota road, put on a screen. Pages are warm stone paper (`stone-paper`), not stark white. Green is the colour of the herb shelf and the doctor's coat: deep, settled emerald (`herb-green`) that marks every place a visitor can act, and that darkens to `forest-night` where the shop holds its ground (the nav order button and the footer). The name is written by hand: the Tangerine script wordmark is the one flourish that says \"family, generational\", and everything around it stays plain so the script keeps its warmth.\n\nDensity is relaxed and retail-friendly. There are wide 1280px containers, generous 80px section breathing room, and rounded, softly lifted cards that feel like jars on a shelf you can pick up. Serif headlines carry the \"ancient wisdom\" register, often with an italic emerald second phrase (\"What Our *Customers Say*\"). Inter carries every price, label and button so the commerce reads clearly. Photography of real products, services and the shop sits inside rounded frames, with dark stone gradients wherever text sits on top.\n\nThe implemented system has some loose ends that are recorded rather than resolved (see Do's and Don'ts → Known gaps). Document what renders; don't treat the gaps as intent.",
+    "keyCharacteristics": [
+      "Warm stone neutrals (Tailwind *stone*) everywhere; cool grays are drift.",
+      "One accent family, emerald, in a full ladder from `dew` to `forest-night`; turmeric amber only for stars and small highlights.",
+      "Pills for actions and chips, 16–24px radii for cards and media frames.",
+      "Soft, diffuse lift on cards, warming to an emerald-tinted glow on hover.",
+      "Tangerine script reserved for the Rathnadeepa Herbals wordmark.",
+      "Serif headlines with an italic emerald phrase; sans for everything functional."
+    ],
+    "rules": [
+      {
+        "name": "The Warm Stone Rule",
+        "body": "Neutrals come from the stone family. `gray-*` and `slate-*` classes in older components (blog preview, some loaders) are drift; don't add more.",
+        "section": "colors"
+      },
+      {
+        "name": "The Emerald Ladder Rule",
+        "body": "All brand colour is emerald, picked by depth: pale steps for surfaces, 600 for action, 900 for grounding. Plain `green-*` belongs only to the wordmark and to WhatsApp-specific moments.",
+        "section": "colors"
+      },
+      {
+        "name": "The Turmeric Pinch Rule",
+        "body": "Amber is a spice, not a base. Stars, a badge dot, a tiny highlight; never a fill larger than a chip.",
+        "section": "colors"
+      },
+      {
+        "name": "The Signature Rule",
+        "body": "Tangerine appears only in the wordmark. Never set headings, prices or Sinhala in script.",
+        "section": "typography"
+      },
+      {
+        "name": "The Italic Phrase Rule",
+        "body": "A serif headline may end with one italic emerald phrase. One per heading, never the whole line.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sinhala Legibility Rule",
+        "body": "Sinhala copy (for example, the bilingual hero subtitle) is set in the body sans at body size or larger, on solid or darkened ground, and always carries `lang=\"si\"` so Noto Sans Sinhala and the 1.8 leading apply.",
+        "section": "typography"
+      },
+      {
+        "name": "The 11px Floor Rule",
+        "body": "No customer-facing text is smaller than 11px, and only uppercase micro-labels may use 11px. The cart count bubble (10px) is the one exception.",
+        "section": "typography"
+      },
+      {
+        "name": "The Picked-Up Jar Rule",
+        "body": "Interactive cards lift on hover (translate up and deepen to Herbal lift). Static information panels stay on Rest or `shadow-sm` and do not move.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use Herb Green for anything a visitor can act on, and Forest Night where the brand needs to sit heavy (nav CTA, footer).",
+      "Do keep page grounds Stone Paper and text in stone inks; pale emerald bands (Dew) are for whole sections, not individual cards.",
+      "Do make storefront actions pills and product cards 24px-rounded, with the Rest → Herbal lift hover.",
+      "Do write section headlines in serif with at most one italic emerald phrase.",
+      "Do darken imagery with a stone gradient (`stone-900/90` → transparent) before setting text on it.",
+      "Do give Sinhala text body size or larger, on solid or darkened ground.",
+      "Do label a price \"From\" only when a product's sizes cost different amounts, and show the lowest one.",
+      "Do say what happens next at the WhatsApp handoff (no payment now, we confirm stock and delivery, closed on Poya days), in English and Sinhala.",
+      "Do send every WhatsApp message to the shop's own number, never a manufacturer's, and open it with the bilingual greeting \"ආයුබෝවන්! / Hello!\".",
+      "Do give every icon-only control an `aria-label`, and give small visual controls (carousel dots, footer links) at least a 24px-tall hit area."
+    ],
+    "donts": [
+      "Don't use Tangerine outside the wordmark.",
+      "Don't introduce gray or slate neutrals, or a second accent hue; turmeric stays a pinch.",
+      "Don't let turmeric/amber become a button or a large fill.",
+      "Don't put hard square corners on customer-facing actions or cards.",
+      "Don't use coloured side stripes (`border-l-4`) on panels; use a hairline border all round.",
+      "Don't show testimonials, ratings or reviews that aren't real. The testimonials section is hidden until real reviews exist."
+    ]
+  }
+}

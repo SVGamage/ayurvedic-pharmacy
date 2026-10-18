@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
+/* The header is fixed; keep focused and anchored targets clear of it. */
+html {
+  scroll-padding-top: 9rem;
+}
+
+/* Typography */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+/* Sinhala has tall stacked vowel signs; give it more leading and no tracking. */
+:lang(si) {
+  line-height: 1.8;
+  letter-spacing: 0;
+}
+
 /* Custom utility classes */
 .line-clamp-2 {
   display: -webkit-box;
@@ -17,37 +35,7 @@
   overflow: hidden;
 }
 
-/* Custom animations for enhanced page headers */
-@keyframes pulse-slow {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes glow {
-  0%,
-  100% {
-    box-shadow: 0 0 5px rgba(52, 168, 90, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(52, 168, 90, 0.6);
-  }
-}
-
+/* Entrance for hero copy */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -59,21 +47,16 @@
   }
 }
 
-.animate-pulse-slow {
-  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-glow {
-  animation: glow 2s ease-in-out infinite;
-}
-
 .animate-fade-in-up {
   animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 /* Animation delay utilities */
@@ -101,57 +84,32 @@
   animation-delay: 700ms;
 }
 
-/* Enhanced gradient text support */
-.text-gradient {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* Browser surfaces, themed from the palette */
+::selection {
+  background: #d1fae5; /* Leaf Wash */
+  color: #064e3b; /* Forest Night */
 }
 
-.text-gradient-ayurveda {
-  background: linear-gradient(135deg, #34a85a 0%, #22c55e 50%, #eab308 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+html {
+  scrollbar-color: #059669 #f5f5f4;
 }
 
-/* Backdrop blur utilities for better browser support */
-.backdrop-blur-light {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-/* Custom shadow for floating elements */
-.shadow-float {
-  box-shadow:
-    0 8px 25px -8px rgba(0, 0, 0, 0.1),
-    0 20px 40px -12px rgba(52, 168, 90, 0.15);
-}
-
-.shadow-ayurveda {
-  box-shadow:
-    0 4px 20px -4px rgba(52, 168, 90, 0.25),
-    0 8px 40px -8px rgba(34, 197, 94, 0.15);
-}
-
-/* Custom scrollbar for Ayurvedic theme */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #f5f5f4; /* Stone Shelf */
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #34a85a, #22c55e);
+  background: #059669; /* Herb Green */
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
+  background: #047857; /* Herb Green Deep */
 }
 
 /* Smooth Carousel Snap */
@@ -185,8 +143,8 @@
   --secondary-foreground: #1c1917;
   --muted: #e7e5e4; /* Stone-200 */
   --muted-foreground: #57534e; /* Stone-600 */
-  --accent: #fbbf24; /* Amber-400 */
-  --accent-foreground: #1c1917;
+  --accent: #ecfdf5; /* Emerald-50 (Dew): hover/selected fill for shadcn primitives */
+  --accent-foreground: #065f46; /* Emerald-800 (Forest Shade) */
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   --border: #e7e5e4; /* Stone-200 */
@@ -206,9 +164,9 @@
   --sidebar-border: #e7e5e4;
   --sidebar-ring: #059669;
   --font-sans:
-    var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, sans-serif;
-  --font-serif: Source Serif 4, serif;
+    var(--font-inter), var(--font-sinhala), system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-source-serif);
   --font-mono: JetBrains Mono, monospace;
   --font-brand: var(--font-tangerine), cursive;
   --radius: 0.5rem;
@@ -262,9 +220,9 @@
   --sidebar-border: #444444;
   --sidebar-ring: #34a85a;
   --font-sans:
-    var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, sans-serif;
-  --font-serif: Source Serif 4, serif;
+    var(--font-inter), var(--font-sinhala), system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-source-serif);
   --font-mono: JetBrains Mono, monospace;
   --font-brand: var(--font-tangerine), cursive;
   --radius: 0.5rem;

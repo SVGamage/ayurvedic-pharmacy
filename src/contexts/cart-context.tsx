@@ -34,6 +34,8 @@ interface CartContextType {
   removeItem: (id: string, variant: string) => void;
   updateQuantity: (id: string, variant: string, quantity: number) => void;
   clearCart: () => void;
+  /** Put back a previous set of items (used to undo "Clear cart"). */
+  restoreItems: (items: CartItem[]) => void;
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
@@ -174,6 +176,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     []
   );
 
+  const restoreItems = useCallback((items: CartItem[]) => {
+    dispatch({ type: "HYDRATE", payload: items });
+  }, []);
+
   const clearCart = useCallback(() => {
     dispatch({ type: "CLEAR_CART" });
   }, []);
@@ -206,6 +212,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         removeItem,
         updateQuantity,
         clearCart,
+        restoreItems,
         openCart,
         closeCart,
         toggleCart,

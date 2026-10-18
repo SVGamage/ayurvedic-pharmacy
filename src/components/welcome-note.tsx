@@ -12,7 +12,7 @@ export default function WelcomeNote() {
       <div className="absolute inset-0 bg-emerald-50/50 -skew-y-1 transform origin-top-left scale-110" />
 
       <div className="relative max-w-4xl mx-auto px-4 text-center">
-        <div className="inline-flex items-center justify-center p-3 bg-white rounded-full shadow-sm mb-6 animate-bounce-slow">
+        <div className="inline-flex items-center justify-center p-3 bg-white rounded-full shadow-sm mb-6">
           <Leaf className="h-6 w-6 text-emerald-600" />
         </div>
 

@@ -2,18 +2,18 @@ import { Briefcase } from "lucide-react";
 
 export default function ServiceLoading() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-yellow-50 flex items-center justify-center">
+    <div
+      className="min-h-screen bg-stone-50 flex items-center justify-center"
+      role="status"
+    >
       <div className="text-center">
-        <div className="relative">
-          <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-            <Briefcase className="h-10 w-10 text-yellow-600" />
-          </div>
-          <div className="absolute inset-0 w-20 h-20 border-4 border-yellow-200 rounded-full animate-spin border-t-yellow-600 mx-auto"></div>
+        <div className="relative w-16 h-16 mx-auto mb-5">
+          <div className="absolute inset-0 rounded-full border-4 border-emerald-100 border-t-emerald-600 animate-spin motion-reduce:animate-none" />
+          <Briefcase className="absolute inset-0 m-auto h-7 w-7 text-emerald-700" />
         </div>
-        <h3 className="text-2xl font-bold text-yellow-800 mb-2">
-          Loading Healing Services...
-        </h3>
-        <p className="text-yellow-600">Preparing your wellness offerings</p>
+        <p className="text-xl font-serif font-semibold text-stone-800">
+          Loading services…
+        </p>
       </div>
     </div>
   );

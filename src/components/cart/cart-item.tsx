@@ -43,41 +43,41 @@ export function CartItem({ item }: CartItemProps) {
         <h4 className="text-xs sm:text-sm font-medium text-stone-800 line-clamp-2 pr-1 leading-tight">
           {item.name}
         </h4>
-        <p className="text-[10px] sm:text-xs text-stone-500 mt-0.5">
+        <p className="text-xs text-stone-500 mt-0.5">
           {item.selectedVariant.variant}
         </p>
-        <p className="text-xs sm:text-sm font-semibold text-emerald-600 mt-0.5 sm:mt-1">
+        <p className="text-xs sm:text-sm font-semibold text-stone-800 tabular-nums mt-0.5 sm:mt-1">
           {formatCurrency(item.selectedVariant.price)}
         </p>
 
         {/* Quantity Controls */}
         <div className="flex items-center gap-1.5 sm:gap-2 mt-1.5 sm:mt-2">
-          <div className="flex items-center border border-stone-200 rounded-md sm:rounded-lg">
+          <div className="flex items-center border border-stone-200 rounded-lg">
             <button
               onClick={handleDecrement}
-              className="p-1 sm:p-1.5 text-stone-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-l-md sm:rounded-l-lg transition-colors active:bg-emerald-100"
+              className="flex h-9 w-9 items-center justify-center text-stone-600 hover:text-emerald-700 hover:bg-stone-100 rounded-l-lg transition-colors active:bg-stone-200"
               aria-label="Decrease quantity"
             >
-              <Minus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              <Minus className="w-3.5 h-3.5" />
             </button>
-            <span className="px-2 sm:px-3 text-xs sm:text-sm font-medium text-stone-700 min-w-[24px] sm:min-w-[32px] text-center">
+            <span className="px-1 text-sm font-medium text-stone-700 min-w-[28px] text-center tabular-nums" aria-live="polite">
               {item.quantity}
             </span>
             <button
               onClick={handleIncrement}
-              className="p-1 sm:p-1.5 text-stone-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-r-md sm:rounded-r-lg transition-colors active:bg-emerald-100"
+              className="flex h-9 w-9 items-center justify-center text-stone-600 hover:text-emerald-700 hover:bg-stone-100 rounded-r-lg transition-colors active:bg-stone-200"
               aria-label="Increase quantity"
             >
-              <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              <Plus className="w-3.5 h-3.5" />
             </button>
           </div>
 
           <button
             onClick={handleRemove}
-            className="p-1 sm:p-1.5 text-stone-400 hover:text-red-500 hover:bg-red-50 rounded-md sm:rounded-lg transition-colors ml-auto active:bg-red-100"
-            aria-label="Remove item"
+            className="flex h-9 w-9 items-center justify-center text-stone-500 hover:text-red-600 hover:bg-stone-100 rounded-lg transition-colors ml-auto active:bg-stone-200"
+            aria-label={`Remove ${item.name} (${item.selectedVariant.variant})`}
           >
-            <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <Trash2 className="w-4 h-4" />
           </button>
         </div>
       </div>

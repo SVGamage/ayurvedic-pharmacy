@@ -2,9 +2,9 @@
 
 import type React from "react";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import Image from "next/image";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,28 +16,25 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import Link from "next/link";
 import {
   Phone,
   Smartphone,
   Mail,
   MapPin,
-  Clock,
-  Share2,
   Facebook,
   Instagram,
   MessageCircle,
   Stethoscope,
   Users,
-  Leaf,
 } from "lucide-react";
 import {
-  contactViaWhatsApp,
+  askDoctorViaWhatsApp,
   emergencyConsultationViaWhatsApp,
   submitContactFormViaWhatsApp,
 } from "@/lib/whatsapp";
 import { ReusableHeroSection } from "@/components/reusable-hero-section";
-import { TikTokIcon, ThreadsIcon } from "@/components/social-icons";
+import { WhatsAppHandoffNote } from "@/components/whatsapp-handoff-note";
+import { OpenStatus } from "@/components/open-status";
 import { ContactPageInfoData } from "@/types/contact-info";
 import { Faq } from "@/types/faq";
 import {
@@ -45,28 +42,33 @@ import {
   sanitizeRichText,
 } from "@/lib/rich-text";
 
-const SERVICE_OPTIONS = [
-  { value: "ayurvedic-consultation", label: "Ayurvedic Consultation" },
-  { value: "online-consultation", label: "Online Consultation" },
-  { value: "nakshatra-services", label: "Nakshatra Services" },
-  { value: "product-inquiry", label: "Product Inquiry" },
-  { value: "general-inquiry", label: "General Inquiry" },
+const TOPIC_OPTIONS = [
+  { value: "ayurvedic-consultation", label: "Ayurvedic consultation" },
+  { value: "online-consultation", label: "Online consultation" },
+  { value: "nakshatra-services", label: "Nakshatra services" },
+  { value: "product-inquiry", label: "A product" },
+  { value: "general-inquiry", label: "Something else" },
 ] as const;
+
+const RICH_TEXT =
+  "max-w-prose text-stone-600 text-sm sm:text-base leading-relaxed space-y-3 [&_h2]:text-lg [&_h2]:sm:text-xl [&_h2]:font-serif [&_h2]:font-semibold [&_h2]:text-stone-800 [&_h2]:mb-2 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_li]:mb-1 [&_blockquote]:border-l-4 [&_blockquote]:border-emerald-400 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-stone-700";
+
+const FIELD = "h-11 border-stone-200 bg-white placeholder:text-stone-400";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     phone: "",
-    subject: "",
-    service: "",
+    email: "",
+    topic: "",
     message: "",
   });
-
   const [contactInfo, setContactInfo] = useState<ContactPageInfoData | null>(
-    null
+    null,
   );
   const [faqs, setFaqs] = useState<Faq[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const topicLabelId = useId();
 
   useEffect(() => {
     const fetchPageData = async () => {
@@ -75,20 +77,16 @@ export default function ContactPage() {
           fetch("/api/contact-info"),
           fetch("/api/faqs"),
         ]);
-
-        if (infoRes.ok) {
-          const data = await infoRes.json();
-          setContactInfo(data);
-        }
-
+        if (infoRes.ok) setContactInfo(await infoRes.json());
         if (faqRes.ok) {
           const faqData = await faqRes.json();
-          if (Array.isArray(faqData)) {
-            setFaqs(faqData);
-          }
+          if (Array.isArray(faqData)) setFaqs(faqData);
         }
       } catch (error) {
+        // The form and contact details still work without this content.
         console.error("Error loading contact page data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchPageData();
@@ -96,526 +94,429 @@ export default function ContactPage() {
 
   const safeDoctorHtml = useMemo(
     () => sanitizeRichText(contactInfo?.doctorDescription),
-    [contactInfo?.doctorDescription]
+    [contactInfo?.doctorDescription],
   );
   const hasDoctorDescription = hasVisibleRichTextContent(safeDoctorHtml);
   const showDoctorSection = Boolean(
     contactInfo?.doctorImage ||
       hasDoctorDescription ||
-      contactInfo?.doctorName?.trim()
+      contactInfo?.doctorName?.trim(),
   );
 
   const safeTeamHtml = useMemo(
     () => sanitizeRichText(contactInfo?.teamDescription),
-    [contactInfo?.teamDescription]
+    [contactInfo?.teamDescription],
   );
   const hasTeamDescription = hasVisibleRichTextContent(safeTeamHtml);
   const showTeamSection = Boolean(
     contactInfo?.teamImage ||
       hasTeamDescription ||
-      contactInfo?.teamTitle?.trim()
+      contactInfo?.teamTitle?.trim(),
   );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const serviceLabel = SERVICE_OPTIONS.find(
-      (option) => option.value === formData.service
-    )?.label;
     submitContactFormViaWhatsApp({
       name: formData.name,
-      email: formData.email,
       phone: formData.phone,
-      service: serviceLabel,
-      subject: formData.subject,
+      email: formData.email,
+      topic: TOPIC_OPTIONS.find((o) => o.value === formData.topic)?.label,
       message: formData.message,
     });
   };
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const doctorName = contactInfo?.doctorName?.trim();
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-8 md:pt-40">
-      {/* Enhanced Header Section */}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-12 md:pt-36">
       <ReusableHeroSection
         preTitle="Connect With Us"
         titleLine1="Get in Touch"
         titleLine2="With Our Team"
         subtitle="We're here to help you on your wellness journey"
-        description="Reach out to us for consultations, product inquiries, or any questions about Ayurvedic healing. Our dedicated team is ready to guide you towards natural wellness."
-        badges={["Expert Guidance", "Quick Response", "Personal Care"]}
         theme="green"
+        compact
       />
 
-      {/* Doctor & Team Showcase Section */}
-      {(showDoctorSection || showTeamSection) && (
-        <section className="space-y-8 sm:space-y-12 mb-12 sm:mb-16">
-          {/* Doctor Showcase — Left & Right on Web View (md+), Stacked on Mobile */}
-          {showDoctorSection && (
-            <Card className="overflow-hidden border-stone-200 shadow-sm hover:shadow-md transition-shadow rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white via-white to-emerald-50/40 relative">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-100/40 rounded-full -mr-24 -mt-24 blur-3xl pointer-events-none" />
-              <div className="grid grid-cols-1 md:grid-cols-12 items-stretch">
-                {contactInfo?.doctorImage && (
-                  <div className="md:col-span-5 lg:col-span-4 relative w-full h-80 sm:h-96 md:h-auto md:min-h-[380px] bg-stone-100 overflow-hidden">
-                    <Image
-                      src={contactInfo.doctorImage}
-                      alt={
-                        contactInfo.doctorName || "Our Ayurvedic Physician"
-                      }
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 42vw, 33vw"
-                      className="object-cover object-top"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-stone-900/25 via-transparent to-transparent md:hidden" />
-                  </div>
-                )}
+      {/* Doctor: the person most visitors want to reach */}
+      {isLoading ? (
+        <div
+          className="mb-12 h-[380px] rounded-3xl bg-stone-100 animate-pulse"
+          aria-hidden="true"
+        />
+      ) : (
+        showDoctorSection && (
+          <section
+            aria-labelledby="doctor-heading"
+            className="mb-12 sm:mb-16 overflow-hidden rounded-3xl border border-stone-200 bg-white"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-12 items-stretch">
+              {contactInfo?.doctorImage && (
+                <div className="md:col-span-5 lg:col-span-4 relative w-full h-80 sm:h-96 md:h-auto md:min-h-[380px] bg-stone-100">
+                  <Image
+                    src={contactInfo.doctorImage}
+                    alt={doctorName || "Our Ayurvedic physician"}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 42vw, 33vw"
+                    className="object-cover object-top"
+                  />
+                </div>
+              )}
 
-                <CardContent
-                  className={`${
-                    contactInfo?.doctorImage
-                      ? "md:col-span-7 lg:col-span-8"
-                      : "md:col-span-12"
-                  } p-6 sm:p-8 lg:p-10 flex flex-col justify-center relative z-10`}
+              <div
+                className={`${
+                  contactInfo?.doctorImage
+                    ? "md:col-span-7 lg:col-span-8"
+                    : "md:col-span-12"
+                } p-6 sm:p-8 lg:p-10 flex flex-col justify-center`}
+              >
+                <p className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-800 px-3.5 py-1.5 rounded-full w-fit mb-4">
+                  <Stethoscope className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
+                  <span className="text-xs font-semibold uppercase tracking-wider">
+                    {contactInfo?.doctorSpecialty?.trim() || "Ayurvedic Physician"}
+                  </span>
+                </p>
+
+                <h2
+                  id="doctor-heading"
+                  className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-stone-800 mb-4 leading-tight"
                 >
-                  <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200/80 text-emerald-700 px-3.5 py-1.5 rounded-full w-fit mb-4">
-                    <Stethoscope className="h-4 w-4 text-emerald-600 flex-shrink-0" />
-                    <span className="text-xs font-semibold uppercase tracking-wider">
-                      {contactInfo?.doctorSpecialty?.trim() ||
-                        "Ayurvedic Physician"}
-                    </span>
-                  </div>
-
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-stone-800 mb-4 leading-tight">
-                    {contactInfo?.doctorName?.trim() ? (
-                      contactInfo.doctorName
-                    ) : (
-                      <>
-                        Meet Our{" "}
-                        <span className="text-emerald-700 italic">
-                          Ayurvedic Doctor
-                        </span>
-                      </>
-                    )}
-                  </h2>
-
-                  {hasDoctorDescription && (
-                    <div
-                      className="text-stone-600 text-sm sm:text-base leading-relaxed space-y-3 [&_h2]:text-lg [&_h2]:sm:text-xl [&_h2]:font-serif [&_h2]:font-semibold [&_h2]:text-stone-800 [&_h2]:mb-2 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_li]:mb-1 [&_blockquote]:border-l-4 [&_blockquote]:border-emerald-400 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-stone-700"
-                      dangerouslySetInnerHTML={{ __html: safeDoctorHtml }}
-                    />
+                  {doctorName || (
+                    <>
+                      Meet Our{" "}
+                      <span className="text-emerald-700 italic">
+                        Ayurvedic Doctor
+                      </span>
+                    </>
                   )}
-                </CardContent>
-              </div>
-            </Card>
-          )}
+                </h2>
 
-          {/* Team Showcase — Horizontal Image First (Top), Description Vertically Below on All Screen Sizes */}
-          {showTeamSection && (
-            <Card className="overflow-hidden border-stone-200 shadow-sm hover:shadow-md transition-shadow rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white via-white to-stone-50/80 relative">
-              <div className="absolute bottom-0 right-0 w-64 h-64 bg-emerald-100/30 rounded-full -mr-24 -mb-24 blur-3xl pointer-events-none" />
-              <div className="flex flex-col">
-                {contactInfo?.teamImage && (
-                  <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[21/9] bg-stone-100 overflow-hidden border-b border-stone-100">
-                    <Image
-                      src={contactInfo.teamImage}
-                      alt={contactInfo.teamTitle || "Our Pharmacy Team"}
-                      fill
-                      sizes="(max-width: 1280px) 100vw, 1280px"
-                      className="object-cover object-center"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-stone-900/20 via-transparent to-transparent" />
-                  </div>
+                {hasDoctorDescription && (
+                  <div
+                    className={RICH_TEXT}
+                    dangerouslySetInnerHTML={{ __html: safeDoctorHtml }}
+                  />
                 )}
 
-                <CardContent className="p-6 sm:p-8 lg:p-10 relative z-10">
-                  <div className="max-w-4xl mx-auto">
-                    <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200/80 text-emerald-700 px-3.5 py-1.5 rounded-full w-fit mb-4">
-                      <Users className="h-4 w-4 text-emerald-600 flex-shrink-0" />
-                      <span className="text-xs font-semibold uppercase tracking-wider">
-                        Our Wellness Team
-                      </span>
-                    </div>
-
-                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-stone-800 mb-4 leading-tight">
-                      {contactInfo?.teamTitle?.trim() ? (
-                        contactInfo.teamTitle
-                      ) : (
-                        <>
-                          Dedicated to Your{" "}
-                          <span className="text-emerald-700 italic">
-                            Natural Healing
-                          </span>
-                        </>
-                      )}
-                    </h2>
-
-                    {hasTeamDescription && (
-                      <div
-                        className="text-stone-600 text-sm sm:text-base leading-relaxed space-y-3 [&_h2]:text-lg [&_h2]:sm:text-xl [&_h2]:font-serif [&_h2]:font-semibold [&_h2]:text-stone-800 [&_h2]:mb-2 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_li]:mb-1 [&_blockquote]:border-l-4 [&_blockquote]:border-emerald-400 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-stone-700"
-                        dangerouslySetInnerHTML={{ __html: safeTeamHtml }}
-                      />
-                    )}
-
-                    <div className="mt-6 pt-4 border-t border-stone-100 flex items-center gap-2 text-xs sm:text-sm text-emerald-700 font-medium">
-                      <Leaf className="h-4 w-4 text-emerald-600 flex-shrink-0" />
-                      <span>
-                        Authentic Ayurvedic Care • Personalized Attention
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <Button
+                    onClick={() => askDoctorViaWhatsApp(doctorName)}
+                    className="min-h-12 rounded-full bg-emerald-600 px-6 text-white hover:bg-emerald-700"
+                  >
+                    <MessageCircle className="mr-2 h-4 w-4" aria-hidden="true" />
+                    Ask {doctorName || "the doctor"} on WhatsApp
+                  </Button>
+                  <Link
+                    href="/services#ayurvedic"
+                    className="inline-flex min-h-10 items-center text-sm font-medium text-emerald-800 underline-offset-4 hover:underline"
+                  >
+                    See consultations
+                  </Link>
+                </div>
               </div>
-            </Card>
+            </div>
+          </section>
+        )
+      )}
+
+      {/* Message form + contact details */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-16">
+        <section aria-labelledby="form-heading" className="lg:col-span-2">
+          <h2
+            id="form-heading"
+            className="mb-2 text-2xl sm:text-3xl font-serif font-bold text-stone-800"
+          >
+            Send us a message
+          </h2>
+          <p className="mb-6 text-stone-600">
+            Your message opens in WhatsApp, ready to send.
+          </p>
+
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-5 rounded-3xl border border-stone-200 bg-white p-5 sm:p-8"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="name" className="text-stone-700">
+                  Your name
+                </Label>
+                <Input
+                  id="name"
+                  autoComplete="name"
+                  value={formData.name}
+                  onChange={(e) => handleChange("name", e.target.value)}
+                  required
+                  className={FIELD}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="phone" className="text-stone-700">
+                  Phone <span className="text-stone-500">(optional)</span>
+                </Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  value={formData.phone}
+                  onChange={(e) => handleChange("phone", e.target.value)}
+                  className={FIELD}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-stone-700">
+                  Email <span className="text-stone-500">(optional)</span>
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  value={formData.email}
+                  onChange={(e) => handleChange("email", e.target.value)}
+                  className={FIELD}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label id={topicLabelId} className="text-stone-700">
+                  What is it about?{" "}
+                  <span className="text-stone-500">(optional)</span>
+                </Label>
+                <Select
+                  value={formData.topic}
+                  onValueChange={(value) => handleChange("topic", value)}
+                >
+                  <SelectTrigger
+                    aria-labelledby={topicLabelId}
+                    className="h-11 border-stone-200 bg-white"
+                  >
+                    <SelectValue placeholder="Choose a topic" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TOPIC_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="message" className="text-stone-700">
+                Your message
+              </Label>
+              <Textarea
+                id="message"
+                value={formData.message}
+                onChange={(e) => handleChange("message", e.target.value)}
+                placeholder="Tell us what you need, e.g. a remedy you're looking for or a question for the doctor"
+                rows={5}
+                required
+                className="border-stone-200 bg-white placeholder:text-stone-400"
+              />
+            </div>
+
+            <WhatsAppHandoffNote kind="message" />
+
+            <Button
+              type="submit"
+              className="w-full sm:w-auto min-h-12 rounded-full bg-emerald-600 px-8 text-white hover:bg-emerald-700"
+            >
+              <MessageCircle className="mr-2 h-4 w-4" aria-hidden="true" />
+              Send on WhatsApp
+            </Button>
+          </form>
+        </section>
+
+        {/* Contact details */}
+        <aside aria-labelledby="details-heading" className="space-y-8">
+          <h2 id="details-heading" className="sr-only">
+            Contact details
+          </h2>
+
+          <OpenStatus />
+
+          <ul className="space-y-4">
+            <li>
+              <a
+                href="tel:+94760575304"
+                className="flex items-center gap-3 group min-h-11"
+              >
+                <Smartphone className="h-5 w-5 text-emerald-700 flex-shrink-0" aria-hidden="true" />
+                <span>
+                  <span className="block text-sm text-stone-600">Mobile</span>
+                  <span className="font-medium text-stone-800 group-hover:text-emerald-800">
+                    +94 76 057 5304
+                  </span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="tel:+94473477938"
+                className="flex items-center gap-3 group min-h-11"
+              >
+                <Phone className="h-5 w-5 text-emerald-700 flex-shrink-0" aria-hidden="true" />
+                <span>
+                  <span className="block text-sm text-stone-600">Shop</span>
+                  <span className="font-medium text-stone-800 group-hover:text-emerald-800">
+                    047 347 7938
+                  </span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="mailto:rathnadeepaherbal@gmail.com"
+                className="flex items-center gap-3 group min-h-11"
+              >
+                <Mail className="h-5 w-5 text-emerald-700 flex-shrink-0" aria-hidden="true" />
+                <span className="min-w-0">
+                  <span className="block text-sm text-stone-600">Email</span>
+                  <span className="font-medium text-stone-800 break-all group-hover:text-emerald-800">
+                    rathnadeepaherbal@gmail.com
+                  </span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <Link
+                href="/location"
+                className="flex items-center gap-3 group min-h-11"
+              >
+                <MapPin className="h-5 w-5 text-emerald-700 flex-shrink-0" aria-hidden="true" />
+                <span>
+                  <span className="block text-sm text-stone-600">Visit the shop</span>
+                  <span className="font-medium text-stone-800 group-hover:text-emerald-800">
+                    Hambantota Rd, Tissamaharama
+                  </span>
+                </span>
+              </Link>
+            </li>
+          </ul>
+
+          <div>
+            <h3 className="mb-3 font-serif text-lg font-semibold text-stone-800">
+              Follow us
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="https://www.facebook.com/share/17qai7aUM5/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-stone-200 bg-white px-4 text-sm font-medium text-stone-700 hover:border-emerald-400 hover:text-emerald-800"
+              >
+                <Facebook className="h-4 w-4" aria-hidden="true" />
+                Facebook
+              </a>
+              <a
+                href="https://www.instagram.com/rathnadeepa_herbals/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-stone-200 bg-white px-4 text-sm font-medium text-stone-700 hover:border-emerald-400 hover:text-emerald-800"
+              >
+                <Instagram className="h-4 w-4" aria-hidden="true" />
+                Instagram
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5">
+            <h3 className="mb-2 font-serif text-lg font-semibold text-stone-800">
+              Emergency Consultation
+            </h3>
+            <p className="mb-4 text-sm leading-relaxed text-stone-600">
+              Need urgent Ayurvedic advice? Our emergency consultation service
+              is available 24/7 for critical wellness concerns.
+            </p>
+            <Button
+              variant="outline"
+              className="w-full min-h-11 rounded-full border-2 border-stone-300 font-semibold text-stone-800 hover:bg-white"
+              onClick={emergencyConsultationViaWhatsApp}
+            >
+              <Phone className="mr-2 h-4 w-4" aria-hidden="true" />
+              Emergency Contact
+            </Button>
+          </div>
+        </aside>
+      </div>
+
+      {/* Team */}
+      {showTeamSection && (
+        <section
+          aria-labelledby="team-heading"
+          className="mb-16 overflow-hidden rounded-3xl border border-stone-200 bg-white"
+        >
+          {contactInfo?.teamImage && (
+            <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[21/9] bg-stone-100">
+              <Image
+                src={contactInfo.teamImage}
+                alt={contactInfo.teamTitle || "Our pharmacy team"}
+                fill
+                sizes="(max-width: 1280px) 100vw, 1280px"
+                className="object-cover object-center"
+              />
+            </div>
           )}
+          <div className="p-6 sm:p-8 lg:p-10">
+            <p className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-800 px-3.5 py-1.5 rounded-full w-fit mb-4">
+              <Users className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
+              <span className="text-xs font-semibold uppercase tracking-wider">
+                Our Wellness Team
+              </span>
+            </p>
+            <h2
+              id="team-heading"
+              className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-stone-800 mb-4 leading-tight"
+            >
+              {contactInfo?.teamTitle?.trim() || (
+                <>
+                  Dedicated to Your{" "}
+                  <span className="text-emerald-700 italic">Natural Healing</span>
+                </>
+              )}
+            </h2>
+            {hasTeamDescription && (
+              <div
+                className={RICH_TEXT}
+                dangerouslySetInnerHTML={{ __html: safeTeamHtml }}
+              />
+            )}
+          </div>
         </section>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-        {/* Enhanced Contact Form */}
-        <div className="lg:col-span-2">
-          <Card className="shadow-sm border-stone-200">
-            <CardHeader className="pb-4 bg-stone-50 border-b border-stone-100">
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center mb-3 bg-white px-3 py-1 rounded-full border border-stone-200">
-                  <span className="text-sm font-medium text-stone-600 tracking-wider uppercase">
-                    Message Us
-                  </span>
-                </div>
-                <CardTitle className="text-2xl font-serif font-bold text-stone-800">
-                  Send Us a Message
-                </CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-6">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name" className="text-stone-700">
-                      Full Name *
-                    </Label>
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => handleChange("name", e.target.value)}
-                      placeholder="Enter your full name"
-                      required
-                      className="border-stone-200 focus:border-emerald-500 focus:ring-emerald-500 bg-stone-50"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-stone-700">
-                      Email Address *
-                    </Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => handleChange("email", e.target.value)}
-                      placeholder="Enter your email"
-                      required
-                      className="border-stone-200 focus:border-emerald-500 focus:ring-emerald-500 bg-stone-50"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-stone-700">
-                      Phone Number
-                    </Label>
-                    <Input
-                      id="phone"
-                      value={formData.phone}
-                      onChange={(e) => handleChange("phone", e.target.value)}
-                      placeholder="Enter your phone number"
-                      className="border-stone-200 focus:border-emerald-500 focus:ring-emerald-500 bg-stone-50"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="service" className="text-stone-700">
-                      Service Interest
-                    </Label>
-                    <Select
-                      value={formData.service}
-                      onValueChange={(value) => handleChange("service", value)}
-                    >
-                      <SelectTrigger className="border-stone-200 focus:ring-emerald-500 bg-stone-50">
-                        <SelectValue placeholder="Select a service" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {SERVICE_OPTIONS.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="subject" className="text-stone-700">
-                    Subject *
-                  </Label>
-                  <Input
-                    id="subject"
-                    value={formData.subject}
-                    onChange={(e) => handleChange("subject", e.target.value)}
-                    placeholder="Brief subject of your message"
-                    required
-                    className="border-stone-200 focus:border-emerald-500 focus:ring-emerald-500 bg-stone-50"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message" className="text-stone-700">
-                    Message *
-                  </Label>
-                  <Textarea
-                    id="message"
-                    value={formData.message}
-                    onChange={(e) => handleChange("message", e.target.value)}
-                    placeholder="Please describe your inquiry in detail..."
-                    rows={6}
-                    required
-                    className="border-stone-200 focus:border-emerald-500 focus:ring-emerald-500 bg-stone-50"
-                  />
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                  <Button
-                    type="submit"
-                    className="flex-1 bg-emerald-700 hover:bg-emerald-800 text-white shadow-md"
-                    size="lg"
-                  >
-                    Send Message
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="flex-1 border-emerald-600 text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800"
-                    size="lg"
-                    onClick={() =>
-                      contactViaWhatsApp(formData.subject, formData.message)
-                    }
-                  >
-                    <MessageCircle className="h-4 w-4 mr-2" />
-                    WhatsApp
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Enhanced Contact Information */}
-        <div className="space-y-6">
-          <Card className="shadow-sm border-stone-200">
-            <CardHeader className="pb-3 bg-stone-50 border-b border-stone-100">
-              <div className="text-center">
-                <CardTitle className="text-lg font-serif text-stone-800">
-                  Get in Touch
-                </CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4 pt-6">
-              <a
-                href="tel:+94760575304"
-                className="flex items-center space-x-3 group"
-              >
-                <div className="p-2 bg-emerald-100 rounded-full group-hover:bg-emerald-200 transition-colors">
-                  <Smartphone className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-                </div>
-                <div>
-                  <p className="font-medium text-stone-900">Mobile</p>
-                  <p className="text-stone-600 group-hover:text-emerald-700 transition-colors">
-                    +94 76 057 5304
-                  </p>
-                </div>
-              </a>
-
-              <a
-                href="tel:+94473477938"
-                className="flex items-center space-x-3 group"
-              >
-                <div className="p-2 bg-emerald-100 rounded-full group-hover:bg-emerald-200 transition-colors">
-                  <Phone className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-                </div>
-                <div>
-                  <p className="font-medium text-stone-900">Telephone</p>
-                  <p className="text-stone-600 group-hover:text-emerald-700 transition-colors">
-                    +94 47 34 77 938
-                  </p>
-                </div>
-              </a>
-
-              <a
-                href="mailto:rathnadeepaherbal@gmail.com"
-                className="flex items-center space-x-3 group"
-              >
-                <div className="p-2 bg-emerald-100 rounded-full group-hover:bg-emerald-200 transition-colors">
-                  <Mail className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-                </div>
-                <div>
-                  <p className="font-medium text-stone-900">Email</p>
-                  <p className="text-stone-600 break-all group-hover:text-emerald-700 transition-colors">
-                    rathnadeepaherbal@gmail.com
-                  </p>
-                </div>
-              </a>
-
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-emerald-100 rounded-full">
-                  <Share2 className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-                </div>
-                <div>
-                  <p className="font-medium text-stone-900">Social Media</p>
-                  <p className="text-stone-600">Contact through social media</p>
-                </div>
-              </div>
-
-              <Link
-                href="/location"
-                className="flex items-center space-x-3 group"
-              >
-                <div className="p-2 bg-emerald-100 rounded-full group-hover:bg-emerald-200 transition-colors">
-                  <MapPin className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-                </div>
-                <div>
-                  <p className="font-medium text-stone-900">Our Stores</p>
-                  <p className="text-stone-600 group-hover:text-emerald-700 transition-colors">
-                    Meet us in our stores
-                  </p>
-                </div>
-              </Link>
-
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-emerald-100 rounded-full">
-                  <Clock className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-                </div>
-                <div>
-                  <p className="font-medium text-stone-900">Hours</p>
-                  <p className="text-stone-600">Everyday: 8:00 AM - 7:00 PM</p>
-                  <p className="text-stone-600">Poya Days: Closed (Holiday)</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="shadow-sm border-stone-200">
-            <CardHeader className="pb-3 bg-stone-50 border-b border-stone-100">
-              <div className="text-center">
-                <CardTitle className="text-lg font-serif text-stone-800">
-                  Follow Us
-                </CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-6">
-              <div className="grid grid-cols-2 gap-4">
-                <Link
-                  href="https://www.facebook.com/share/17qai7aUM5/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Facebook"
-                  className="flex items-center justify-center space-x-2 rounded-md border border-stone-200 px-4 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50 hover:text-emerald-700 transition-colors"
-                >
-                  <Facebook className="h-4 w-4" />
-                  <span>Facebook</span>
-                </Link>
-                <Link
-                  href="https://www.instagram.com/rathnadeepa_herbals/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Instagram"
-                  className="flex items-center justify-center space-x-2 rounded-md border border-stone-200 px-4 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50 hover:text-emerald-700 transition-colors"
-                >
-                  <Instagram className="h-4 w-4" />
-                  <span>Instagram</span>
-                </Link>
-                <Link
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="TikTok"
-                  className="flex items-center justify-center space-x-2 rounded-md border border-stone-200 px-4 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50 hover:text-emerald-700 transition-colors"
-                >
-                  <TikTokIcon className="h-4 w-4" />
-                  <span>TikTok</span>
-                </Link>
-                <Link
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Threads"
-                  className="flex items-center justify-center space-x-2 rounded-md border border-stone-200 px-4 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50 hover:text-emerald-700 transition-colors"
-                >
-                  <ThreadsIcon className="h-4 w-4" />
-                  <span>Threads</span>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-stone-50 border border-stone-200 shadow-sm">
-            <CardContent className="p-6 text-center">
-              <div className="inline-flex items-center justify-center mb-3">
-                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                  <Phone className="h-5 w-5 text-red-600" />
-                </div>
-              </div>
-              <h3 className="font-bold font-serif text-stone-900 mb-2 text-lg">
-                Emergency Consultation
-              </h3>
-              <p className="text-sm text-stone-600 mb-4 leading-relaxed">
-                Need urgent Ayurvedic advice? Our emergency consultation service
-                is available 24/7 for critical wellness concerns.
-              </p>
-              <Button
-                className="bg-red-600 hover:bg-red-700 text-white shadow-md w-full"
-                size="sm"
-                onClick={emergencyConsultationViaWhatsApp}
-              >
-                Emergency Contact
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Enhanced FAQ Section */}
+      {/* FAQs */}
       {faqs.length > 0 && (
-        <Card className="shadow-sm border-stone-200">
-          <CardHeader className="pb-4 bg-stone-50 border-b border-stone-100">
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center mb-3 bg-white px-3 py-1 rounded-full border border-stone-200">
-                <span className="text-sm font-medium text-stone-600 tracking-wider uppercase">
-                  Common Questions
-                </span>
+        <section aria-labelledby="faq-heading">
+          <h2
+            id="faq-heading"
+            className="mb-6 text-2xl sm:text-3xl font-serif font-bold text-stone-800"
+          >
+            Frequently asked questions
+          </h2>
+          <dl className="grid grid-cols-1 gap-x-10 md:grid-cols-2">
+            {faqs.map((faq) => (
+              <div key={faq.id} className="border-t border-stone-200 py-5">
+                <dt className="mb-2 font-serif text-lg font-semibold text-stone-800">
+                  {faq.question}
+                </dt>
+                <dd className="max-w-prose whitespace-pre-line text-stone-600">
+                  {faq.answer}
+                </dd>
               </div>
-              <CardTitle className="text-2xl font-serif font-bold text-stone-800">
-                Frequently Asked Questions
-              </CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {faqs.map((faq) => (
-                <div
-                  key={faq.id}
-                  className="p-4 rounded-xl bg-stone-50 border border-stone-100"
-                >
-                  <h4 className="font-serif font-semibold mb-2 text-stone-800">
-                    {faq.question}
-                  </h4>
-                  <p className="text-stone-600 text-sm whitespace-pre-line">
-                    {faq.answer}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+            ))}
+          </dl>
+        </section>
       )}
     </div>
   );

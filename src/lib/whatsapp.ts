@@ -14,19 +14,54 @@ const LOCAL_WHATSAPP_CONFIG: WhatsAppConfig = {
   baseUrl: WHATSAPP_CONFIG.whatsappBaseUrl,
 };
 
+// Bilingual opener used on order messages (Sinhala first, then English).
+const ORDER_GREETING = "ආයුබෝවන්! / Hello!";
+
 // Product ordering via WhatsApp
 export const orderProductViaWhatsApp = (
   productName: string,
   productPrice: number,
-  productId: string
 ) => {
-  const message = `Hello! I'm interested in ordering the following product:
+  const message = `${ORDER_GREETING}
+I'd like to order:
 
-📦 Product: ${productName}
-💰 Price: ${formatCurrencyForWhatsApp(productPrice)}
-🆔 Product ID: ${productId}
+📦 ${productName}
+💰 ${formatCurrencyForWhatsApp(productPrice)}
 
-Could you please provide more information about availability and delivery options?
+Please confirm availability and delivery to my area.
+
+Thank you!`;
+
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
+
+  window.open(whatsappUrl, "_blank");
+};
+
+// Ask about a product that has no listed price, or ask the doctor about it
+export const askAboutProductViaWhatsApp = (
+  productName: string,
+  intent: "price" | "doctor",
+) => {
+  const ask =
+    intent === "price"
+      ? `Could you tell me the price and available sizes of ${productName}?`
+      : `I'd like to ask your doctor about ${productName} before ordering. Is it suitable for me?`;
+  const message = `${ORDER_GREETING}
+${ask}
+
+Thank you!`;
+
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
+
+  window.open(whatsappUrl, "_blank");
+};
+
+// Ask the shop to find something the catalog search didn't
+export const askForProductViaWhatsApp = (searchTerm: string) => {
+  const message = `${ORDER_GREETING}
+I couldn't find "${searchTerm}" on your website. Do you have it, or something similar?
 
 Thank you!`;
 
@@ -37,22 +72,38 @@ Thank you!`;
 };
 
 // Service booking via WhatsApp
+export interface ServiceBookingDetails {
+  /** Free text, e.g. "Saturday morning". */
+  preferredTime?: string;
+  /** Nakshatra readings need birth details; prompt the customer to have them ready. */
+  isNakshatra?: boolean;
+}
+
 export const bookServiceViaWhatsApp = (
   serviceName: string,
   servicePrice: string,
-  serviceDuration: string
+  serviceDuration: string,
+  details: ServiceBookingDetails = {},
 ) => {
-  const message = `Hello! I would like to book the following service:
+  const lines = [
+    ORDER_GREETING,
+    "I'd like to book:",
+    "",
+    `🗓️ ${serviceName}`,
+    serviceDuration ? `⏱️ ${serviceDuration}` : null,
+    servicePrice ? `💰 ${servicePrice}` : null,
+    details.preferredTime?.trim()
+      ? `📅 Preferred time: ${details.preferredTime.trim()}`
+      : null,
+    "",
+    details.isNakshatra
+      ? "I'll share my date, time and place of birth when you reply."
+      : "Please let me know an available time.",
+    "",
+    "Thank you!",
+  ].filter((line): line is string => line !== null);
 
-🔮 Service: ${serviceName}
-💰 Price: ${servicePrice}
-⏰ Duration: ${serviceDuration}
-
-Could you please help me schedule an appointment at a convenient time?
-
-Thank you!`;
-
-  const encodedMessage = encodeURIComponent(message);
+  const encodedMessage = encodeURIComponent(lines.join("\n"));
   const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
 
   window.open(whatsappUrl, "_blank");
@@ -89,30 +140,27 @@ Thank you!`;
 // Contact form submission via WhatsApp
 export interface ContactFormDetails {
   name: string;
-  email: string;
+  email?: string;
   phone?: string;
-  service?: string;
-  subject: string;
+  /** What the message is about, e.g. "Product inquiry". */
+  topic?: string;
   message: string;
 }
 
 export const submitContactFormViaWhatsApp = (details: ContactFormDetails) => {
-  const lines = [
-    "Hello! I'd like to get in touch. Here are my details:",
-    "",
-    `👤 *Name:* ${details.name}`,
-    `📧 *Email:* ${details.email}`,
-  ];
+  const lines = [ORDER_GREETING, "", `👤 *Name:* ${details.name}`];
 
-  if (details.phone) {
-    lines.push(`📱 *Phone:* ${details.phone}`);
+  if (details.phone?.trim()) {
+    lines.push(`📱 *Phone:* ${details.phone.trim()}`);
   }
-  if (details.service) {
-    lines.push(`🔖 *Service Interest:* ${details.service}`);
+  if (details.email?.trim()) {
+    lines.push(`📧 *Email:* ${details.email.trim()}`);
+  }
+  if (details.topic) {
+    lines.push(`🔖 *About:* ${details.topic}`);
   }
 
   lines.push(
-    `📝 *Subject:* ${details.subject}`,
     "",
     "💬 *Message:*",
     details.message,
@@ -121,6 +169,22 @@ export const submitContactFormViaWhatsApp = (details: ContactFormDetails) => {
   );
 
   const encodedMessage = encodeURIComponent(lines.join("\n"));
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
+
+  window.open(whatsappUrl, "_blank");
+};
+
+// Ask the in-house doctor a question before visiting or ordering
+export const askDoctorViaWhatsApp = (doctorName?: string) => {
+  const who = doctorName?.trim() ? doctorName.trim() : "your doctor";
+  const message = `${ORDER_GREETING}
+I'd like to ask ${who} a question.
+
+(Please describe the concern, and the age of the person if it's for someone else.)
+
+Thank you!`;
+
+  const encodedMessage = encodeURIComponent(message);
   const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
 
   window.open(whatsappUrl, "_blank");
@@ -178,23 +242,15 @@ Thank you!`;
   window.open(whatsappUrl, "_blank");
 };
 
-// Contact company via WhatsApp
-export const contactCompanyViaWhatsApp = (
-  companyName: string,
-  phone?: string,
-) => {
-  const targetPhone = phone
-    ? phone.replace(/\+/g, "")
-    : LOCAL_WHATSAPP_CONFIG.phoneNumber;
-
-  const message = `Hello! I'm interested in products from ${companyName}.
-
-Could you please provide more information about available products and pricing?
+// Ask the shop about a brand it stocks. Always goes to Rathnadeepa, never the manufacturer.
+export const contactCompanyViaWhatsApp = (companyName: string) => {
+  const message = `${ORDER_GREETING}
+I'm looking for ${companyName} products. Could you tell me what you have in stock and the prices?
 
 Thank you!`;
 
   const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${targetPhone}&text=${encodedMessage}`;
+  const whatsappUrl = `${LOCAL_WHATSAPP_CONFIG.baseUrl}${LOCAL_WHATSAPP_CONFIG.phoneNumber}&text=${encodedMessage}`;
 
   window.open(whatsappUrl, "_blank");
 };
@@ -211,7 +267,15 @@ export const getWhatsAppConfig = (): WhatsAppConfig => {
 };
 
 // Order cart items via WhatsApp
-export const orderCartViaWhatsApp = (items: CartItem[]) => {
+export interface OrderCustomerDetails {
+  name?: string;
+  town?: string;
+}
+
+export const orderCartViaWhatsApp = (
+  items: CartItem[],
+  customer: OrderCustomerDetails = {},
+) => {
   const itemsList = items
     .map(
       (item, i) =>
@@ -225,7 +289,16 @@ export const orderCartViaWhatsApp = (items: CartItem[]) => {
     0
   );
 
-  const message = `Hello! I would like to order:
+  const customerLines = [
+    customer.name?.trim() && `👤 Name: ${customer.name.trim()}`,
+    customer.town?.trim() && `📍 Deliver to: ${customer.town.trim()}`,
+  ].filter(Boolean);
+  const customerBlock = customerLines.length
+    ? `\n${customerLines.join("\n")}\n`
+    : "";
+
+  const message = `${ORDER_GREETING}
+I would like to order:
 
 🛒 *ORDER DETAILS*
 ${itemsList}
@@ -234,8 +307,8 @@ ${itemsList}
 📦 Total Items: ${totalQuantity}
 💰 Total: ${formatCurrencyForWhatsApp(total)}
 ───────────────────
-
-Please confirm availability and delivery details.
+${customerBlock}
+Please confirm availability and delivery to my area.
 
 Thank you!`;
 

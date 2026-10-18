@@ -100,7 +100,7 @@ export function ReviewCard({
                 {review.treatment && (
                   <Badge
                     variant="outline"
-                    className="text-[10px] border-stone-200 text-stone-500 font-normal"
+                    className="text-[11px] border-stone-200 text-stone-500 font-normal"
                   >
                     {review.treatment}
                   </Badge>
@@ -156,7 +156,7 @@ export function ReviewCard({
                 {showVerified && review.verified && (
                   <div className="flex items-center space-x-1 bg-emerald-50 px-2 py-0.5 rounded-full">
                     <CheckCircle className="h-3 w-3 text-emerald-600" />
-                    <span className="text-[10px] text-emerald-700 font-medium uppercase tracking-wide">
+                    <span className="text-[11px] text-emerald-700 font-medium uppercase tracking-wide">
                       Verified
                     </span>
                   </div>
